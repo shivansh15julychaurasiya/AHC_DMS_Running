@@ -1,0 +1,67 @@
+package com.dms.service;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.dms.model.CaseType;
+import com.dms.model.IndexField;
+
+@Service
+public class MasterService {
+	
+	@PersistenceContext
+	private EntityManager em;
+	
+	public List<CaseType> getCaseTypes() {
+		// TODO Auto-generated method stub
+		List<CaseType> result = em.createQuery("SELECT c FROM CaseType c")
+				.getResultList();
+
+		return result;
+	}
+	public List<IndexField> getIndexFields() {
+		// TODO Auto-generated method stub
+		List<IndexField> result = em.createQuery("SELECT i FROM IndexField i where i.if_rec_status=1")
+				.getResultList();
+
+		return result;
+	}
+	@Transactional
+	public IndexField getIndexField(Long id) {
+		IndexField result = new IndexField() ;
+		try{			
+			String sql = "SELECT i FROM IndexField i WHERE i.if_id= :id ";
+			result = (IndexField) em.createQuery(sql).setParameter("id", id).getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+		}return result;
+	}
+	@Transactional
+	public IndexField getIndexFieldByName(String name) {
+		IndexField result = new IndexField() ;
+		try{			
+			String sql = "SELECT i FROM IndexField i WHERE i.if_name= :name";
+			result = (IndexField) em.createQuery(sql).setParameter("name", name).getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+		
+	public CaseType getCaseTypeByLabel(String name) {
+		// TODO Auto-generated method stub
+		CaseType result = new CaseType() ;
+		try{			
+			String sql = "SELECT c FROM CaseType c WHERE c.ct_label= :name";
+			result =  (CaseType) em.createQuery(sql).setParameter("name", name).getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+} 

@@ -1,0 +1,236 @@
+package com.dms.model;
+
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="sub_documents")
+public class SubDocument {
+	
+	@Id 
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator="sub_documents_seq")
+	@SequenceGenerator(name="sub_documents_seq", sequenceName="sub_documents_seq", allocationSize=1)
+	@Column(name = "sd_id") 
+	private Long sd_id;
+	
+	@Column(name = "sd_fd_mid")
+	private Long sd_fd_mid;
+	
+	@Column(name = "sd_if_mid")
+	private Long sd_if_mid;
+	
+	@Column (name="sd_document_name")
+	private String sd_document_name;
+	
+	@Column (name = "sd_no_of_pages")
+	private int sd_no_of_pages;
+	
+	@Column (name = "sd_version")
+	private int sd_version;
+	
+	@Column (name= "sd_document_id")
+	private Integer sd_document_id;
+	
+	@Column (name= "sd_document_no")
+	private Integer sd_document_no;
+	
+	@Column (name= "sd_document_year")
+	private Integer sd_document_year;
+	
+	@Column (name="sd_party")
+	private String sd_party;
+	
+	@Column (name="sd_description")
+	private String sd_description;
+	
+	@Column (name = "sd_submitted_date")
+	private Date sd_submitted_date;
+	
+	@Column (name = "sd_cr_by")
+	private Long sd_cr_by;
+	
+	@Column (name = "sd_cr_date")
+	private Date sd_cr_date;
+	
+	@Column (name= "sd_rec_status")
+	private int sd_rec_status;
+	
+	@Column (name= "sd_major_sequence")
+	private int sd_major_sequence;
+	
+	@Column (name= "sd_minor_sequence")
+	private int sd_minor_sequence;
+	
+	@Column (name= "sd_judgement_id")
+	private Long sd_judgement_id;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "sd_if_mid",insertable = false, updatable = false)
+	private IndexField indexField;
+
+	public Long getSd_id() {
+		return sd_id;
+	}
+
+	public void setSd_id(Long sd_id) {
+		this.sd_id = sd_id;
+	}
+
+	public Long getSd_fd_mid() {
+		return sd_fd_mid;
+	}
+
+	public void setSd_fd_mid(Long sd_fd_mid) {
+		this.sd_fd_mid = sd_fd_mid;
+	}
+
+	public Long getSd_if_mid() {
+		return sd_if_mid;
+	}
+
+	public void setSd_if_mid(Long sd_if_mid) {
+		this.sd_if_mid = sd_if_mid;
+	}
+
+	public String getSd_document_name() {
+		return sd_document_name;
+	}
+
+	public void setSd_document_name(String sd_document_name) {
+		this.sd_document_name = sd_document_name;
+	}
+
+	public int getSd_no_of_pages() {
+		return sd_no_of_pages;
+	}
+
+	public void setSd_no_of_pages(int sd_no_of_pages) {
+		this.sd_no_of_pages = sd_no_of_pages;
+	}
+
+	public int getSd_version() {
+		return sd_version;
+	}
+
+	public void setSd_version(int sd_version) {
+		this.sd_version = sd_version;
+	}
+
+	public Integer getSd_document_id() {
+		return sd_document_id;
+	}
+
+	public void setSd_document_id(Integer sd_document_id) {
+		this.sd_document_id = sd_document_id;
+	}
+
+	public Integer getSd_document_no() {
+		return sd_document_no;
+	}
+
+	public void setSd_document_no(Integer sd_document_no) {
+		this.sd_document_no = sd_document_no;
+	}
+
+	public Integer getSd_document_year() {
+		return sd_document_year;
+	}
+
+	public void setSd_document_year(Integer sd_document_year) {
+		this.sd_document_year = sd_document_year;
+	}
+
+	public String getSd_party() {
+		return sd_party;
+	}
+
+	public void setSd_party(String sd_party) {
+		this.sd_party = sd_party;
+	}
+
+	public String getSd_description() {
+		return sd_description;
+	}
+
+	public void setSd_description(String sd_description) {
+		this.sd_description = sd_description;
+	}
+
+	public Date getSd_submitted_date() {
+		return sd_submitted_date;
+	}
+
+	public void setSd_submitted_date(Date sd_submitted_date) {
+		this.sd_submitted_date = sd_submitted_date;
+	}
+
+	public Long getSd_cr_by() {
+		return sd_cr_by;
+	}
+
+	public void setSd_cr_by(Long sd_cr_by) {
+		this.sd_cr_by = sd_cr_by;
+	}
+
+	public Date getSd_cr_date() {
+		return sd_cr_date;
+	}
+
+	public void setSd_cr_date(Date sd_cr_date) {
+		this.sd_cr_date = sd_cr_date;
+	}
+
+	public int getSd_rec_status() {
+		return sd_rec_status;
+	}
+
+	public void setSd_rec_status(int sd_rec_status) {
+		this.sd_rec_status = sd_rec_status;
+	}
+
+	public int getSd_major_sequence() {
+		return sd_major_sequence;
+	}
+
+	public void setSd_major_sequence(int sd_major_sequence) {
+		this.sd_major_sequence = sd_major_sequence;
+	}
+
+	public int getSd_minor_sequence() {
+		return sd_minor_sequence;
+	}
+
+	public void setSd_minor_sequence(int sd_minor_sequence) {
+		this.sd_minor_sequence = sd_minor_sequence;
+	}
+
+	public IndexField getIndexField() {
+		return indexField;
+	}
+
+	public void setIndexField(IndexField indexField) {
+		this.indexField = indexField;
+	}
+
+	public Long getSd_judgement_id() {
+		return sd_judgement_id;
+	}
+
+	public void setSd_judgement_id(Long sd_judgement_id) {
+		this.sd_judgement_id = sd_judgement_id;
+	}
+	
+	
+
+	
+}
