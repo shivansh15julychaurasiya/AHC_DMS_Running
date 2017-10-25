@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -89,8 +90,8 @@ public class CaseFileController {
 
 		return jsonData;
 	}
-	@RequestMapping(value = "/uploadApplication", method = RequestMethod.POST)
-	public @ResponseBody String uploadApplication(MultipartHttpServletRequest request,HttpSession session) throws DocumentException 
+	@RequestMapping(value = "/uploadJudgement", method = RequestMethod.POST)
+	public @ResponseBody String uploadJudgement(MultipartHttpServletRequest request,HttpSession session) throws DocumentException 
 	{
 		ActionResponse<SubDocument> response = new ActionResponse();
 		User u=(User) session.getAttribute("USER");
@@ -98,6 +99,14 @@ public class CaseFileController {
 		Lookup lookup=lookupService.getLookUpObject("REPOSITORYPATH");
 		Long caseFileId=Long.parseLong(request.getParameter("sd_fd_mid"), 10);
 		Long indexFieldId= Long.parseLong(request.getParameter("sd_if_mid"), 10);
+		String order_date=request.getParameter("sd_submitted_date");
+		Date orderDate=null;
+		try {
+			orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		MultipartFile mpf = null;
     	Iterator<String> itr = request.getFileNames();
     	String newfilepath="";
@@ -111,7 +120,7 @@ public class CaseFileController {
     	while (itr.hasNext()) 
 		{
 			mpf = request.getFile(itr.next());
-			String filename=caseFileDetail.getCaseType().getCt_label()+caseFileDetail.getFd_case_no()+caseFileDetail.getFd_case_year()+"_"+indexField.getIf_type_code()+"_"+count;
+			String filename=caseFileDetail.getFd_document_name()+"_"+indexField.getIf_type_code()+"_"+count;
 			newfilepath=lookup.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+indexField.getIf_name()+File.separator+filename+".pdf";
 			SubDocument subDocument=new SubDocument();
 			subDocument.setSd_cr_by(u.getUm_id());
@@ -120,6 +129,8 @@ public class CaseFileController {
 			subDocument.setSd_if_mid(indexFieldId);
 			subDocument.setSd_version(1);
 			subDocument.setSd_document_name(filename);
+			subDocument.setSd_submitted_date(orderDate);
+			subDocument.setSd_minor_sequence(count);
 			
 			try {
 				FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(newfilepath));

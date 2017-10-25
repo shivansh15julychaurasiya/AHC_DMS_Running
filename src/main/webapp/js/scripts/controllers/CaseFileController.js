@@ -1,4 +1,4 @@
-var EDMSApp = angular.module("EDMSApp", ['ngFileUpload','ngMask']);
+var EDMSApp = angular.module("EDMSApp", ['ngFileUpload','ngMask','ui.bootstrap']);
 EDMSApp.directive('loading', ['$http', function ($http) {
     return {
         restrict: 'A',
@@ -28,7 +28,49 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	  getCaseTypes();
 	  getIndexFields();
 
+	  $scope.open1 = function($event,type) {
+		    $event.preventDefault();
+		    $event.stopPropagation();
+		    
+		    if(type=="fromDate1")
+		    	$scope.fromDate1= true;
+		    if(type=="toDate1")
+		    	$scope.toDate= true;
+		};
+	
+		$scope.toggleMax = function() {
+		    //$scope.minDate = $scope.minDate ? null : new Date();
+			$scope.maxDate = new Date();
+		};
+		$scope.toggleMax();
+		
+		$scope.open = function($event,type) {
+		    $event.preventDefault();
+		    $event.stopPropagation();
+		    
+		    if(type=="fromDate")
+		    	$scope.fromDate= true;
+		    if(type=="toDate")
+		    	$scope.toDate= true;
+		};
+		
+		$scope.dateOptions = {
+		    formatYear: 'yy',
+		    startingDay: 1
+		    
+		};
+		
+		$scope.formats = ['dd-MMMM-yyyy','dd-mm-yyyy', 'yyyy/MM/dd', 'dd-MM-yyyy', 'shortDate'];
+		$scope.format = $scope.formats[3];
+		
+		function convertDate(inputFormat) 
+		{debugger
+			  function pad(s) { return (s < 10) ? '0' + s : s; }
+			  var d = new Date(inputFormat);
+			  return [ d.getFullYear(), pad(d.getMonth()+1),pad(d.getDate())].join('-');
+		}
 
+	  
 	  function getCaseTypes(){
 		  $http.get(urlBase+'master/getcasetypes').success(function (data) {
 		    		$scope.caseTypes=data.modelList;		    	
@@ -67,10 +109,16 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		  $scope.subdocument.sd_if_mid=$scope.if_id;
 		  $scope.subdocument.sd_fd_mid=$scope.casefile.fd_id;
 		  
+		  if($scope.sd_submitted_date!=null){
+			  $scope.sd_submitted_date=convertDate($scope.sd_submitted_date);
+			}
+		  $scope.subdocument.sd_submitted_date=$scope.sd_submitted_date;
+		  
+		  
 			  var file=$scope.picFile;
 			  
 			    file.upload = Upload.upload({
-			      url: urlBase + 'casefile/uploadApplication',
+			      url: urlBase + 'casefile/uploadJudgement',
 			      headers: {
 			    	  'optional-header': 'header-value'
 			        },
@@ -79,7 +127,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 			    });
 
 			    file.upload.then(function (response) {
-			        if(response.response=="TRUE"){
+			        if(response.data.response=="TRUE"){
 			        	$scope.errorlist =null;
 			        	alert("Successfully uploaded document");
 			        	$("#uploadDocument").modal("hide");

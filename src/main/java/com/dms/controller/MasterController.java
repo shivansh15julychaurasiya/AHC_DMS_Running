@@ -50,7 +50,7 @@ public class MasterController {
 	public @ResponseBody String getIndexFields() {
 		String jsonData="";
 		ActionResponse<IndexField> response=new ActionResponse<>();
-		List<IndexField> indexFields=masterService.getIndexFields();
+		List<IndexField> indexFields=masterService.getSelectecdIndexFields();
 		response.setModelList(indexFields);		
 		jsonData=globalfunction.convert_to_json(response);		
 		return jsonData;

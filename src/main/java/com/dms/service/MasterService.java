@@ -31,6 +31,15 @@ public class MasterService {
 
 		return result;
 	}
+	
+	public List<IndexField> getSelectecdIndexFields() {
+		// TODO Auto-generated method stub
+		List<IndexField> result = em.createQuery("SELECT i FROM IndexField i where i.if_id in (39,40)")
+				.getResultList();
+
+		return result;
+	}
+	
 	@Transactional
 	public IndexField getIndexField(Long id) {
 		IndexField result = new IndexField() ;

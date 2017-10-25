@@ -149,6 +149,11 @@
 	src="${pageContext.request.contextPath}/js/angularJs/ngMask.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/scripts/controllers/CaseFileController.js"></script>
+	
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/bootstrap/angular-datepicker.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/bootstrap/ui-bootstrap-tpls.0.11.2.js"></script>
 
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/assets/js/apps.min.js"></script>
