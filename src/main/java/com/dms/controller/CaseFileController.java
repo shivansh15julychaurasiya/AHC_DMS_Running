@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,13 +38,16 @@ import com.dms.model.CaseFileDetail;
 import com.dms.model.IndexField;
 import com.dms.model.Lookup;
 import com.dms.model.MetaData;
+import com.dms.model.OrderReport;
 import com.dms.model.SubDocument;
 import com.dms.model.User;
 import com.dms.service.CaseFileDetailService;
 import com.dms.service.LookupService;
 import com.dms.service.MasterService;
+import com.dms.service.OrderReportService;
 import com.dms.service.SubDocumentService;
 import com.dms.utility.GlobalFunction;
+import com.dms.utility.PDFCreator;
 import com.itextpdf.text.pdf.PdfReader;
 import com.lowagie.text.DocumentException;
 
@@ -61,7 +65,10 @@ public class CaseFileController {
 	private MasterService masterService;
 	
 	@Autowired
-	private CaseFileDetailService caseFileDetailService;	
+	private CaseFileDetailService caseFileDetailService;
+	
+	@Autowired
+	private OrderReportService orderReportService;
 	
 	@Autowired
 	private SubDocumentService subDocumentService;
@@ -102,7 +109,9 @@ public class CaseFileController {
 		String order_date=request.getParameter("sd_submitted_date");
 		Date orderDate=null;
 		try {
-			orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
+			if(indexFieldId.longValue()!=40L)
+				orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
+			
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -129,7 +138,9 @@ public class CaseFileController {
 			subDocument.setSd_if_mid(indexFieldId);
 			subDocument.setSd_version(1);
 			subDocument.setSd_document_name(filename);
-			subDocument.setSd_submitted_date(orderDate);
+			if(indexFieldId.longValue()!=40L)
+				subDocument.setSd_submitted_date(orderDate);
+			
 			subDocument.setSd_minor_sequence(count);
 			
 			try {
@@ -140,11 +151,74 @@ public class CaseFileController {
 		       	subDocument.setSd_no_of_pages(no_of_pages);
 				
 		       	subDocumentService.save(subDocument);
+		       	reader.close();
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 		}
+    	
+    	response.setResponse("TRUE");
+    	jsonData = globalfunction.convert_to_json(response);
+		return jsonData;
+	}
+	@RequestMapping(value = "/addreportdata", method = RequestMethod.POST)
+	public @ResponseBody String addReportData(HttpServletRequest request,HttpSession session) throws DocumentException 
+	{
+		ActionResponse<SubDocument> response = new ActionResponse();
+		User u=(User) session.getAttribute("USER");
+		String jsonData="";
+		Long caseFileId=Long.parseLong(request.getParameter("sd_fd_mid"), 10);
+		Long indexFieldId= Long.parseLong(request.getParameter("sd_if_mid"), 10);
+		String ord_remark=request.getParameter("ord_remark");
+		Lookup lookup=lookupService.getLookUpObject("REPOSITORYPATH");
+		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(caseFileId);
+		IndexField indexField=masterService.getIndexField(indexFieldId);
+		Integer count=subDocumentService.getCount(caseFileId);
+		List<OrderReport> orderreports=orderReportService.getOrderReports(caseFileId);
+		count=count+1;
+		String filename=caseFileDetail.getFd_document_name()+"_"+indexField.getIf_type_code()+"_"+count;
+		SubDocument subDocument=new SubDocument();
+		
+		if(orderreports.isEmpty()){		
+			
+			subDocument.setSd_cr_by(u.getUm_id());
+			subDocument.setSd_cr_date(new Date());
+			subDocument.setSd_fd_mid(caseFileId);
+			subDocument.setSd_if_mid(indexFieldId);
+			subDocument.setSd_version(1);
+			subDocument.setSd_document_name(filename);
+			subDocument.setSd_minor_sequence(count);
+			subDocument=subDocumentService.save(subDocument);
+		}else{
+			subDocument=orderreports.get(0).getSubDocument();
+		}
+		
+		
+    	if(indexFieldId.longValue()==40L){
+    		
+    		String pdfname=lookup.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+indexField.getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+    		OrderReport or=new OrderReport();
+    		or.setOrd_created(new Date());
+    		or.setOrd_remark(ord_remark);
+    		or.setOrd_fd_mid(caseFileId);
+    		or.setOrd_sd_mid(subDocument.getSd_id());
+    		orderReportService.save(or);
+    		
+    		List<OrderReport> orList=orderReportService.getOrderReports(caseFileId);
+    		try {
+				PDFCreator.generatePDF(orList,pdfname);
+				File source=new File(pdfname);
+				PdfReader reader = new PdfReader(source.getAbsolutePath());
+				Integer no_of_pages = reader.getNumberOfPages();
+		       	subDocument.setSd_no_of_pages(no_of_pages);
+		       	reader.close();
+		       	subDocumentService.save(subDocument);
+    		}catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     	response.setResponse("TRUE");
     	jsonData = globalfunction.convert_to_json(response);
 		return jsonData;

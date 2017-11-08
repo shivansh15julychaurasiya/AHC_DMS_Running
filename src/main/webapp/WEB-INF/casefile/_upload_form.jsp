@@ -20,12 +20,23 @@
 			</div>
 		</div>
 		
-		<div class="col-sm-4">
-			<label class="control-label">Date of Decision: <span class="text-danger"> * </span></label>
-			<input type="text" class="form-control" datepicker-popup="{{format1}}" name="fromDate1" ng-model="sd_submitted_date" required is-open="fromDate1" max-date="maxDate"  datepicker-options="dateOptions" ng-disabled="true" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" show-button-bar="false" />
-			<span class="input-group-addon" ng-click="open1($event,'fromDate1')"><i class="glyphicon glyphicon-calendar"></i></span>
+		<div class="row" ng-hide="if_id==40">
+			<div class="form-group">
+				<label class="control-label col-md-4">Date of Decision: <span class="text-danger"> * </span></label>
+				<div class="col-md-4">
+					<input type="text" class="form-control" datepicker-popup="{{format1}}" name="fromDate1" ng-model="sd_submitted_date" is-open="fromDate1" max-date="maxDate"  datepicker-options="dateOptions" ng-disabled="true" date-disabled="disabled(date, mode)" close-text="Close" show-button-bar="false" />
+					<span class="input-group-addon" ng-click="open1($event,'fromDate1')"><i class="glyphicon glyphicon-calendar"></i></span>
+				</div>
+			</div>
 		</div>
-			
+		<div class="row"  ng-show="if_id==40">
+			<div class="form-group">
+				<label class="control-label col-md-4">Order Remark<span class="text-danger"> * </span></label>
+				<div class="col-md-4">
+					<input type="text" name="order_date" id="order_date" ng-model="ord_remark" class="form-control col-md-4"/>
+				</div>
+			</div>
+		</div>	
 		<div class="row">							  			      		
 				<div class="form-group">
 							<label class="col-md-4 control-label" for="file">File<span class="star">*</span></label>

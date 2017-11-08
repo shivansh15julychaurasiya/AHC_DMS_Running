@@ -64,7 +64,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		$scope.format = $scope.formats[3];
 		
 		function convertDate(inputFormat) 
-		{debugger
+		{
 			  function pad(s) { return (s < 10) ? '0' + s : s; }
 			  var d = new Date(inputFormat);
 			  return [ d.getFullYear(), pad(d.getMonth()+1),pad(d.getDate())].join('-');
@@ -104,6 +104,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		      	console.log("Error in getting tree data");
 		      });
 	  }	  
+	  $scope.ord_remark="";
 	  $scope.save=function() 
 	  {
 		  $scope.subdocument.sd_if_mid=$scope.if_id;
@@ -113,10 +114,14 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 			  $scope.sd_submitted_date=convertDate($scope.sd_submitted_date);
 			}
 		  $scope.subdocument.sd_submitted_date=$scope.sd_submitted_date;
-		  
-		  
+		  $scope.subdocument.ord_remark=$scope.ord_remark;
+		  	
 			  var file=$scope.picFile;
-			  
+			  if($scope.if_id==40 && $scope.ord_remark!=''){
+				  addReportData();
+			  }
+			  if(file!="")
+			  {
 			    file.upload = Upload.upload({
 			      url: urlBase + 'casefile/uploadJudgement',
 			      headers: {
@@ -132,6 +137,10 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 			        	alert("Successfully uploaded document");
 			        	$("#uploadDocument").modal("hide");
 			        	//window.location.reload();
+			        	$scope.picFile='';
+			        	$scope.if_id='';
+			        	$scope.ord_remark='';
+			        	
 			        }else{
 			        	$scope.errorlist = response.data.dataMapList;
 			        }
@@ -145,7 +154,25 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 			      file.upload.xhr(function (xhr) {
 			        // xhr.upload.addEventListener('abort', function(){console.log('abort complete')}, false);
 			      });
-			} 
+			  }
+			}
+	  function addReportData(){
+		  $http.post(urlBase+'casefile/addreportdata?sd_if_mid='+$scope.subdocument.sd_if_mid
+				  +"&sd_fd_mid="+$scope.subdocument.sd_fd_mid
+				  +"&ord_remark="+$scope.subdocument.ord_remark
+			  )
+			  .success(function (data) {
+			    	if(data.response=="TRUE")
+			    		alert("Successfully added order report data");		    	
+			    	else
+			    		alert("Error occurred while adding order report data");
+			    	
+			    	$("#uploadDocument").modal("hide");
+			      }).
+			      error(function(data, status, headers, config) {
+			      	console.log("Error in getting tree data");
+			      });
+	  }
 	  $scope.downloadFiles=function(id){
 			window.open(urlBase+"casefile/downloadfiles/"+id,"_self");
 		}
