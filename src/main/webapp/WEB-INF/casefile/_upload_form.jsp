@@ -33,7 +33,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-4">Order Remark<span class="text-danger"> * </span></label>
 				<div class="col-md-4">
-					<input type="text" name="order_date" id="order_date" ng-model="ord_remark" class="form-control col-md-4"/>
+					<textarea name="order_date" id="order_date" ng-model="ord_remark" class="form-control col-md-4"></textarea>
 				</div>
 			</div>
 		</div>	
