@@ -74,9 +74,16 @@ public class SubDocument {
 	@Column (name= "sd_judgement_id")
 	private Long sd_judgement_id;
 	
+	@Column (name="sd_counsel")
+	private String sd_counsel;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sd_if_mid",insertable = false, updatable = false)
 	private IndexField indexField;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "sd_document_id",insertable = false, updatable = false)
+	private ApplicationTypes documentType;
 
 	public Long getSd_id() {
 		return sd_id;
@@ -213,6 +220,16 @@ public class SubDocument {
 	public void setSd_minor_sequence(int sd_minor_sequence) {
 		this.sd_minor_sequence = sd_minor_sequence;
 	}
+	
+	
+
+	public String getSd_counsel() {
+		return sd_counsel;
+	}
+
+	public void setSd_counsel(String sd_counsel) {
+		this.sd_counsel = sd_counsel;
+	}
 
 	public IndexField getIndexField() {
 		return indexField;
@@ -228,6 +245,14 @@ public class SubDocument {
 
 	public void setSd_judgement_id(Long sd_judgement_id) {
 		this.sd_judgement_id = sd_judgement_id;
+	}
+
+	public ApplicationTypes getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(ApplicationTypes documentType) {
+		this.documentType = documentType;
 	}
 	
 	
