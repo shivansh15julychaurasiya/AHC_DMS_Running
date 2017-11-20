@@ -81,8 +81,8 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		      });
 	  }
 	  function getIndexFields(){
-		  $http.get(urlBase+'master/getindexfields').success(function (data) {
-		    		$scope.indexFields=data.modelList;		    	
+		  $http.get(urlBase+'master/getapplications').success(function (data) {
+		    		$scope.applications=data.modelList;		    	
 		    	
 		      }).
 		      error(function(data, status, headers, config) {
@@ -107,7 +107,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	  $scope.ord_remark="";
 	  $scope.save=function() 
 	  {
-		  $scope.subdocument.sd_if_mid=$scope.if_id;
+		  $scope.subdocument.at_id=$scope.at_id;
 		  $scope.subdocument.sd_fd_mid=$scope.casefile.fd_id;
 		  
 		  if($scope.sd_submitted_date!=null){
@@ -117,7 +117,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		  $scope.subdocument.ord_remark=$scope.ord_remark;
 		  	
 			  var file=$scope.picFile;
-			  if($scope.if_id==40 && $scope.ord_remark!=''){
+			  if($scope.at_id==100004 && $scope.ord_remark!=''){
 				  addReportData();
 			  }
 			  if(file!="")
@@ -157,7 +157,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 			  }
 			}
 	  function addReportData(){
-		  $http.post(urlBase+'casefile/addreportdata?sd_if_mid='+$scope.subdocument.sd_if_mid
+		  $http.post(urlBase+'casefile/addreportdata?at_id='+$scope.subdocument.at_id
 				  +"&sd_fd_mid="+$scope.subdocument.sd_fd_mid
 				  +"&ord_remark="+$scope.subdocument.ord_remark
 			  )

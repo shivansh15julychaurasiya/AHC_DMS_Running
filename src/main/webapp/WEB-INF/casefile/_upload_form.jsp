@@ -13,14 +13,14 @@
 		<div class="row">							  			      		
 			<div class="form-group">
 				<label class="col-md-4 control-label">Document Type<span class="star">*</span></label>
-				<select  ng-model="if_id"
-			 		ng-options="indexField.if_id as indexField.if_label for indexField in indexFields  | orderBy:'if_label'">
+				<select  ng-model="at_id"
+			 		ng-options="at.at_id as at.at_name for at in applications  | orderBy:'at_name'">
 					<option value="">Select Document Type</option>
 				</select>
 			</div>
 		</div>
 		
-		<div class="row" ng-hide="if_id==40">
+		<div class="row">
 			<div class="form-group">
 				<label class="control-label col-md-4">Date of Decision: <span class="text-danger"> * </span></label>
 				<div class="col-md-4">
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row"  ng-show="if_id==40">
+		<div class="row" >
 			<div class="form-group">
 				<label class="control-label col-md-4">Order Remark<span class="text-danger"> * </span></label>
 				<div class="col-md-4">

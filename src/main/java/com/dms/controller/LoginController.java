@@ -123,7 +123,7 @@ public class LoginController extends HttpServlet {
 				response2.setModelList(ob_list);
 				session.setAttribute("ob_list", ob_list);
 				System.out.println("objectlist="+cm.convert_to_json(ob_list));
-			if(user.getUserroles().get(0).getLk().getLk_longname().equals("DMSAdmin"))
+			if(user.getUserroles().get(0).getLk().getLk_longname().equals("DMSAdmin") || user.getUserroles().get(0).getLk().getLk_longname().equals("Review_Officer"))
 				response.setData("admin/home");
 			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("CaueList_Uploader"))
 				response.setData("causelist/home");

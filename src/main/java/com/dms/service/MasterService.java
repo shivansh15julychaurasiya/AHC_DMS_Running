@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dms.model.ApplicationTypes;
 import com.dms.model.CaseType;
 import com.dms.model.IndexField;
 
@@ -71,6 +72,19 @@ public class MasterService {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		return result;
+	}
+	
+	public List<CaseType> getCaseTypesByUser(Long userId) {
+		// TODO Auto-generated method stub
+		List<CaseType> result = em.createQuery("SELECT c FROM CaseType c where c.ct_id in(select uc.ucm_ct_mid from UserCaseType uc where uc.ucm_um_mid=:userId)").setParameter("userId", userId)
+				.getResultList();
+
+		return result;
+	}
+	public List<ApplicationTypes> getApplicationsByType(String at_type) {
+		List<ApplicationTypes> result = em.createQuery("SELECT a FROM ApplicationTypes a where a.at_type=:at_type").setParameter("at_type",at_type)
+		.getResultList();
 		return result;
 	}
 } 

@@ -1,4 +1,4 @@
-<jsp:include page="../content/header2.jsp"></jsp:include>
+<%@ include file="../content/header2.jsp"%>
 <div id="content" class="content">
 	<div class="container-fluid" ng-controller="CaseFileController">
 
@@ -58,10 +58,12 @@
 									<td>
 										<!-- 	                                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" ng-click="getStages(row)" data-target="#stageHistory"> -->
 										<!-- 													History --> <!-- 												</button> -->
-										<button class="btn btn-success btn-sm"
+										<% if(role.equals("DMSAdmin")) {%>
+										 <button class="btn btn-success btn-sm"
 											ng-click="viewCaseFile(row.fd_id)">View</button>
 										<button class="btn btn-success btn-sm"
 											ng-click="downloadFiles(row.fd_id)">Download</button>
+										<% }%>	
 										<button type="button" class="btn btn-primary btn-sm"
 											data-toggle="modal" ng-click="setModel(row)"
 											data-target="#uploadDocument">Upload</button>

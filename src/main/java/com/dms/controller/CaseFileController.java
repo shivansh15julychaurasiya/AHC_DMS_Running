@@ -105,12 +105,12 @@ public class CaseFileController {
 		String jsonData="";
 		Lookup lookup=lookupService.getLookUpObject("REPOSITORYPATH");
 		Long caseFileId=Long.parseLong(request.getParameter("sd_fd_mid"), 10);
-		Long indexFieldId= Long.parseLong(request.getParameter("sd_if_mid"), 10);
+		Integer at_id= Integer.parseInt(request.getParameter("at_id"), 10);
 		String order_date=request.getParameter("sd_submitted_date");
+		Long indexFieldId=39L;
 		Date orderDate=null;
 		try {
-			if(indexFieldId.longValue()!=40L)
-				orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
+			orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
 			
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
@@ -138,6 +138,7 @@ public class CaseFileController {
 			subDocument.setSd_if_mid(indexFieldId);
 			subDocument.setSd_version(1);
 			subDocument.setSd_document_name(filename);
+			subDocument.setSd_document_id(at_id);
 			if(indexFieldId.longValue()!=40L)
 				subDocument.setSd_submitted_date(orderDate);
 			
@@ -169,7 +170,8 @@ public class CaseFileController {
 		User u=(User) session.getAttribute("USER");
 		String jsonData="";
 		Long caseFileId=Long.parseLong(request.getParameter("sd_fd_mid"), 10);
-		Long indexFieldId= Long.parseLong(request.getParameter("sd_if_mid"), 10);
+		Integer at_id= Integer.parseInt(request.getParameter("at_id"), 10);
+		Long indexFieldId=39L;
 		String ord_remark=request.getParameter("ord_remark");
 		Lookup lookup=lookupService.getLookUpObject("REPOSITORYPATH");
 		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(caseFileId);
@@ -189,13 +191,14 @@ public class CaseFileController {
 			subDocument.setSd_version(1);
 			subDocument.setSd_document_name(filename);
 			subDocument.setSd_minor_sequence(count);
+			subDocument.setSd_document_id(at_id);
 			subDocument=subDocumentService.save(subDocument);
 		}else{
 			subDocument=orderreports.get(0).getSubDocument();
 		}
 		
 		
-    	if(indexFieldId.longValue()==40L){
+    	if(indexFieldId.longValue()==39L){
     		
     		String pdfname=lookup.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+indexField.getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
     		OrderReport or=new OrderReport();
@@ -298,25 +301,26 @@ public class CaseFileController {
 		
 		String returnview="/casefile/view";
 		
-		model.addAttribute("document_name", subDocument.getSd_document_name());
-
-		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
-		String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
-		
-		File source = new File(srcPath);	
-
-		String uploadPath = context.getRealPath("");		
-		File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
-
-		try {
-		    FileUtils.copyFile(source, dest);
-		} 
-		catch (IOException e) {
-		    e.printStackTrace();
-		}
+//		model.addAttribute("document_name", subDocument.getSd_document_name());
+//
+//		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+//		String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+//		
+//		File source = new File(srcPath);	
+//
+//		String uploadPath = context.getRealPath("");		
+//		File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
+//
+//		try {
+//		    FileUtils.copyFile(source, dest);
+//		} 
+//		catch (IOException e) {
+//		    e.printStackTrace();
+//		}
 		
 		return returnview;
 	}
+	
 	@RequestMapping(value = "/getsubdocuments/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getSubDocuments(@PathVariable("id") Long fd_id,HttpSession session) {
 		String jsonData = null;
@@ -330,6 +334,34 @@ public class CaseFileController {
 
 		return jsonData;
 	}
+	@RequestMapping(value = "/getcasefiledetails/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getcasefiledetails(@PathVariable("id") Long fd_id,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<CaseFileDetail> response=new ActionResponse<>();
+		
+		CaseFileDetail casefile=caseFileDetailService.getCaseFileDetail(fd_id);
+		response.setResponse("TRUE");
+		response.setModelData(casefile);
+		
+		jsonData = globalfunction.convert_to_json(response);
+
+		return jsonData;
+	}
+	@RequestMapping(value = "/getorderreports/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getorderreports(@PathVariable("id") Long fd_id,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<OrderReport> response=new ActionResponse<>();
+		
+		List<OrderReport> orderReportData=orderReportService.getOrderReports(fd_id);
+		response.setResponse("TRUE");
+		response.setModelList(orderReportData);
+		
+		jsonData = globalfunction.convert_to_json(response);
+
+		return jsonData;
+	}
+
+	
 	@RequestMapping(value = "/getmetadata/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getMetadata(@PathVariable("id") Long fd_id,HttpSession session) {
 		String jsonData = null;
