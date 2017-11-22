@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.CauseList;
 import com.dms.model.CauseListType;
+import com.dms.model.PetitionerAdvocate;
+import com.dms.model.RespondentAdvocate;
 
 
 
@@ -30,10 +32,11 @@ public class CauseListService
     	try {	
     		causeList= em.merge(cl);	    	
 	    }catch (Exception e) {		
-	    	e.printStackTrace();
+	    	e.printStackTrace();	    	
 		}
     	return causeList;
     }
+	
 	@Transactional
 	public List<CauseListType> getCauseListTypes() {
 		List<CauseListType> result = em.createQuery("SELECT c FROM CauseListType c").getResultList();
@@ -113,11 +116,7 @@ public class CauseListService
 		}
 		if(causeList.getCl_list_type_mid()!=null)
 		{	
-			if(causeList.getCl_list_type_mid()==1){
-				querystr+=" AND c.cl_list_type_mid In (1,2,3)";
-			}else{
-				querystr+=" AND c.cl_list_type_mid="+causeList.getCl_list_type_mid();
-			}
+			querystr+=" AND c.cl_list_type_mid="+causeList.getCl_list_type_mid();			
 		}
 		
 		try {
@@ -178,5 +177,26 @@ public class CauseListService
 		}
 		return sequence;
 	}
-
+	
+	@Transactional
+    public PetitionerAdvocate savePetAdvocate(PetitionerAdvocate a) {    
+		PetitionerAdvocate pa = null;
+    	try {	
+    		pa= em.merge(a);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();
+		}
+    	return pa;
+    }
+	
+	@Transactional
+    public RespondentAdvocate saveResAdvocate(RespondentAdvocate a) {    
+		RespondentAdvocate ra = null;
+    	try {	
+    		ra= em.merge(a);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();
+		}
+    	return ra;
+    }
 }

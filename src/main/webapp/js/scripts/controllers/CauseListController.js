@@ -171,7 +171,10 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	$scope.save=function() 
 	{
 		  var file=$scope.picFile;
-		  
+		  if($scope.picFile==''){
+			  alert("Please select file");
+			  return false;
+		  }
 		  	//var d = new Date($scope.causelist.cl_date);
 		  	//var m=("0" + (d.getMonth() + 1)).slice(-2)
 		    //var year=d.getFullYear();

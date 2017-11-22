@@ -29,16 +29,22 @@ EDMSApp.controller('ECourtHomeCtrl',['$scope','$http',function ($scope, $http) {
 	$scope.backlogcount=0;
 	$scope.supplementarycount=0;
 	$scope.additionalcount=0;
+	$scope.applicationcount=0;
+	$scope.correctioncount=0;
 	
 	function loadMasterData() {
 		var response = $http.get(baseUrl+'ecourt/getreport');
 		response.success(function(data, status, headers, config) {		
 			$scope.masterdata= data.modelList;
 			angular.forEach($scope.masterdata, function(object, key) {
-				  if(object.cl_list_type_mid==6){
-					  $scope.supplementarycount=object.count
-				  }
+				  
 				  if(object.cl_list_type_mid==1){
+					  $scope.applicationcount=object.count
+				  }
+				  if(object.cl_list_type_mid==2){
+					  $scope.correctioncount=object.count
+				  }
+				  if(object.cl_list_type_mid==3){
 					  $scope.dailycount=object.count
 				  }
 				  if(object.cl_list_type_mid==4){
@@ -46,6 +52,9 @@ EDMSApp.controller('ECourtHomeCtrl',['$scope','$http',function ($scope, $http) {
 				  }
 				  if(object.cl_list_type_mid==5){
 					  $scope.freshcount=object.count
+				  }
+				  if(object.cl_list_type_mid==6){
+					  $scope.supplementarycount=object.count
 				  }
 				  if(object.cl_list_type_mid==7){
 					  $scope.additionalcount=object.count

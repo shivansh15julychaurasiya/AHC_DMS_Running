@@ -70,14 +70,21 @@ public class EcourtController {
 			list=causeListService.getListByType(causeList);	
 		}
 		List<CauseList> cList=new ArrayList<>();
-		Integer dailycount=0;
+		
 		for(int i=0;i<list.size();i++){
 			CauseList c=new CauseList();
 			Object[] row1 = (Object[]) list.get(i);
-			if(row1[1].toString().equals("1") || row1[1].toString().equals("2") || row1[1].toString().equals("3")){
+			if(row1[1].toString().equals("1")){
 				c.setCl_list_type_mid(1L);
-				dailycount+=Integer.parseInt(row1[0].toString());
-				c.setCount(dailycount);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if(row1[1].toString().equals("2")){
+				c.setCl_list_type_mid(2L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if(row1[1].toString().equals("3")){
+				c.setCl_list_type_mid(3L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
 			}
 			if(row1[1].toString().equals("4")){
 				c.setCl_list_type_mid(4L);

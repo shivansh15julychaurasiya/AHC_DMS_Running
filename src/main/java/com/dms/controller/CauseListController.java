@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -42,9 +43,10 @@ import com.dms.model.CauseListType;
 import com.dms.model.CourtMaster;
 import com.dms.model.CourtUserMapping;
 import com.dms.model.Lookup;
-import com.dms.model.MetaData;
+import com.dms.model.PetitionerAdvocate;
 import com.dms.model.Rec;
 import com.dms.model.Record;
+import com.dms.model.RespondentAdvocate;
 import com.dms.model.SubDocument;
 import com.dms.model.User;
 import com.dms.model.UserRole;
@@ -211,9 +213,10 @@ public class CauseListController
 				
 				try{
 				
-				//case_type=causeListService.findCaseType(cases.getType(), 8L);
+ 				//case_type=causeListService.findCaseType(cases.getType(), 8L);
 				
 					CauseList cl=new CauseList();
+					
 					
 					String sDate=rec.getDol();  
 				    date=new SimpleDateFormat("dd/MM/yyyy").parse(sDate);
@@ -234,8 +237,50 @@ public class CauseListController
 					cl.setCl_applawr(rec.getApplawr());
 					cl.setCl_stage(rec.getStage());
 					cl.setCl_dol(date);
+					System.out.println("Caseno="+cl.getCl_case_no()+" & case year="+cl.getCl_case_year()+" &count="+count);
 					
 					cl=causeListService.save(cl);
+					PetitionerAdvocate pa=new PetitionerAdvocate();
+					pa.setPa_name(rec.getPetadv());
+					pa.setPa_cl_mid(cl.getCl_id());
+					causeListService.savePetAdvocate(pa);
+					
+					RespondentAdvocate ra=new RespondentAdvocate();
+					ra.setRa_name(rec.getResadv());
+					ra.setRa_cl_mid(cl.getCl_id());
+					causeListService.saveResAdvocate(ra);
+					
+					Map<String, String> extpadv=(Map<String, String>) rec.getExtpadv();
+					try {
+						if(!extpadv.isEmpty())
+						{
+						
+							for(Entry<String, String> extp:extpadv.entrySet()){
+								PetitionerAdvocate padvocate=new PetitionerAdvocate();
+								padvocate.setPa_name(extp.getValue());
+								padvocate.setPa_cl_mid(cl.getCl_id());
+								causeListService.savePetAdvocate(padvocate);
+							}
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Map<String, String> extradv=(Map<String, String>) rec.getExtradv();
+					try {
+						if(!extradv.isEmpty())
+						{					
+							for(Entry<String, String> extr:extradv.entrySet()){
+								RespondentAdvocate radvocate=new RespondentAdvocate();
+								radvocate.setRa_name(extr.getValue());
+								radvocate.setRa_cl_mid(cl.getCl_id());
+								causeListService.saveResAdvocate(radvocate);
+							}
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					CaseFileDetail casefile=new CaseFileDetail();
 					casefile.setFd_case_no(cl.getCl_case_no());
 					casefile.setFd_case_type(cl.getCl_case_type_mid());
