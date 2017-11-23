@@ -13,12 +13,12 @@
 	                <div class="panel-body">
 	                	<input type="hidden" class="form-control" value=${doc_id} id="doc_id" name="doc_id"> 
 						<input type="hidden" class="form-control" value=${document_name} id="document_name" name="document_name">
-						<div class="col-md-6">
+						<div class="col-md-5">
 							<jsp:include page="treeview.jsp"></jsp:include>
 							
 						</div>
-						<div class="col-md-6">
-							<jsp:include page="orderreport.jsp"></jsp:include>
+						<div class="col-md-7">
+							<jsp:include page="viewer.jsp"></jsp:include>
 						</div>
 	                </div>
 	            </div>

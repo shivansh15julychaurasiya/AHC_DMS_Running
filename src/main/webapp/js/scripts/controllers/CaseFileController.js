@@ -91,6 +91,10 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	  }
 	  $scope.setModel=function(casefile){
 		  $scope.casefile=casefile;
+		  $scope.at_id='';
+		  $scope.sd_submitted_date='';
+		  $scope.ord_remark='';
+		  $scope.picFile='';
 	  }
 	  $scope.searchCaseFiles=function() 
 	  {
@@ -103,7 +107,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		      error(function(data, status, headers, config) {
 		      	console.log("Error in getting tree data");
 		      });
-	  }	  
+	  }
 	  $scope.ord_remark="";
 	  $scope.save=function() 
 	  {
@@ -160,6 +164,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		  $http.post(urlBase+'casefile/addreportdata?at_id='+$scope.subdocument.at_id
 				  +"&sd_fd_mid="+$scope.subdocument.sd_fd_mid
 				  +"&ord_remark="+$scope.subdocument.ord_remark
+				  +"&sd_submitted_date="+$scope.subdocument.sd_submitted_date
 			  )
 			  .success(function (data) {
 			    	if(data.response=="TRUE")

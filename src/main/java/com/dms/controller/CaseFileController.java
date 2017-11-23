@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -171,7 +172,16 @@ public class CaseFileController {
 		String jsonData="";
 		Long caseFileId=Long.parseLong(request.getParameter("sd_fd_mid"), 10);
 		Integer at_id= Integer.parseInt(request.getParameter("at_id"), 10);
+		String order_date=request.getParameter("sd_submitted_date");
 		Long indexFieldId=39L;
+		Date orderDate=null;
+		try {
+			orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
+			
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String ord_remark=request.getParameter("ord_remark");
 		Lookup lookup=lookupService.getLookUpObject("REPOSITORYPATH");
 		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(caseFileId);
@@ -192,9 +202,11 @@ public class CaseFileController {
 			subDocument.setSd_document_name(filename);
 			subDocument.setSd_minor_sequence(count);
 			subDocument.setSd_document_id(at_id);
+			subDocument.setSd_submitted_date(orderDate);
 			subDocument=subDocumentService.save(subDocument);
 		}else{
 			subDocument=orderreports.get(0).getSubDocument();
+			subDocument.setSd_submitted_date(orderDate);
 		}
 		
 		
@@ -292,35 +304,104 @@ public class CaseFileController {
 	    }
 	
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-	public  String view(@PathVariable("id") Long docId,HttpSession session,HttpServletRequest request,Model model) {
-		model.addAttribute("doc_id", docId);
+	public  String view(@PathVariable("id") Long docId,Model model) {
 		
-		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(docId);
+		
 		SubDocument subDocument = subDocumentService.getSubDocument(docId);
-		User user=(User) session.getAttribute("USER");		
-		
 		String returnview="/casefile/view";
-		
-//		model.addAttribute("document_name", subDocument.getSd_document_name());
-//
-//		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
-//		String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
-//		
-//		File source = new File(srcPath);	
-//
-//		String uploadPath = context.getRealPath("");		
-//		File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
-//
-//		try {
-//		    FileUtils.copyFile(source, dest);
-//		} 
-//		catch (IOException e) {
-//		    e.printStackTrace();
-//		}
+		if(subDocument==null){
+			returnview="/casefile/notfound";	
+		}else{
+			
+			CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(docId);
+			model.addAttribute("document_name", subDocument.getSd_document_name());
+			model.addAttribute("doc_id", docId);
+			model.addAttribute("isApplication",null);
+			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+			String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+			
+			File source = new File(srcPath);	
+	
+			String uploadPath = context.getRealPath("");		
+			File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
+	
+			try {
+			    FileUtils.copyFile(source, dest);
+			} 
+			catch (IOException e) {
+			    e.printStackTrace();
+			}
+		}
 		
 		return returnview;
 	}
+	@RequestMapping(value = "/subdocument/{id}", method = RequestMethod.GET)
+	public  String subdocument(@PathVariable("id") Long subDocId,Model model) {
+		SubDocument subDocument = subDocumentService.getByPK(subDocId);
+				
+		String returnview="/casefile/view";
+		if(subDocument==null){
+			returnview="/casefile/notfound";	
+		}else{
+			Long docId=subDocument.getSd_fd_mid();
+			CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(docId);
+			
+			model.addAttribute("doc_id", docId);
+			model.addAttribute("document_name", subDocument.getSd_document_name());
+			model.addAttribute("isApplication",null);
+			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+			String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+			
+			File source = new File(srcPath);	
 	
+			String uploadPath = context.getRealPath("");		
+			File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
+	
+			try {
+			    FileUtils.copyFile(source, dest);
+			} 
+			catch (IOException e) {
+			    e.printStackTrace();
+			}
+		}
+		return returnview;
+	}
+	@RequestMapping(value = "/applicationview", method = RequestMethod.GET)
+	public  String subdocument(@RequestParam("app_no") Integer app_no,@RequestParam("app_year") Integer app_year,Model model) {
+		SubDocument subDocument = subDocumentService.getApplication(app_no,app_year);
+		String returnview="/casefile/view";
+		if(subDocument==null){
+			returnview="/casefile/notfound";	
+		}else{
+		Long docId=subDocument.getSd_fd_mid();
+		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(docId);
+		
+		model.addAttribute("doc_id", docId);
+		model.addAttribute("document_name", subDocument.getSd_document_name());
+		model.addAttribute("isApplication",1);
+		model.addAttribute("application_type", subDocument.getDocumentType().getAt_name());
+		model.addAttribute("party", subDocument.getSd_party());
+		model.addAttribute("name", subDocument.getSd_description());
+		model.addAttribute("counsel", subDocument.getSd_counsel());
+
+		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+		String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+		
+		File source = new File(srcPath);	
+
+		String uploadPath = context.getRealPath("");		
+		File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
+
+		try {
+		    FileUtils.copyFile(source, dest);
+		} 
+		catch (IOException e) {
+		    e.printStackTrace();
+		}
+		}
+		return returnview;
+	}
+
 	@RequestMapping(value = "/getsubdocuments/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getSubDocuments(@PathVariable("id") Long fd_id,HttpSession session) {
 		String jsonData = null;

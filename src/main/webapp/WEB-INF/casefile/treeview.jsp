@@ -1,3 +1,45 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:if test="${isApplication==1}">
+<div class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Application
+					</a>
+               </h3>
+           </div>
+           <div id="collapseThree" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;">
+                   <div class="table-responsive">
+
+						<table id="data-table" class="table table-striped table-bordered">
+                           <thead>
+                               <tr>
+                                   <th>Type</th>
+                                   <th>Party</th>
+                                   <th>Name</th>
+                                   <th>Counsel</th>
+                                </tr>
+                                
+                                 <td> ${application_type}</td>
+                                 <td><c:if test="${party=='P'}">Petitioner</c:if>
+                                 <c:if test="${party=='R'}">Respondent</c:if>
+                                 <c:if test="${party=='O'}">Other</c:if>
+                                  </td>
+                                 <td>${name}</td>
+                                 <td>${counsel}</td>
+                         		</tr>
+                    </thead>
+                    
+                </table>
+                </div>
+          </div>
+    </div>
+</div>
+</c:if>
+<div class="panel-group" id="accordion">
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
@@ -8,7 +50,7 @@
                </h3>
            </div>
            <div id="collapseOne" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
@@ -16,19 +58,15 @@
                                    <th>Type</th>
                                    <th>Party</th>
                                    <th>Name</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
                                 <tr ng-repeat="data in petitions">
-                                 <td>{{data.indexField.if_label}}</td>
+                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
-                         </tr>
+                         		</tr>
                     </thead>
                     
                 </table>
@@ -36,6 +74,33 @@
         </div>
     </div>
 </div>
+<div class="panel panel-inverse overflow-hidden">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOrderReport">
+									    <i class="fa fa-plus-circle pull-right"></i> 
+										Order Report Data
+									</a>
+                        </h3>
+                    </div>
+                    <div id="collapseOrderReport" class="panel-collapse collapse in">
+                        <div class="panel-body" style="padding:2px;">
+                            <div class="table-responsive">
+                                <table id="data-table" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Report</th>
+                                         </tr>
+                                         <tr ng-repeat="data in orderReports">
+	                                         <td>{{data.ord_remark}} ( {{data.ord_created | date:'dd/MM/yyyy'}})</td>	                                         
+                                         </tr>
+                                    </thead>
+                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
@@ -47,59 +112,24 @@
                </h3>
            </div>
            <div id="collapseNine" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
                                <tr>
                                    <th>Type</th>
+                                   <th>Sub Type</th>
                                    <th>Party</th>
                                    <th>Name</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
-                                <tr ng-repeat="data in office_reports">
-                                 <td>{{data.indexField.if_label}}</td>
+                                <tr ng-repeat="data in order_sheets">
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
+                                 <td>{{data.documentType.at_name}}</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
-                         </tr>
-                    </thead>
-                    
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="panel panel-inverse overflow-hidden">
-           <div class="panel-heading">
-               <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
-				    <i class="fa fa-plus-circle pull-right"></i> 
-					Order Sheet
-					</a>
-               </h3>
-           </div>
-           <div id="collapseEight" class="panel-collapse collapse in">
-               <div class="panel-body">
-                   <div class="table-responsive">
-                       <table id="data-table" class="table table-striped table-bordered">
-                           <thead>
-                               <tr>
-                                   <th>Type</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
-                                </tr>
-                                <tr ng-repeat="data in order_sheets">
-                                 <td>{{data.documentType.at_name}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
                          </tr>
                     </thead>
                     
@@ -119,7 +149,7 @@
                </h3>
            </div>
            <div id="collapseFive" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
@@ -128,19 +158,15 @@
                                    <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
                                 <tr ng-repeat="data in coun_affidavits">
-                                 <td>{{data.indexField.if_label}}</td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
                          </tr>
                     </thead>
                     
@@ -160,7 +186,7 @@
                </h3>
            </div>
            <div id="collapseTwo" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
@@ -169,19 +195,15 @@
                                    <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
                                 <tr ng-repeat="data in rejoinders">
-                                 <td>{{data.indexField.if_label}}</td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
                          </tr>
                     </thead>
                     
@@ -201,7 +223,7 @@
                </h3>
            </div>
            <div id="collapseSix" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
@@ -210,19 +232,15 @@
                                    <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
                                 <tr ng-repeat="data in supp_coun_affidavits">
-                                 <td>{{data.indexField.if_label}}</td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
                          </tr>
                     </thead>
                     
@@ -242,7 +260,7 @@
                </h3>
            </div>
            <div id="collapseSeven" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
@@ -251,19 +269,15 @@
                                    <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
                                 <tr ng-repeat="data in supp_rejoinders">
-                                 <td>{{data.indexField.if_label}}</td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
                          </tr>
                     </thead>
                     
@@ -283,7 +297,7 @@
                </h3>
            </div>
            <div id="collapseFour" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
@@ -292,19 +306,15 @@
                                    <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
                                 <tr ng-repeat="data in supp_affidavits">
-                                 <td>{{data.indexField.if_label}}</td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
                          </tr>
                     </thead>
                     
@@ -324,7 +334,7 @@
                </h3>
            </div>
            <div id="collapseThree" class="panel-collapse collapse in">
-               <div class="panel-body">
+               <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
                            <thead>
@@ -333,20 +343,16 @@
                                    <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
-                                   <th>Date</th>
-                                   <th>Link</th>
                                 </tr>
                                 <tr ng-repeat="data in applications">
-                                 <td>{{data.documentType.at_name}}</td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.documentType.at_name}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
                                  <td><span ng-if="data.sd_party=='P'">Petitioner</span>
                                  	<span ng-if="data.sd_party=='R'">Respondent</span>
                                  	<span ng-if="data.sd_party=='O'">Other</span>
                                  </td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
-                                 <td>{{data.sd_submitted_date | date:'dd/MM/yyyy'}}</td>
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">View Document</td>
-                         </tr>
+                         		</tr>
                     </thead>
                     
                 </table>
@@ -354,4 +360,4 @@
         </div>
     </div>
 </div>
-
+</div>

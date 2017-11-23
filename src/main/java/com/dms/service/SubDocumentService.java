@@ -48,11 +48,12 @@ public class SubDocumentService
 		try {
 			Query query=em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid order by sd_id asc").setParameter("sd_fd_mid",fd_id);
 			subDocument= (SubDocument) query.setMaxResults(1).getSingleResult();
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		return subDocument;
+			//e.printStackTrace();
+		}finally{
+			return subDocument;	
+		}
 	}
 	
 	public List<SubDocument> getSubDocuments(Long fd_id) {
@@ -83,12 +84,27 @@ public class SubDocumentService
 		try {
 			Query query=em.createQuery("SELECT d FROM SubDocument d where d.sd_id=:sd_id").setParameter("sd_id",sd_id);
 			subDocument= (SubDocument) query.getSingleResult();
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		return subDocument;
+			//e.printStackTrace();
+		}finally{
+			return subDocument;	
+		}
 
+	}
+	public SubDocument getApplication(Integer app_no, Integer app_year) {
+		// TODO Auto-generated method stub
+		SubDocument subDocument=null;
+		try {
+			Query query=em.createQuery("SELECT d FROM SubDocument d where d.sd_document_no=:app_no and d.sd_document_year=:app_year and d.sd_if_mid=14").setParameter("app_no",app_no).setParameter("app_year", app_year);
+			subDocument= (SubDocument) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}finally{
+			return subDocument;	
+		}		
+		
 	}
 	
 	

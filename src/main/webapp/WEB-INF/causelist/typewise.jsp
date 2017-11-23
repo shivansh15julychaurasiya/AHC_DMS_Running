@@ -32,8 +32,8 @@
 						<tr ng-repeat="data in displayedCollection">
 						<td>{{data.cl_serial_no}}</td>
 						<td style="text-align:center;cursor: pointer;text-decoration: underline;">
-						
-						<span ng-if="data.listType.clt_name=='A' || data.listType.clt_name=='C'" ng-click="viewCaseFile(data.cl_fd_mid)">Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/></span><span ng-click="viewCaseFile(data.cl_fd_mid)">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						<span ng-if="data.cl_list_type_mid==1 || data.cl_list_type_mid==2" ng-click="viewApplication(data.cl_ano,data.cl_ayr)">Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/>{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						<span ng-if="data.cl_list_type_mid !=1 && data.cl_list_type_mid !=2" ng-click="viewCaseFile(data.cl_fd_mid)">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
 						
 						</td>
 						<td style="text-align:center">{{data.cl_first_petitioner}} <br/> vs <br/> {{data.cl_first_respondent}} </td>

@@ -213,6 +213,10 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	$scope.viewCaseFile=function(id){
 		  window.open(urlBase+"casefile/view/"+id,"_blank");
 	  }
+	$scope.viewApplication=function(application_no,application_year){
+		  window.open(urlBase+"casefile/applicationview/?app_no="+application_no+"&app_year="+application_year,"_blank");
+	  }
+	
 	$scope.updatePriority=function(id){
 		var response = $http.get(urlBase+'causelist/updatepriority/'+id);
 		response.success(function(data, status, headers, config) {

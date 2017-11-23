@@ -64,7 +64,7 @@
 										<button class="btn btn-success btn-sm"
 											ng-click="downloadFiles(row.fd_id)">Download</button>
 										<% }%>	
-										<button type="button" class="btn btn-primary btn-sm"
+										<button type="button" class="btn btn-success btn-sm"
 											data-toggle="modal" ng-click="setModel(row)"
 											data-target="#uploadDocument">Upload</button>
 									</td>

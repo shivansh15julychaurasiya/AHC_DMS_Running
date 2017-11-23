@@ -9,10 +9,10 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	//$scope.judgmentdocId= $('#judgmentdocId').val();
 	
 	//alert(2);
-	//$scope.document_name= $('#document_name').val();
+	$scope.document_name= $('#document_name').val();
 	//alert($scope.fd_file_bar_code);
-	//var url = urlBase+'uploads/' + $scope.document_name+".pdf";
-	//DEFAULT_URL = url;
+	var url = urlBase+'uploads/' + $scope.document_name+".pdf";
+	DEFAULT_URL = url;
 	
    // alert(DEFAULT_URL);
 	$scope.petitions=[];
@@ -60,9 +60,6 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	    		  case'order_sheet':
 	    			  $scope.order_sheets.push($scope.subdocument);
 	    			  break;
-	    		  case'office_report':
-	    			  $scope.office_reports.push($scope.subdocument);
-	    			  break;
 	    		  }
 	    		});
 	    	console.log($scope.petition);
@@ -90,6 +87,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	}
 	
 	$scope.showSubDocument=function(sd_id){
-		window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
+		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
+		window.open(urlBase+'casefile/subdocument/'+sd_id,'_self');
 	};
 });
