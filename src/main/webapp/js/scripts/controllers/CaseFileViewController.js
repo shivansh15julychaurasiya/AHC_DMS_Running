@@ -27,7 +27,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	
 	getSubDocuments();
 	getCaseFileDetails();
-	getOrderReports();
+	
 	function getSubDocuments(){
 		$http.get(urlBase+'casefile/getsubdocuments/'+$scope.doc_id).success(function (data) {
 	    	$scope.subDocuments=data.modelList;
@@ -61,6 +61,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	    			  $scope.order_sheets.push($scope.subdocument);
 	    			  break;
 	    		  }
+	    		  getOrderReports();
 	    		});
 	    	console.log($scope.petition);
 	      }).
@@ -79,13 +80,28 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	}
 	function getOrderReports(){
 		$http.get(urlBase+'casefile/getorderreports/'+$scope.doc_id).success(function (data) {
-	    	$scope.orderReports=data.modelList;	    	  
+	    	$scope.orderReports=data.modelList;
+	    	generateReportData();
 	      }).
 	      error(function(data, status, headers, config) {
 	      	console.log("Error in getting sub documents");
 	      });
 	}
-	
+	function generateReportData(){
+		$scope.orderData=[];
+		angular.forEach($scope.order_sheets, function(value, key) {
+			$scope.ordermodel={'sd_id':value.sd_id,'document_type':value.documentType.at_name,'sd_created_date':value.sd_cr_date,'sd_party':value.sd_party,'sd_description':value.sd_description,'ord_remark':''};
+			$scope.orderData.push($scope.ordermodel);
+		});
+		angular.forEach($scope.orderReports, function(value, key) {
+			var sd_id=null;
+			if(value.subDocument!=null)
+				sd_id=value.subDocument.sd_id;			
+				$scope.ordermodel={'sd_id':sd_id,'document_type':'OFFICE REPORT','sd_created_date':value.ord_created,'sd_party':'','sd_description':'','ord_remark':value.ord_remark};
+				$scope.orderData.push($scope.ordermodel);
+			});
+		//alert(JSON.stringify($scope.orderData));
+	}
 	$scope.showSubDocument=function(sd_id){
 		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
 		window.open(urlBase+'casefile/subdocument/'+sd_id,'_self');

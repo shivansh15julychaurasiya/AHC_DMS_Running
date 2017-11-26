@@ -43,6 +43,45 @@
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseORDER">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Office report
+					</a>
+               </h3>
+           </div>
+           <div id="collapseORDER" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;">
+                   <div class="table-responsive">
+                       <table id="data-table" class="table table-striped table-bordered">
+                           <thead>
+                               <tr>
+                                   <th>Type</th>
+                                   <th>Notice</th>
+                                   <th>Party</th>
+                                   <th>Name</th>
+                                </tr>
+                                <tr ng-repeat="data in orderData | orderBy :'sd_created_date'">
+                                 <td>
+                                 <span  ng-if="data.sd_id!=null" ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.document_type}} ( {{data.sd_created_date | date:'dd/MM/yyyy'}})</span>
+                                 <span  ng-if="data.sd_id==null">{{data.document_type}} ( {{data.sd_created_date | date:'dd/MM/yyyy'}})</span>
+                                 </td>
+                                 <td> {{data.ord_remark}}</td>
+                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
+                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
+                                 	<span ng-if="data.sd_party=='O'">Other</span>
+                                 </td>
+                                 <td>{{data.sd_description}}</td>
+                         </tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
 				    <i class="fa fa-plus-circle pull-right"></i> 
 					Petition
@@ -74,71 +113,6 @@
         </div>
     </div>
 </div>
-<div class="panel panel-inverse overflow-hidden">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOrderReport">
-									    <i class="fa fa-plus-circle pull-right"></i> 
-										Order Report Data
-									</a>
-                        </h3>
-                    </div>
-                    <div id="collapseOrderReport" class="panel-collapse collapse in">
-                        <div class="panel-body" style="padding:2px;">
-                            <div class="table-responsive">
-                                <table id="data-table" class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Report</th>
-                                         </tr>
-                                         <tr ng-repeat="data in orderReports">
-	                                         <td>{{data.ord_remark}} ( {{data.ord_created | date:'dd/MM/yyyy'}})</td>	                                         
-                                         </tr>
-                                    </thead>
-                                    
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-<div class="panel panel-inverse overflow-hidden">
-           <div class="panel-heading">
-               <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseNine">
-				    <i class="fa fa-plus-circle pull-right"></i> 
-					Office report
-					</a>
-               </h3>
-           </div>
-           <div id="collapseNine" class="panel-collapse collapse in">
-               <div class="panel-body" style="padding:2px;">
-                   <div class="table-responsive">
-                       <table id="data-table" class="table table-striped table-bordered">
-                           <thead>
-                               <tr>
-                                   <th>Type</th>
-                                   <th>Sub Type</th>
-                                   <th>Party</th>
-                                   <th>Name</th>
-                                </tr>
-                                <tr ng-repeat="data in order_sheets">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td>{{data.documentType.at_name}}</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
-                                 <td>{{data.sd_description}}</td>
-                         </tr>
-                    </thead>
-                    
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
@@ -175,7 +149,6 @@
         </div>
     </div>
 </div>
-
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">

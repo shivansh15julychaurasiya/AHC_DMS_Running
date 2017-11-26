@@ -29,6 +29,9 @@ public class OrderReport {
 	@Column(name="ord_created")
 	private Date ord_created;
 	
+	@Column(name="ord_created_by")
+	private Long ord_created_by;
+	
 	@Column(name="ord_fd_mid")
 	private Long ord_fd_mid;
 	
@@ -85,6 +88,14 @@ public class OrderReport {
 
 	public void setSubDocument(SubDocument subDocument) {
 		this.subDocument = subDocument;
+	}
+
+	public Long getOrd_created_by() {
+		return ord_created_by;
+	}
+
+	public void setOrd_created_by(Long ord_created_by) {
+		this.ord_created_by = ord_created_by;
 	}
 	
 	
