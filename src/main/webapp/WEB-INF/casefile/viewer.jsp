@@ -23,7 +23,7 @@
             <button id="viewOutline" class="toolbarButton group" title="Show Document Outline" tabindex="3" data-l10n-id="outline">
                <span data-l10n-id="outline_label">Document Outline</span>
             </button>
-            <button id="viewAttachments" class="toolbarButton group" title="Show Attachments" tabindex="4" data-l10n-id="attachments">
+            <button style="display:none" id="viewAttachments" class="toolbarButton group" title="Show Attachments" tabindex="4" data-l10n-id="attachments">
                <span data-l10n-id="attachments_label">Attachments</span>
             </button>
           </div>
@@ -33,7 +33,7 @@
           </div>
           <div id="outlineView" class="hidden">
           </div>
-          <div id="attachmentsView" class="hidden">
+          <div id="attachmentsView"  class="hidden">
           </div>
         </div>
       </div>  <!-- sidebarContainer -->
@@ -136,7 +136,7 @@
                 <span id="numPages" class="toolbarLabel"></span>
               </div>
               <div id="toolbarViewerRight">
-                <button id="presentationMode" class="toolbarButton presentationMode hiddenLargeView" title="Switch to Presentation Mode" tabindex="31" data-l10n-id="presentation_mode">
+                <button style="display:none"  id="presentationMode" class="toolbarButton presentationMode hiddenLargeView" title="Switch to Presentation Mode" tabindex="31" data-l10n-id="presentation_mode">
                   <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
                 </button>
 
@@ -365,6 +365,9 @@
 }
 #mozPrintCallback-shim .progress-actions {
   clear: both;
+}
+.outlineItem a{
+color:black;
 }
   </style>
   <div class="mozPrintCallback-dialog-box">

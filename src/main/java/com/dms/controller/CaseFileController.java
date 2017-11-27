@@ -323,11 +323,21 @@ public class CaseFileController {
 		}else{
 		Long docId=subDocument.getSd_fd_mid();
 		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(docId);
+		Date date = subDocument.getSd_submitted_date();
 		
+	    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	    String submitted_date= ""; 
+	    if(date!=null){
+	    	submitted_date= formatter.format(date);
+	    }
+	    
 		model.addAttribute("doc_id", docId);
 		model.addAttribute("document_name", subDocument.getSd_document_name());
 		model.addAttribute("isApplication",1);
 		model.addAttribute("application_type", subDocument.getDocumentType().getAt_name());
+		model.addAttribute("application_no", subDocument.getSd_document_no());
+		model.addAttribute("application_year", subDocument.getSd_document_year());
+		model.addAttribute("submitted_date", submitted_date);
 		model.addAttribute("party", subDocument.getSd_party());
 		model.addAttribute("name", subDocument.getSd_description());
 		model.addAttribute("counsel", subDocument.getSd_counsel());

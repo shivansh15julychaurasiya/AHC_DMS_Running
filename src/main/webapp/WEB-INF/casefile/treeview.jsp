@@ -18,16 +18,11 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
                                 
-                                 <td> ${application_type}</td>
-                                 <td><c:if test="${party=='P'}">Petitioner</c:if>
-                                 <c:if test="${party=='R'}">Respondent</c:if>
-                                 <c:if test="${party=='O'}">Other</c:if>
-                                  </td>
+                                 <td> ${application_type} <br/> ${application_no}/ ${application_year} <br/> ${submitted_date} </td>
                                  <td>${name}</td>
                                  <td>${counsel}</td>
                          		</tr>
@@ -56,20 +51,15 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Notice</th>
-                                   <th>Party</th>
+                                   <th>Description</th>
                                    <th>Name</th>
                                 </tr>
                                 <tr ng-repeat="data in orderData | orderBy :'sd_created_date'">
                                  <td>
-                                 <span  ng-if="data.sd_id!=null" ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.document_type}} ( {{data.sd_created_date | date:'dd/MM/yyyy'}})</span>
-                                 <span  ng-if="data.sd_id==null">{{data.document_type}} ( {{data.sd_created_date | date:'dd/MM/yyyy'}})</span>
+                                 <span  ng-if="data.sd_id!=null" ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.document_type}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</span>
+                                 <span  ng-if="data.sd_id==null">{{data.document_type}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</span>
                                  </td>
                                  <td> {{data.ord_remark}}</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
                                  <td>{{data.sd_description}}</td>
                          </tr>
                     </thead>
@@ -95,15 +85,10 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                 </tr>
                                 <tr ng-repeat="data in petitions">
-                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
+                                 <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</td>
                                  <td>{{data.sd_description}}</td>
                          		</tr>
                     </thead>
@@ -129,16 +114,11 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
                                 <tr ng-repeat="data in coun_affidavits">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
                          </tr>
@@ -165,16 +145,11 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
                                 <tr ng-repeat="data in rejoinders">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
                          </tr>
@@ -202,16 +177,11 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
                                 <tr ng-repeat="data in supp_coun_affidavits">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
                          </tr>
@@ -239,16 +209,11 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
                                 <tr ng-repeat="data in supp_rejoinders">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
                          </tr>
@@ -276,16 +241,11 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
                                 <tr ng-repeat="data in supp_affidavits">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</td>
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
                          </tr>
@@ -313,16 +273,11 @@
                            <thead>
                                <tr>
                                    <th>Type</th>
-                                   <th>Party</th>
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
                                 <tr ng-repeat="data in applications">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.documentType.at_name}} ( {{data.sd_submitted_date | date:'dd/MM/yyyy'}})</td>
-                                 <td><span ng-if="data.sd_party=='P'">Petitioner</span>
-                                 	<span ng-if="data.sd_party=='R'">Respondent</span>
-                                 	<span ng-if="data.sd_party=='O'">Other</span>
-                                 </td>
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.documentType.at_name}} <br/> {{data.sd_document_no}} /{{data.sd_document_year}} <br/> {{data.sd_submitted_date | date:'dd-MM-yyyy h:mma'}}</td>                                 
                                  <td>{{data.sd_description}}</td>
                                  <td>{{data.sd_counsel}}</td>
                          		</tr>

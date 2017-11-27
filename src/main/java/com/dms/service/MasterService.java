@@ -83,7 +83,7 @@ public class MasterService {
 		return result;
 	}
 	public List<ApplicationTypes> getApplicationsByType(String at_type) {
-		List<ApplicationTypes> result = em.createQuery("SELECT a FROM ApplicationTypes a where a.at_type=:at_type").setParameter("at_type",at_type)
+		List<ApplicationTypes> result = em.createQuery("SELECT a FROM ApplicationTypes a where a.at_type=:at_type and a.at_rec_status=1").setParameter("at_type",at_type)
 		.getResultList();
 		return result;
 	}

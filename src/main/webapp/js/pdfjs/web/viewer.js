@@ -7168,70 +7168,31 @@ function webViewerInitialized() {
 
   document.getElementById('pageNumber').addEventListener('change', function() {
     // Handle the user inputting a floating point number.
-    
-    this.value=parseInt(this.value,10)+1;
     PDFViewerApplication.page = (this.value | 0);
+
     if (this.value !== (this.value | 0).toString()) {
       this.value = PDFViewerApplication.page;
     }
   });
-  
-  
+
   document.getElementById('scaleSelect').addEventListener('change', function() {
     if (this.value === 'custom') {
       return;
     }
     PDFViewerApplication.pdfViewer.currentScaleValue = this.value;
   });
-  
 
-  /*document.getElementById('presentationMode').addEventListener('click',
-		    SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));*/
+  document.getElementById('presentationMode').addEventListener('click',
+    SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));
 
   document.getElementById('openFile').addEventListener('click',
     SecondaryToolbar.openFileClick.bind(SecondaryToolbar));
 
   document.getElementById('print').addEventListener('click',
     SecondaryToolbar.printClick.bind(SecondaryToolbar));
-  
-  	var enablePresentation=true;
-  //	myFunction();
-    var getnextpage;
-    
-    function myFunction() {
-    	
-    	
-    	PDFViewerApplication.page=1;
-    	if(enablePresentation){
-    	getnextpage=setInterval(function(){ 
-	    	 this.value=parseInt(this.value,10)+1;
-	    	    PDFViewerApplication.page = (this.value | 0);
-	    	    if (this.value !== (this.value | 0).toString()) {
-	    	      this.value = PDFViewerApplication.page;
-	    	    }
-	    	
-	    }, 10000);
-    	
-  	  }else{
-  		clearInterval(getnextpage);
-  	  }
-  	}	
-    	
-    	document.getElementById('presentationMode').addEventListener('click',
-    			function(){
-    		this.value=0;
-    		PDFViewerApplication.page = (this.value | 0);
-    		if(enablePresentation)
-			  	  {
-			  		  enablePresentation=false; 
-			  	  }else{
-			  		  enablePresentation=true;
-			  	  }
-			  	  myFunction();
-    	});
 
-  /*document.getElementById('download').addEventListener('click',
-    SecondaryToolbar.downloadClick.bind(SecondaryToolbar));*/
+  document.getElementById('download').addEventListener('click',
+    SecondaryToolbar.downloadClick.bind(SecondaryToolbar));
 
 
   if (file && file.lastIndexOf('file:', 0) === 0) {
@@ -7622,6 +7583,8 @@ window.addEventListener('keydown', function keydown(evt) {
   if (cmd === 1 || cmd === 8) {
     switch (evt.keyCode) {
       case 83: // s
+    	  //changes added by ajit to restrict the download option
+    	  return false;
         PDFViewerApplication.download();
         handled = true;
         break;

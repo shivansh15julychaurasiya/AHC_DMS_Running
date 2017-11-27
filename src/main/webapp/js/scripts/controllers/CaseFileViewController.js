@@ -90,14 +90,14 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	function generateReportData(){
 		$scope.orderData=[];
 		angular.forEach($scope.order_sheets, function(value, key) {
-			$scope.ordermodel={'sd_id':value.sd_id,'document_type':value.documentType.at_name,'sd_created_date':value.sd_cr_date,'sd_party':value.sd_party,'sd_description':value.sd_description,'ord_remark':''};
+			$scope.ordermodel={'sd_id':value.sd_id,'document_type':value.documentType.at_name,'sd_created_date':value.sd_cr_date,'sd_submitted_date':value.sd_submitted_date,'sd_party':value.sd_party,'sd_description':value.sd_description,'ord_remark':''};
 			$scope.orderData.push($scope.ordermodel);
 		});
 		angular.forEach($scope.orderReports, function(value, key) {
 			var sd_id=null;
 			if(value.subDocument!=null)
 				sd_id=value.subDocument.sd_id;			
-				$scope.ordermodel={'sd_id':sd_id,'document_type':'OFFICE REPORT','sd_created_date':value.ord_created,'sd_party':'','sd_description':'','ord_remark':value.ord_remark};
+				$scope.ordermodel={'sd_id':sd_id,'document_type':'OFFICE REPORT','sd_created_date':value.ord_created,'sd_submitted_date':value.sd_submitted_date,'sd_party':'','sd_description':'','ord_remark':value.ord_remark};
 				$scope.orderData.push($scope.ordermodel);
 			});
 		//alert(JSON.stringify($scope.orderData));
