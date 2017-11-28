@@ -106,7 +106,13 @@ public class SubDocumentService
 		}		
 		
 	}
-	
+	public List<SubDocument> getAllSubDocuments(Long fd_id) {
+		// TODO Auto-generated method stub
+		List<SubDocument> result = em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid order by d.sd_cr_date")
+				.setParameter("sd_fd_mid", fd_id).getResultList();
+
+		return result;
+	}
 	
 
 }
