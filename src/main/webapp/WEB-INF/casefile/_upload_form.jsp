@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		
-		<div class="row" ng-show="at_id==100001">
+		<div class="row" ng-show="at_id==100001 || at_id==100002">
 			<div class="form-group">
 				<label class="control-label col-md-4">Date of Decision: <span class="text-danger"> * </span></label>
 				<div class="col-md-4">

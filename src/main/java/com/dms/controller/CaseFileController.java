@@ -111,7 +111,7 @@ public class CaseFileController {
 		String order_date=request.getParameter("sd_submitted_date");
 		Long indexFieldId=39L;
 		Date orderDate=new Date();
-		if(at_id==100001){
+		if(at_id==100001 || at_id==100002){
 			try {
 				orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
 				
