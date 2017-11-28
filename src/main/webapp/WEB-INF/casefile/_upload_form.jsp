@@ -20,15 +20,15 @@
 			</div>
 		</div>
 		
-<!-- 		<div class="row"> -->
-<!-- 			<div class="form-group"> -->
-<!-- 				<label class="control-label col-md-4">Date of Decision: <span class="text-danger"> * </span></label> -->
-<!-- 				<div class="col-md-4"> -->
-<!-- 					<input type="text" class="form-control" required datepicker-popup="{{format1}}" name="fromDate1" ng-model="sd_submitted_date" is-open="fromDate1" max-date="maxDate"  datepicker-options="dateOptions" ng-disabled="true" date-disabled="disabled(date, mode)" close-text="Close" show-button-bar="false" /> -->
-<!-- 					<span class="input-group-addon" ng-click="open1($event,'fromDate1')"><i class="glyphicon glyphicon-calendar"></i></span> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
+		<div class="row" ng-show="at_id==100001">
+			<div class="form-group">
+				<label class="control-label col-md-4">Date of Decision: <span class="text-danger"> * </span></label>
+				<div class="col-md-4">
+					<input type="text" class="form-control" datepicker-popup="{{format1}}" name="fromDate1" ng-model="sd_submitted_date" is-open="fromDate1" max-date="maxDate"  datepicker-options="dateOptions" ng-disabled="true" date-disabled="disabled(date, mode)" close-text="Close" show-button-bar="false" />
+					<span class="input-group-addon" ng-click="open1($event,'fromDate1')"><i class="glyphicon glyphicon-calendar"></i></span>
+				</div>
+			</div>
+		</div>
 		<div class="row" >
 			<div class="form-group">
 				<label class="control-label col-md-4">Order Remark<span class="text-danger"> * </span></label>

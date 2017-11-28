@@ -108,8 +108,18 @@ public class CaseFileController {
 		Long caseFileId=Long.parseLong(request.getParameter("sd_fd_mid"), 10);
 		Integer at_id= Integer.parseInt(request.getParameter("at_id"), 10);
 		String ord_remark=request.getParameter("ord_remark");
+		String order_date=request.getParameter("sd_submitted_date");
 		Long indexFieldId=39L;
 		Date orderDate=new Date();
+		if(at_id==100001){
+			try {
+				orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
+				
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		
 		MultipartFile mpf = null;
     	Iterator<String> itr = request.getFileNames();
@@ -132,7 +142,7 @@ public class CaseFileController {
 			subDocument.setSd_document_name(filename);
 			subDocument.setSd_document_id(at_id);
 			subDocument.setSd_submitted_date(orderDate);
-			
+			subDocument.setSd_rec_status(1);
 			subDocument.setSd_minor_sequence(count);
 			
 			try {
@@ -189,7 +199,7 @@ public class CaseFileController {
 	@RequestMapping(value="/downloadfiles/{id}",method=RequestMethod.GET)
 	public void downloadCaseFile(@PathVariable("id") Long caseFileId,HttpServletResponse response,HttpSession session)
 	{	
-		List<SubDocument> subDocuments=subDocumentService.getSubDocuments(caseFileId);
+		List<SubDocument> subDocuments=subDocumentService.getAllSubDocuments(caseFileId);
 		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
 		Lookup lookUpZip=lookupService.getLookUpObject("ZIP_DOWNLOAD_PATH");
 		

@@ -1,23 +1,4 @@
 var EDMSApp = angular.module("EDMSApp", ['ngFileUpload','ngMask','ui.bootstrap']);
-EDMSApp.directive('loading', ['$http', function ($http) {
-    return {
-        restrict: 'A',
-        link: function (scope, elm, attrs) {
-            scope.isLoading = function () {
-                return $http.pendingRequests.length > 0;
-            };
-            scope.$watch(scope.isLoading, function (v) {
-                if (v) {
-                    elm.show();
-                } else {
-                    elm.hide();
-                }
-            });
-        }
-    };
-}]);
-
-
 
 EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($scope, $http,Upload) {
 	  var urlBase="/dms/";
@@ -27,7 +8,6 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	  $scope.subdocument={};
 	  getCaseTypes();
 	  getIndexFields();
-
 	  $scope.open1 = function($event,type) {
 		    $event.preventDefault();
 		    $event.stopPropagation();
@@ -113,14 +93,12 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	  {
 		  $scope.subdocument.at_id=$scope.at_id;
 		  $scope.subdocument.sd_fd_mid=$scope.casefile.fd_id;
-		  
-//		  if($scope.sd_submitted_date!=null){
-//			  $scope.sd_submitted_date=convertDate($scope.sd_submitted_date);
-//			}
-		  //$scope.subdocument.sd_submitted_date=$scope.sd_submitted_date;
+		  if($scope.sd_submitted_date!=null){
+			  $scope.sd_submitted_date=convertDate($scope.sd_submitted_date);
+			}
+		  $scope.subdocument.sd_submitted_date=$scope.sd_submitted_date;
 		  $scope.subdocument.ord_remark=$scope.ord_remark;
-		  	
-			  var file=$scope.picFile;
+		    var file=$scope.picFile;
 			  if($scope.ord_remark!='' && file==""){
 				  addReportData();
 			  }

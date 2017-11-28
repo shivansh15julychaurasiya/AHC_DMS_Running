@@ -1256,17 +1256,17 @@ html[dir='rtl'] .verticalToolbarSeparator {
 
 #thumbnailView {
   position: absolute;
-  width: 120px;
+  width: 90%;
   top: 0;
   bottom: 0;
-  padding: 10px 40px 0;
-  overflow: auto;
+  padding: 0px;
   -webkit-overflow-scrolling: touch;
 }
 
 .thumbnail {
   float: left;
   margin-bottom: 5px;
+  width:80%;
 }
 
 #thumbnailView > a:last-of-type > .thumbnail {

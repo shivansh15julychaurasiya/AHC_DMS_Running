@@ -96,8 +96,9 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 		angular.forEach($scope.orderReports, function(value, key) {
 			var sd_id=null;
 			if(value.subDocument!=null)
-				sd_id=value.subDocument.sd_id;			
-				$scope.ordermodel={'sd_id':sd_id,'document_type':'OFFICE REPORT','sd_created_date':value.ord_created,'sd_submitted_date':value.sd_submitted_date,'sd_party':'','sd_description':'','ord_remark':value.ord_remark};
+				sd_id=value.subDocument.sd_id;
+			
+				$scope.ordermodel={'sd_id':sd_id,'document_type':'OFFICE REPORT','sd_created_date':value.ord_created,'sd_submitted_date':value.ord_created,'sd_party':'','sd_description':'','ord_remark':value.ord_remark};
 				$scope.orderData.push($scope.ordermodel);
 			});
 		//alert(JSON.stringify($scope.orderData));

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -199,4 +200,37 @@ public class CauseListService
 		}
     	return ra;
     }
+	@Transactional
+	public void deleteCauseList(Date cDate) {
+		// TODO Auto-generated method stub
+		try {
+			Query query  =  em.createQuery("DELETE  from CauseList c WHERE c.cl_dol < :cDate").setParameter("cDate", cDate);
+			query.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Transactional
+	public void deletePetitionerAdvocates() {
+		// TODO Auto-generated method stub
+		try {
+			Query query  =  em.createQuery("DELETE  from PetitionerAdvocate");
+			query.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Transactional
+	public void deleteRespondentAdvocates() {
+		// TODO Auto-generated method stub
+		try {
+			Query query  =  em.createQuery("DELETE  from RespondentAdvocate");
+			query.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

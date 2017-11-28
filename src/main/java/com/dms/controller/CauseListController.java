@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -43,10 +43,8 @@ import com.dms.model.CauseListType;
 import com.dms.model.CourtMaster;
 import com.dms.model.CourtUserMapping;
 import com.dms.model.Lookup;
-import com.dms.model.PetitionerAdvocate;
 import com.dms.model.Rec;
 import com.dms.model.Record;
-import com.dms.model.RespondentAdvocate;
 import com.dms.model.SubDocument;
 import com.dms.model.User;
 import com.dms.model.UserRole;
@@ -164,6 +162,12 @@ public class CauseListController
     	Iterator<String> itr = request.getFileNames();
     	String xmlPath="";
     	List<CourtMaster> cList=courtService.getCourtLists();
+    	// Truncate Causelist data, petitioner advocates and respondent advocates data
+    			
+    	causeListService.deleteCauseList(date);
+    	//causeListService.deletePetitionerAdvocates();
+    	//causeListService.deleteRespondentAdvocates();
+    	
     	Map<Integer,Integer> courtsList=new HashMap<Integer,Integer>();
     	
     	for(CourtMaster cm:cList ){
@@ -239,7 +243,7 @@ public class CauseListController
 					cl.setCl_dol(date);
 					System.out.println("Caseno="+cl.getCl_case_no()+" & case year="+cl.getCl_case_year()+" &count="+count);
 					
-//					cl=causeListService.save(cl);
+					cl=causeListService.save(cl);
 //					PetitionerAdvocate pa=new PetitionerAdvocate();
 //					pa.setPa_name(rec.getPetadv());
 //					pa.setPa_cl_mid(cl.getCl_id());

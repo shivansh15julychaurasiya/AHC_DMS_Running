@@ -21,7 +21,7 @@
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
-                                
+                                <tr>
                                  <td> ${application_type} <br/> ${application_no}/ ${application_year} <br/> ${submitted_date} </td>
                                  <td>${name}</td>
                                  <td>${counsel}</td>

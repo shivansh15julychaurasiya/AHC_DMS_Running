@@ -25,7 +25,6 @@
 						<th style="text-align:center">Petitioner vs Respondent</th>
 						<th style="text-align:center">Petitioner Council</th>
 						<th style="text-align:center">Respondent Council</th>
-						<th style="text-align:center">Action</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -39,9 +38,6 @@
 						<td style="text-align:center">{{data.cl_first_petitioner}} <br/> vs <br/> {{data.cl_first_respondent}} </td>
 						<td style="text-align:center">{{data.cl_petitioner_council}}</td>
 						<td style="text-align:center">{{data.cl_respondent_council}}</td>
-						<td style="text-align:center" >
-							<button type="button" ng-if="data.cl_sequence==null" class="btn btn-primary btn-sm" ng-click="updatePriority(data.cl_id)">Update Priority</button>
-						</td>
 						</tr>
 						</tbody>
 						<tfoot>
