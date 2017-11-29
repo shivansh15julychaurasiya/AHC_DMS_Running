@@ -164,7 +164,7 @@ public class CauseListController
     	List<CourtMaster> cList=courtService.getCourtLists();
     	// Truncate Causelist data, petitioner advocates and respondent advocates data
     			
-    	causeListService.deleteCauseList(date);
+    	causeListService.deleteCauseList();
     	//causeListService.deletePetitionerAdvocates();
     	//causeListService.deleteRespondentAdvocates();
     	

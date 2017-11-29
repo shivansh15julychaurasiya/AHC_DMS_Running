@@ -143,7 +143,7 @@ public class CauseListService
 			querystr+=" AND c.cl_court_no="+causeList.getCl_court_no();
 		}
 		try {
-			Query query  =  em.createQuery("SELECT count(*),cl_list_type_mid from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" group by c.cl_list_type_mid");
+			Query query  =  em.createQuery("SELECT max(cl_serial_no)as count,cl_list_type_mid from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" group by c.cl_list_type_mid");	
 			list= query.getResultList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -201,10 +201,10 @@ public class CauseListService
     	return ra;
     }
 	@Transactional
-	public void deleteCauseList(Date cDate) {
+	public void deleteCauseList() {
 		// TODO Auto-generated method stub
 		try {
-			Query query  =  em.createQuery("DELETE  from CauseList c WHERE c.cl_dol < :cDate").setParameter("cDate", cDate);
+			Query query  =  em.createQuery("DELETE  from CauseList");
 			query.executeUpdate();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

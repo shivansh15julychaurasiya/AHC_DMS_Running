@@ -1,7 +1,7 @@
-var EDMSApp = angular.module("EDMSApp", ['treeControl']);
+var EDMSApp = angular.module("EDMSApp", ['smart-table']);
 
 
-EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
+EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 	var urlBase="/dms/";
 	$scope.subDocuments=[];
 	$scope.metadata=[];
@@ -16,14 +16,23 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	
    // alert(DEFAULT_URL);
 	$scope.petitions=[];
+	$scope.petitionsData=[];
 	$scope.rejoinders=[];
+	$scope.rejoindersData=[];
 	$scope.applications=[];
+	$scope.applicationsData=[];
 	$scope.supp_affidavits=[];
+	$scope.supp_affidavitsData=[];
 	$scope.coun_affidavits=[];
+	$scope.coun_affidavitsData=[];
 	$scope.supp_coun_affidavits=[];
+	$scope.supp_coun_affidavitsData=[];
 	$scope.supp_rejoinders=[];
+	$scope.supp_rejoindersData=[];
 	$scope.order_sheets=[];
+	$scope.order_sheetsData=[];
 	$scope.office_reports=[];
+	$scope.office_reportsData=[];
 	
 	getSubDocuments();
 	getCaseFileDetails();
@@ -63,7 +72,14 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	    		  }
 	    		  getOrderReports();
 	    		});
-	    	console.log($scope.petition);
+	    	$scope.petitionsData = [].concat($scope.petitions);
+	        $scope.rejoindersData = [].concat($scope.rejoinders);
+	        $scope.applicationsData = [].concat($scope.applications);
+	        $scope.supp_affidavitsData = [].concat($scope.supp_affidavits);
+	        $scope.coun_affidavitsData = [].concat($scope.coun_affidavits);
+	        $scope.supp_coun_affidavitsData = [].concat($scope.supp_coun_affidavits);
+	        $scope.supp_rejoindersData = [].concat($scope.supp_rejoinders);
+	        
 	      }).
 	      error(function(data, status, headers, config) {
 	      	console.log("Error in getting sub documents");
@@ -90,7 +106,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 	function generateReportData(){
 		$scope.orderData=[];
 		angular.forEach($scope.order_sheets, function(value, key) {
-			$scope.ordermodel={'sd_id':value.sd_id,'document_type':value.documentType.at_name,'sd_created_date':value.sd_cr_date,'sd_submitted_date':value.sd_submitted_date,'sd_party':value.sd_party,'sd_description':value.sd_description,'ord_remark':''};
+			$scope.ordermodel={'sd_id':value.sd_id,'document_type':value.documentType.at_description,'sd_created_date':value.sd_cr_date,'sd_submitted_date':value.sd_submitted_date,'sd_party':value.sd_party,'sd_description':value.sd_description,'ord_remark':''};
 			$scope.orderData.push($scope.ordermodel);
 		});
 		angular.forEach($scope.orderReports, function(value, key) {
@@ -102,6 +118,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http, $document) {
 				$scope.orderData.push($scope.ordermodel);
 			});
 		//alert(JSON.stringify($scope.orderData));
+		$scope.orderDataList = [].concat($scope.orderDataList);
 	}
 	$scope.showSubDocument=function(sd_id){
 		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');

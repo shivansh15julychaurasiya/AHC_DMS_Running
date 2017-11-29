@@ -12,7 +12,7 @@
 
  
 
-  <div tabindex="1" class="loadingInProgress" style="height: 450px;">
+  <div tabindex="1" class="loadingInProgress" style="min-height: 1000px;">
     <div id="outerContainer">
       <div id="sidebarContainer">
         <div id="toolbarSidebar">
@@ -212,7 +212,7 @@
                     data-l10n-id="page_rotate_ccw"></menuitem>
         </menu>
 
-        <div id="viewerContainer" tabindex="0" style="height: 680px;">
+        <div id="viewerContainer" tabindex="0" style="height: 900px;">
           <div id="viewer" class="pdfViewer"></div>
         </div>
 

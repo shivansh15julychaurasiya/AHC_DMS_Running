@@ -17,7 +17,7 @@
 		       </div>
 				<div class="panel-body">
 					<div class="row">
-						<table st-table="displayedCollection" st-safe-src="masterdata"  class="table table-striped table-bordered table-hover">
+						<table st-table="displayedCollection" style="font-size:14px;" st-safe-src="masterdata"  class="table table-striped table-bordered table-hover">
 						<thead>
 						<tr>
 						<th>Sl No.</th>
@@ -29,7 +29,9 @@
 						</thead>
 						<tbody>
 						<tr ng-repeat="data in displayedCollection">
-						<td>{{data.cl_serial_no}}</td>
+						<td><span ng-show="displayedCollection[$index-1].cl_serial_no==data.cl_serial_no"><b>With</b></span>
+							<span ng-show="displayedCollection[$index-1].cl_serial_no!=data.cl_serial_no">{{data.cl_serial_no}}</span>
+						</td>
 						<td style="text-align:center;cursor: pointer;text-decoration: underline;">
 						<span ng-if="data.cl_list_type_mid==1 || data.cl_list_type_mid==2" ng-click="viewApplication(data.cl_ano,data.cl_ayr)">Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/>{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
 						<span ng-if="data.cl_list_type_mid !=1 && data.cl_list_type_mid !=2" ng-click="viewCaseFile(data.cl_fd_mid)">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>

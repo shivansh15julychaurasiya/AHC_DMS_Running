@@ -29,12 +29,18 @@
 	
 </body>
 	<script type="text/javascript"	src="${pageContext.request.contextPath}/js/scripts/controllers/CaseFileViewController.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap/ui-bootstrap-tpls.0.11.2.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/angularJs/angular-tree-control.js"></script>
-	<link rel='stylesheet' href='${pageContext.request.contextPath}/css/tree-control/tree-control.css'>
-	<link rel='stylesheet' href='${pageContext.request.contextPath}/css/tree-control/tree-control-attribute.css'>
-
 	<script src="${pageContext.request.contextPath}/assets/js/apps.min.js"></script>
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/Smart-Table-master/dist/smart-table.js"></script>
+	<style>
+	 .st-sort-ascent:before {
+	    content: '\25B2';
+	  }
+	
+	  .st-sort-descent:before {
+	    content: '\25BC';
+	  }
+	</style>
 	<script>
 		$(document).ready(function() {
 			App.init();
