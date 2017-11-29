@@ -45,7 +45,7 @@
                </h3>
            </div>
            <div id="collapseORDER" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="orderData" st-safe-src="orderDataList" class="table table-striped table-bordered">
                            <thead>
@@ -54,7 +54,7 @@
                                    <th st-sort="sd_description">Description</th>
                                    <th  st-sort="sd_counsel">Name</th>
                                 </tr>
-                                <tr ng-repeat="data in orderData | orderBy :'sd_submitted_date'">
+                                <tr ng-repeat="data in orderData">
                                  <td>
                                  <span  ng-if="data.sd_id!=null" ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.document_type}} <br/> {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</span>
                                  <span  ng-if="data.sd_id==null">{{data.document_type}}  {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</span>
@@ -79,7 +79,7 @@
                </h3>
            </div>
            <div id="collapseOne" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="petitions" st-safe-src="petitionsData" class="table table-striped table-bordered">
                            <thead>
@@ -91,6 +91,7 @@
                                 <tr ng-repeat="data in petitions">
                                  <td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</td>
                                  <td>{{data.sd_description}}</td>
+                                 <td>{{data.sd_counsel}}</td>
                          		</tr>
                     </thead>
                     
@@ -109,7 +110,7 @@
                </h3>
            </div>
            <div id="collapseFive" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="coun_affidavits" st-safe-src="coun_affidavitsData" class="table table-striped table-bordered">
                            <thead>
@@ -140,7 +141,7 @@
                </h3>
            </div>
            <div id="collapseTwo" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="rejoinders" st-safe-src="rejoindersData" class="table table-striped table-bordered">
                            <thead>
@@ -172,7 +173,7 @@
                </h3>
            </div>
            <div id="collapseSix" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="supp_coun_affidavits" st-safe-src="supp_coun_affidavitsData" class="table table-striped table-bordered">
                            <thead>
@@ -204,7 +205,7 @@
                </h3>
            </div>
            <div id="collapseSeven" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="supp_rejoinders" st-safe-src="supp_rejoindersData" class="table table-striped table-bordered">
                            <thead>
@@ -236,7 +237,7 @@
                </h3>
            </div>
            <div id="collapseFour" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="supp_affidavits" st-safe-src="supp_affidavitsData" class="table table-striped table-bordered">
                            <thead>
@@ -268,7 +269,7 @@
                </h3>
            </div>
            <div id="collapseThree" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;height:200px;overflow:auto;">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="applications" st-safe-src="applicationsData" class="table table-striped table-bordered">
                            <thead>

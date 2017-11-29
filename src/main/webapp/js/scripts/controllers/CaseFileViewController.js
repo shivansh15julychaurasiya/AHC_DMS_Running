@@ -118,7 +118,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 				$scope.orderData.push($scope.ordermodel);
 			});
 		//alert(JSON.stringify($scope.orderData));
-		$scope.orderDataList = [].concat($scope.orderDataList);
+		$scope.orderDataList = [].concat($scope.orderData);
 	}
 	$scope.showSubDocument=function(sd_id){
 		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
