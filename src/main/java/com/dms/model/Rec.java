@@ -2,16 +2,10 @@ package com.dms.model;
 
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import com.dms.utility.MapAdapter;
 
 @XmlRootElement(name="rec")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -43,13 +37,13 @@ public class Rec {
 	 private String petadv;
 
 	 //object of extpadv
-	 @XmlElement(name="extpadv")
-	 @XmlJavaTypeAdapter(MapAdapter.class)
-	 private Map<String, String> extpadv;
-	 
-	 @XmlElement(name="extradv")
-	 @XmlJavaTypeAdapter(MapAdapter.class)
-	 private Map<String, String> extradv = new HashMap<>();
+//	 @XmlElement(name="extpadv")
+//	 @XmlJavaTypeAdapter(MapAdapter.class)
+//	 private Map<String, String> extpadv;
+//	 
+//	 @XmlElement(name="extradv")
+//	 @XmlJavaTypeAdapter(MapAdapter.class)
+//	 private Map<String, String> extradv = new HashMap<>();
 	 
 	 @XmlElement(name="resadv")
 	 private String resadv;
@@ -193,21 +187,21 @@ public class Rec {
 		this.cases = cases;
 	}
 
-	public Map<String, String> getExtpadv() {
-		return extpadv;
-	}
-
-	public void setExtpadv(Map<String, String> extpadv) {
-		this.extpadv = extpadv;
-	}
-
-	public Map<String, String> getExtradv() {
-		return extradv;
-	}
-
-	public void setExtradv(Map<String, String> extradv) {
-		this.extradv = extradv;
-	}	 
+//	public Map<String, String> getExtpadv() {
+//		return extpadv;
+//	}
+//
+//	public void setExtpadv(Map<String, String> extpadv) {
+//		this.extpadv = extpadv;
+//	}
+//
+//	public Map<String, String> getExtradv() {
+//		return extradv;
+//	}
+//
+//	public void setExtradv(Map<String, String> extradv) {
+//		this.extradv = extradv;
+//	}	 
 }
 
 
