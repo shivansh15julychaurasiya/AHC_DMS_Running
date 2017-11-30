@@ -121,7 +121,7 @@ public class CauseListService
 		}
 		
 		try {
-			Query query  =  em.createQuery("SELECT c from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" order by c.cl_sequence");
+			Query query  =  em.createQuery("SELECT c from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" order by c.cl_serial_no");
 			list= query.getResultList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
