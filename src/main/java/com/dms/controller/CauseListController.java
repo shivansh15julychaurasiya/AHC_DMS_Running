@@ -153,6 +153,7 @@ public class CauseListController
 	public @ResponseBody String create(MultipartHttpServletRequest request,HttpSession session) throws DocumentException 
 	{
 		ActionResponse<CauseList> response = new ActionResponse();
+		response.setResponse("TRUE");
 		String jsonData="";
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -201,6 +202,7 @@ public class CauseListController
 			
 		}
 		File file = new File(xmlPath);
+		
 		
 		int count = 0;
 		try{
@@ -307,12 +309,12 @@ public class CauseListController
 			}
 		}catch(Exception e){
 			e.printStackTrace();
+			response.setResponse("FALSE");
+			response.setData("Error reading causelist");
 		}
 		if(count>0){
 		response.setData(count+" no. of case files not found");
 		response.setResponse("FALSE");
-		}else{
-			response.setResponse("TRUE");
 		}
 		
 		jsonData = globalfunction.convert_to_json(response);
