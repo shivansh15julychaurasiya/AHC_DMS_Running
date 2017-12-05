@@ -45,8 +45,8 @@
 							<thead>
 								<tr>
 									<th>Case Type</th>
-									<th>Case Year</th>
 									<th>Case No</th>
+									<th>Case Year</th>
 									<th>Action</th>
 								</tr>
 							</thead>

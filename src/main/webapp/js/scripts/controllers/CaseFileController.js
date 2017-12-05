@@ -75,6 +75,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		  $scope.sd_submitted_date='';
 		  $scope.ord_remark='';
 		  $scope.picFile='';
+		  console.log($scope.casefile);
 	  }
 	  $scope.searchCaseFiles=function() 
 	  {

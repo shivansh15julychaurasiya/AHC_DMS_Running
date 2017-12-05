@@ -7116,7 +7116,7 @@ function webViewerInitialized() {
 
   document.getElementById('sidebarToggle').addEventListener('click',
     function() {
-      this.classList.toggle('toggled');
+      /*this.classList.toggle('toggled');
       outerContainer.classList.add('sidebarMoving');
       outerContainer.classList.toggle('sidebarOpen');
       PDFViewerApplication.sidebarOpen =
@@ -7124,7 +7124,13 @@ function webViewerInitialized() {
       if (PDFViewerApplication.sidebarOpen) {
         PDFViewerApplication.refreshThumbnailViewer();
       }
-      PDFViewerApplication.forceRendering();
+      PDFViewerApplication.forceRendering();*/
+	  this.classList.toggle('toggled');
+      outerContainer.classList.add('sidebarMoving');
+      outerContainer.classList.toggle('sidebarOpen');
+      PDFViewerApplication.sidebarOpen =
+          outerContainer.classList.contains('sidebarOpen');
+	  PDFViewerApplication.switchSidebarView('outline');
     });
 
   document.getElementById('viewThumbnail').addEventListener('click',

@@ -265,7 +265,7 @@ public class CaseFileController {
 	public  String view(@PathVariable("id") Long docId,Model model) {
 		
 		
-		SubDocument subDocument = subDocumentService.getSubDocument(docId);
+		SubDocument subDocument = subDocumentService.getPetitionSubDocument(docId);
 		String returnview="/casefile/view";
 		if(subDocument==null){
 			returnview="/casefile/notfound";	

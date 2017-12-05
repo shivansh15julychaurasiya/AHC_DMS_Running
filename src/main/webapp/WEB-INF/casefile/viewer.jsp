@@ -12,12 +12,12 @@
 
  
 
-  <div tabindex="1" class="loadingInProgress" style="min-height: 1000px;">
+  <div tabindex="1" class="loadingInProgress" style="height: 450px;">
     <div id="outerContainer">
       <div id="sidebarContainer">
         <div id="toolbarSidebar">
           <div class="splitToolbarButton toggled">
-            <button id="viewThumbnail" class="toolbarButton group toggled" title="Show Thumbnails" tabindex="2" data-l10n-id="thumbs">
+            <button id="viewThumbnail" style="display:none" class="toolbarButton group toggled" title="Show Thumbnails" tabindex="2" data-l10n-id="thumbs">
                <span data-l10n-id="thumbs_label">Thumbnails</span>
             </button>
             <button id="viewOutline" class="toolbarButton group" title="Show Document Outline" tabindex="3" data-l10n-id="outline">
@@ -29,7 +29,7 @@
           </div>
         </div> 
         <div id="sidebarContent">
-          <div id="thumbnailView">
+          <div id="thumbnailView" style="display:none">
           </div>
           <div id="outlineView" class="hidden">
           </div>
@@ -75,7 +75,7 @@
               <span data-l10n-id="download_label">Download</span>
             </button> -->
 
-            <a href="#" id="secondaryViewBookmark" class="secondaryToolbarButton bookmark visibleSmallView" title="Current view (copy or open in new window)" tabindex="55" data-l10n-id="bookmark">
+            <a href="#" id="secondaryViewBookmark" style="display:none" class="secondaryToolbarButton bookmark visibleSmallView" title="Current view (copy or open in new window)" tabindex="55" data-l10n-id="bookmark">
               <span data-l10n-id="bookmark_label">Current View</span>
             </a>
 
@@ -148,7 +148,7 @@
                   <span data-l10n-id="print_label">Print</span>
                 </button>
 
-                <button hidden id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" data-l10n-id="download">
+                <button id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" data-l10n-id="download">
                   <span data-l10n-id="download_label">Download</span>
                 </button>
                 <a href="#" id="viewBookmark" class="toolbarButton bookmark hiddenSmallView" title="Current view (copy or open in new window)" tabindex="35" data-l10n-id="bookmark">

@@ -4,13 +4,13 @@
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
 				    <i class="fa fa-plus-circle pull-right"></i> 
 					Application
 					</a>
                </h3>
            </div>
-           <div id="collapseThree" class="panel-collapse collapse">
+           <div id="collapseThree" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;">
                    <div class="table-responsive">
 
@@ -35,16 +35,16 @@
 </div>
 </c:if>
 <div class="panel-group" id="accordion">
-<div class="panel panel-inverse overflow-hidden">
+<div  ng-show="orderData.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseORDER">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseORDER">
 				    <i class="fa fa-plus-circle pull-right"></i> 
-					Office report
+					Order / Office report
 					</a>
                </h3>
            </div>
-           <div id="collapseORDER" class="panel-collapse collapse">
+           <div id="collapseORDER" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="orderData" st-safe-src="orderDataList" class="table table-striped table-bordered">
@@ -69,16 +69,16 @@
         </div>
     </div>
 </div>
-<div class="panel panel-inverse overflow-hidden">
+<div  ng-show="petitions.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
 				    <i class="fa fa-plus-circle pull-right"></i> 
 					Petition
 					</a>
                </h3>
            </div>
-           <div id="collapseOne" class="panel-collapse collapse">
+           <div id="collapseOne" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="petitions" st-safe-src="petitionsData" class="table table-striped table-bordered">
@@ -100,16 +100,16 @@
         </div>
     </div>
 </div>
-<div class="panel panel-inverse overflow-hidden">
+<div ng-show="coun_affidavits.length > 0"  ng-show="coun_affidavits.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
 				    <i class="fa fa-plus-circle pull-right"></i> 
-					Counter affidavits
+					Counter
 					</a>
                </h3>
            </div>
-           <div id="collapseFive" class="panel-collapse collapse">
+           <div id="collapseFive" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="coun_affidavits" st-safe-src="coun_affidavitsData" class="table table-striped table-bordered">
@@ -131,16 +131,16 @@
         </div>
     </div>
 </div>
-<div class="panel panel-inverse overflow-hidden">
+<div  ng-show="rejoinders.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
 				    <i class="fa fa-plus-circle pull-right"></i> 
 					Rejoinder
 					</a>
                </h3>
            </div>
-           <div id="collapseTwo" class="panel-collapse collapse">
+           <div id="collapseTwo" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="rejoinders" st-safe-src="rejoindersData" class="table table-striped table-bordered">
@@ -162,81 +162,16 @@
         </div>
     </div>
 </div>
-
-<div class="panel panel-inverse overflow-hidden">
+<div  ng-show="supp_affidavits.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
 				    <i class="fa fa-plus-circle pull-right"></i> 
-					Supplimentary counter affidavit
+					Supplimentary
 					</a>
                </h3>
            </div>
-           <div id="collapseSix" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
-                   <div class="table-responsive">
-                       <table id="data-table" st-table="supp_coun_affidavits" st-safe-src="supp_coun_affidavitsData" class="table table-striped table-bordered">
-                           <thead>
-                               	<tr>
-                                   <th st-sort="sd_submitted_date">Type</th>
-                                   <th st-sort="sd_description">Name</th>
-                                   <th  st-sort="sd_counsel">Counsel</th>
-                                </tr>
-                                <tr ng-repeat="data in supp_coun_affidavits">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</td>
-                                 <td>{{data.sd_description}}</td>
-                                 <td>{{data.sd_counsel}}</td>
-                         </tr>
-                    </thead>
-                    
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="panel panel-inverse overflow-hidden">
-           <div class="panel-heading">
-               <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
-				    <i class="fa fa-plus-circle pull-right"></i> 
-					Supplimentary rejoinder
-					</a>
-               </h3>
-           </div>
-           <div id="collapseSeven" class="panel-collapse collapse">
-               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
-                   <div class="table-responsive">
-                       <table id="data-table" st-table="supp_rejoinders" st-safe-src="supp_rejoindersData" class="table table-striped table-bordered">
-                           <thead>
-                               	<tr>
-                                   <th st-sort="sd_submitted_date">Type</th>
-                                   <th st-sort="sd_description">Name</th>
-                                   <th  st-sort="sd_counsel">Counsel</th>
-                                </tr>
-                                <tr ng-repeat="data in supp_rejoinders">
-                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</td>
-                                 <td>{{data.sd_description}}</td>
-                                 <td>{{data.sd_counsel}}</td>
-                         </tr>
-                    </thead>
-                    
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="panel panel-inverse overflow-hidden">
-           <div class="panel-heading">
-               <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-				    <i class="fa fa-plus-circle pull-right"></i> 
-					Supplimentary affidavits
-					</a>
-               </h3>
-           </div>
-           <div id="collapseFour" class="panel-collapse collapse">
+           <div id="collapseFour" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="supp_affidavits" st-safe-src="supp_affidavitsData" class="table table-striped table-bordered">
@@ -259,16 +194,81 @@
     </div>
 </div>
 
-<div class="panel panel-inverse overflow-hidden">
+<div  ng-show="supp_coun_affidavits.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
 				    <i class="fa fa-plus-circle pull-right"></i> 
-					Applications
+					Supplimentary Counter
 					</a>
                </h3>
            </div>
-           <div id="collapseThree" class="panel-collapse collapse">
+           <div id="collapseSix" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
+                   <div class="table-responsive">
+                       <table id="data-table" st-table="supp_coun_affidavits" st-safe-src="supp_coun_affidavitsData" class="table table-striped table-bordered">
+                           <thead>
+                               	<tr>
+                                   <th st-sort="sd_submitted_date">Type</th>
+                                   <th st-sort="sd_description">Name</th>
+                                   <th  st-sort="sd_counsel">Counsel</th>
+                                </tr>
+                                <tr ng-repeat="data in supp_coun_affidavits">
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</td>
+                                 <td>{{data.sd_description}}</td>
+                                 <td>{{data.sd_counsel}}</td>
+                         </tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  ng-show="supp_rejoinders.length > 0" class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Supplimentary Rejoinder
+					</a>
+               </h3>
+           </div>
+           <div id="collapseSeven" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
+                   <div class="table-responsive">
+                       <table id="data-table" st-table="supp_rejoinders" st-safe-src="supp_rejoindersData" class="table table-striped table-bordered">
+                           <thead>
+                               	<tr>
+                                   <th st-sort="sd_submitted_date">Type</th>
+                                   <th st-sort="sd_description">Name</th>
+                                   <th  st-sort="sd_counsel">Counsel</th>
+                                </tr>
+                                <tr ng-repeat="data in supp_rejoinders">
+                                 <td  ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">{{data.indexField.if_label}}  {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</td>
+                                 <td>{{data.sd_description}}</td>
+                                 <td>{{data.sd_counsel}}</td>
+                         </tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div  ng-show="applications.length > 0" class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Misc. Applications
+					</a>
+               </h3>
+           </div>
+           <div id="collapseThree" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:200px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="applications" st-safe-src="applicationsData" class="table table-striped table-bordered">

@@ -29,7 +29,7 @@
 						</thead>
 						<tbody>
 						<tr ng-repeat="data in displayedCollection">
-						<td><span ng-show="displayedCollection[$index-1].cl_serial_no==data.cl_serial_no"><b>With</b></span>
+						<td><span ng-show="displayedCollection[$index-1].cl_serial_no==data.cl_serial_no"><b>with</b></span>
 							<span ng-show="displayedCollection[$index-1].cl_serial_no!=data.cl_serial_no">{{data.cl_serial_no}}</span>
 						</td>
 						<td style="text-align:center;cursor: pointer;text-decoration: underline;">
