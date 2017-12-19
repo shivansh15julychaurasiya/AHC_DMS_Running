@@ -35,7 +35,7 @@ public class MasterService {
 	
 	public List<IndexField> getSelectecdIndexFields() {
 		// TODO Auto-generated method stub
-		List<IndexField> result = em.createQuery("SELECT i FROM IndexField i where i.if_id in (39,40)")
+		List<IndexField> result = em.createQuery("SELECT i FROM IndexField i where i.if_id in (39,14)")
 				.getResultList();
 
 		return result;

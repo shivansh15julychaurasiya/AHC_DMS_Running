@@ -23,15 +23,15 @@
 							<thead>
 								<tr>
 									<td width="25%"><select class="form-control"
-										ng-model="casefile.fd_case_type"
+										ng-model="search.fd_case_type"
 										ng-options="caseType.ct_id as caseType.ct_name for caseType in caseTypes  | orderBy:'ct_name'">
 											<option value="">Select Case Type</option>
 									</select></td>
 									<td><input type="text" class="form-control"
-										placeholder="Case No" ng-model="casefile.fd_case_no">
+										placeholder="Case No" ng-model="search.fd_case_no">
 									</td>
 									<td><input type="text" class="form-control"
-										placeholder="Case Year" ng-model="casefile.fd_case_year">
+										placeholder="Case Year" ng-model="search.fd_case_year">
 									</td>
 									<td>
 										<button id="search" type="submit"

@@ -3,7 +3,7 @@
 	<div id="content" class="content">
 		<div class="container-fluid" ng-controller="CaseFileCtrl" >
 			<div class="row">
-				<div class="panel panel-inverse">
+				<div class="panel panel-inverse" style="min-height:1000px;">
 					<div class="panel-heading">
 					<div class="panel-heading-btn">
 			            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>			            

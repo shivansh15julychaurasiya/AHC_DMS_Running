@@ -162,7 +162,7 @@
                 </button>
               </div>
               <div class="outerCenter">
-                <div class="innerCenter" id="toolbarViewerMiddle" hidden="true">
+                <div class="innerCenter" id="toolbarViewerMiddle">
                    <div class="splitToolbarButton">
                     <button id="zoomOut" class="toolbarButton zoomOut" title="Zoom Out" tabindex="21" data-l10n-id="zoom_out">
                       <span data-l10n-id="zoom_out_label">Zoom Out</span>

@@ -165,6 +165,7 @@ public class JudgementController {
 			subDocument.setSd_fd_mid(caseFileDetail.getFd_id());
 			subDocument.setSd_if_mid(indexField.getIf_id());
 			subDocument.setSd_version(1);
+			subDocument.setSd_document_id(100002);
 			subDocument.setSd_submitted_date(judgementDate);
 			subDocument.setSd_document_name(filename);
 			subDocument.setSd_judgement_id(judgment_id);

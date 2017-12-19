@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,6 +77,16 @@ public class MasterController {
 		String jsonData="";
 		ActionResponse<ApplicationTypes> response=new ActionResponse<>();
 		List<ApplicationTypes> indexFields=masterService.getApplicationsByType("ORDER");
+		response.setModelList(indexFields);		
+		jsonData=globalfunction.convert_to_json(response);		
+		return jsonData;
+	}
+	@RequestMapping(value = "/getapplications/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getApplications(@PathVariable("id") Long if_id,Model model) {
+		String jsonData="";
+		ActionResponse<ApplicationTypes> response=new ActionResponse<>();
+		IndexField index_field=masterService.getIndexField(if_id);
+		List<ApplicationTypes> indexFields=masterService.getApplicationsByType(index_field.getIf_label());
 		response.setModelList(indexFields);		
 		jsonData=globalfunction.convert_to_json(response);		
 		return jsonData;

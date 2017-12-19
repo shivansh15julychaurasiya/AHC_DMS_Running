@@ -61,25 +61,35 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		      });
 	  }
 	  function getIndexFields(){
-		  $http.get(urlBase+'master/getapplications').success(function (data) {
-		    		$scope.applications=data.modelList;		    	
+		  $http.get(urlBase+'master/getindexfields').success(function (data) {
+		    		$scope.index_fields=data.modelList;		    	
 		    	
 		      }).
 		      error(function(data, status, headers, config) {
 		      	console.log("Error in getting indexfields");
 		      });
 	  }
+	  $scope.getApplications=function(){
+		  $http.get(urlBase+'master/getapplications/'+$scope.subdocument.if_id).success(function (data) {
+	    		$scope.applications=data.modelList;		    	
+	    	
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting indexfields");
+	      });
+	  }
 	  $scope.setModel=function(casefile){
 		  $scope.casefile=casefile;
-		  $scope.at_id='';
+		  
 		  $scope.sd_submitted_date='';
-		  $scope.ord_remark='';
+		  $scope.subdocument={};
 		  $scope.picFile='';
 		  console.log($scope.casefile);
 	  }
 	  $scope.searchCaseFiles=function() 
 	  {
-		  $http.post(urlBase+'casefile/getCaseFileList',$scope.casefile).success(function (data) {
+		  $scope.caseFileList=[];
+		  $http.post(urlBase+'casefile/getCaseFileList',$scope.search).success(function (data) {
 		    	if(data.response=="TRUE")
 		    		$scope.caseFileList=data.modelList;		    	
 		    	else
@@ -92,15 +102,19 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	  $scope.ord_remark="";
 	  $scope.save=function() 
 	  {
-		  $scope.subdocument.at_id=$scope.at_id;
-		  $scope.subdocument.sd_fd_mid=$scope.casefile.fd_id;
+		 $scope.subdocument.sd_fd_mid=$scope.casefile.fd_id;
 		  if($scope.sd_submitted_date!=null){
 			  $scope.sd_submitted_date=convertDate($scope.sd_submitted_date);
 			}
 		  $scope.subdocument.sd_submitted_date=$scope.sd_submitted_date;
-		  $scope.subdocument.ord_remark=$scope.ord_remark;
+		  
+		 if($scope.subdocument.if_id==null ||$scope.subdocument.at_id== null){
+			 alert("Please select required fields");
+			 return false;
+		 }
+		 
 		    var file=$scope.picFile;
-			  if($scope.ord_remark!='' && file==""){
+			  if($scope.subdocument.ord_remark!='' && file==""){
 				  addReportData();
 			  }
 			  if(file!="")

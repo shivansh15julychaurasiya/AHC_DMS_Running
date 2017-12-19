@@ -106,12 +106,22 @@ public class CaseFileController {
 		String jsonData="";
 		Lookup lookup=lookupService.getLookUpObject("REPOSITORYPATH");
 		Long caseFileId=Long.parseLong(request.getParameter("sd_fd_mid"), 10);
+		Long indexFieldId=Long.parseLong(request.getParameter("if_id"), 10);
 		Integer at_id= Integer.parseInt(request.getParameter("at_id"), 10);
 		String ord_remark=request.getParameter("ord_remark");
 		String order_date=request.getParameter("sd_submitted_date");
-		Long indexFieldId=39L;
+		Integer sd_document_no = null;
+		Integer sd_document_year = null;
+		try {
+			sd_document_no = Integer.parseInt(request.getParameter("sd_document_no"));
+			sd_document_year = Integer.parseInt(request.getParameter("sd_document_year"));
+		} catch (NumberFormatException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
 		Date orderDate=new Date();
-		if(at_id==100001 || at_id==100002){
+		
 			try {
 				orderDate = new SimpleDateFormat("yyyy-MM-dd").parse(order_date);
 				
@@ -119,7 +129,7 @@ public class CaseFileController {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		}
+		
 		
 		MultipartFile mpf = null;
     	Iterator<String> itr = request.getFileNames();
@@ -144,7 +154,8 @@ public class CaseFileController {
 			subDocument.setSd_submitted_date(orderDate);
 			subDocument.setSd_rec_status(1);
 			subDocument.setSd_minor_sequence(count);
-			
+			subDocument.setSd_document_no(sd_document_no);
+			subDocument.setSd_document_year(sd_document_year);
 			try {
 				FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(newfilepath));
 				File source=new File(newfilepath);

@@ -33,7 +33,8 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 	$scope.order_sheetsData=[];
 	$scope.office_reports=[];
 	$scope.office_reportsData=[];
-	
+	$scope.others=[];
+	$scope.othersData=[];
 	getSubDocuments();
 	getCaseFileDetails();
 	
@@ -54,6 +55,9 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 	    		  case'application':
 	    			  $scope.applications.push($scope.subdocument);
 	    			  break;
+					case'olr':
+	    			  $scope.applications.push($scope.subdocument);
+	    			  break;
 	    		  case'supp_affidavit':
 	    			  $scope.supp_affidavits.push($scope.subdocument);
 	    			  break;
@@ -69,6 +73,9 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 	    		  case'order_sheet':
 	    			  $scope.order_sheets.push($scope.subdocument);
 	    			  break;
+					case'others':
+	    			  $scope.others.push($scope.subdocument);
+	    			  break;
 	    		  }
 	    		  getOrderReports();
 	    		});
@@ -79,6 +86,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 	        $scope.coun_affidavitsData = [].concat($scope.coun_affidavits);
 	        $scope.supp_coun_affidavitsData = [].concat($scope.supp_coun_affidavits);
 	        $scope.supp_rejoindersData = [].concat($scope.supp_rejoinders);
+			$scope.othersData = [].concat($scope.others);
 	        
 	      }).
 	      error(function(data, status, headers, config) {
@@ -114,7 +122,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 			if(value.subDocument!=null)
 				sd_id=value.subDocument.sd_id;
 			
-				$scope.ordermodel={'sd_id':sd_id,'document_type':'OFFICE REPORT','sd_created_date':value.ord_created,'sd_submitted_date':value.ord_created,'sd_party':'','sd_description':'','ord_remark':value.ord_remark};
+				$scope.ordermodel={'sd_id':sd_id,'document_type':'Off. Rep.','sd_created_date':value.ord_created,'sd_submitted_date':value.ord_created,'sd_party':'','sd_description':'','ord_remark':value.ord_remark};
 				$scope.orderData.push($scope.ordermodel);
 			});
 		//alert(JSON.stringify($scope.orderData));
