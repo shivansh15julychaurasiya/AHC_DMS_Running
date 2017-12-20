@@ -8,6 +8,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,8 @@ import com.dms.utility.GlobalFunction;
 @Service
 public class UserService {
 	
-	@PersistenceContext
+	@PersistenceContext(unitName="persistenceUnitDMS")
+	@Qualifier(value = "entityManagerFactoryDMS")
 	private EntityManager em;
 	
 	GlobalFunction globalfunction=new GlobalFunction();
@@ -82,15 +84,10 @@ public class UserService {
 		//System.out.println("call getUserObjects");
 		// TODO Auto-generated method stub
 		String sql = "select o from ObjectMaster o "
-				+ " where o.om_id in (select ro_om_mid from  RoleObject where ro_role_id in (select ur_role_id from UserRole where ur_um_mid = "+um_id+") and ro_rec_status = 1 order by ro_id)";
+				+ " where o.om_id in (select ro_om_mid from  RoleObject where ro_role_id in (select ur_role_id from UserRole where ur_um_mid = "+um_id+") and ro_rec_status = 1 order by ro_id) order by o.om_object_name";
 		List<ObjectMaster> l1 = (List<ObjectMaster>) em.createQuery(sql)
 				.getResultList();
 
-		for (int i = 0; i < l1.size(); i++) {
-			//System.out.println(l1.get(i));
-			ObjectMaster om = l1.get(i);
-			//System.out.println(om.getOm_object_name());
-		}
 		return l1;
 	}
 	

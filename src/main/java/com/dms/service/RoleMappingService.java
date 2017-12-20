@@ -8,6 +8,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,8 @@ import com.dms.model.Tree;
 @Service
 public class RoleMappingService {
  
-	@PersistenceContext
+	@PersistenceContext(unitName="persistenceUnitDMS")
+	@Qualifier(value = "entityManagerFactoryDMS")
 	public EntityManager em;
 	
 	

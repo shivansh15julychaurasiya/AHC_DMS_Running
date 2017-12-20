@@ -60,7 +60,7 @@ background: #f0f3f5;
                        <table id="data-table" st-table="orderData" st-safe-src="orderDataList" class="table table-striped table-bordered">
                            <thead>
                                	<tr>
-                                   <th st-sort="sd_submitted_date">Type</th>
+                                   <th st-sort-default="true" st-sort="sd_submitted_date">Type</th>
                                    <th st-sort="sd_description">Description</th>
                                    <th  st-sort="sd_counsel">Name</th>
                                 </tr>
