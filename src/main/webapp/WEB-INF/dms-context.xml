@@ -13,8 +13,10 @@
  <mvc:default-servlet-handler/>
  <tx:annotation-driven proxy-target-class="true"/>
  <tx:annotation-driven transaction-manager="transactionManager" />
+<tx:annotation-driven transaction-manager="transactionManagerEfiling" />
    <context:annotation-config/>
-    <context:component-scan base-package="com.dms." />
+    <context:component-scan base-package="com.dms.*" />
+    <context:component-scan base-package="com.efiling.*" />
        <context:annotation-config/>
     <bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -51,13 +53,28 @@
       	<property name="username" value="edms"/> 
         <property name="password" value="edms"/>
 	</bean>
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="eFilingDataSource">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://localhost:5432/efiling?charSet=LATIN1"/> 
+      	<property name="username" value="efiling"/> 
+        <property name="password" value="efiling"/>
+	</bean>
    
 	
    
       <!-- EntityManagerFactory -->
-  <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
-    <property name="persistenceUnitName" value="persistenceUnit"/>
+  <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactoryDMS">
+    <property name="persistenceUnitName" value="persistenceUnitDMS"/>
     <property name="dataSource" ref="dataSource"/>
+     <property name="jpaProperties">
+        <props>
+            <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+        </props>
+    </property> 
+  </bean>
+ <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactoryEfiling">
+    <property name="persistenceUnitName" value="persistenceUnitEfiling"/>
+    <property name="dataSource" ref="eFilingDataSource"/>
      <property name="jpaProperties">
         <props>
             <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
@@ -78,7 +95,10 @@
     </bean>
     
   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-    <property name="entityManagerFactory" ref="entityManagerFactory" />
+    <property name="entityManagerFactory" ref="entityManagerFactoryDMS" />
+</bean>
+<bean id="transactionManagerEfiling" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactoryEfiling" />
 </bean>
 
     <!-- Enable @Transactional annotation -->
