@@ -10,6 +10,7 @@ EDMSApp.controller('AmendmentController',['$scope','$http',function ($scope, $ht
 	$scope.fd_id= $('#fd_id').val();
 	getAdvocates();
 	getAmendments();
+	$scope.amendments=[];
 	$scope.searchuser=false;
 	function getApplicationTypes()
 	 {

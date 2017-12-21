@@ -354,7 +354,7 @@ public class GlobalFunction {
         outputStream.close();
         copy1.close();
     }
-	private void doBookmark(String src, String dest, Map<String, Integer> map) {
+	public void doBookmark(String src, String dest, Map<String, Integer> map) {
 		// TODO Auto-generated method stub
      	Document document = new Document();
     	

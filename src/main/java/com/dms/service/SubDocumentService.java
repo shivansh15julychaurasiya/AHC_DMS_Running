@@ -60,7 +60,7 @@ public class SubDocumentService
 	
 	public List<SubDocument> getSubDocuments(Long fd_id) {
 		// TODO Auto-generated method stub
-		List<SubDocument> result = em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid and d.sd_id not in (select ord.ord_sd_mid from OrderReport ord where ord.ord_fd_mid=:ord_fd_mid and ord.ord_sd_mid is not null)order by sd_submitted_date")
+		List<SubDocument> result = em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid and d.sd_rec_status=1 and d.sd_id not in (select ord.ord_sd_mid from OrderReport ord where ord.ord_fd_mid=:ord_fd_mid and ord.ord_sd_mid is not null)order by sd_submitted_date")
 				.setParameter("sd_fd_mid", fd_id).setParameter("ord_fd_mid", fd_id).getResultList();
 
 		return result;
@@ -110,7 +110,7 @@ public class SubDocumentService
 	}
 	public List<SubDocument> getAllSubDocuments(Long fd_id) {
 		// TODO Auto-generated method stub
-		List<SubDocument> result = em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid order by d.sd_submitted_date")
+		List<SubDocument> result = em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid and d.sd_rec_status=1 order by d.sd_submitted_date")
 				.setParameter("sd_fd_mid", fd_id).getResultList();
 
 		return result;
@@ -126,6 +126,13 @@ public class SubDocumentService
 		}finally{
 			return subDocument;	
 		}
+	}
+	public List<SubDocument> getByField(Long fd_id, Long field_id) {
+		// TODO Auto-generated method stub
+		List<SubDocument> result = em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid and d.sd_if_mid=:sd_if_mid and d.sd_rec_status=1 order by d.sd_submitted_date")
+				.setParameter("sd_fd_mid", fd_id).setParameter("sd_if_mid", field_id).getResultList();
+
+		return result;
 	}
 
 }

@@ -132,4 +132,8 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
 		window.open(urlBase+'casefile/subdocument/'+sd_id,'_self');
 	};
+	$scope.viewAllOrders=function(){
+		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
+		window.open(urlBase+'casefile/vieworders/'+$scope.doc_id,'_self');
+	};
 });

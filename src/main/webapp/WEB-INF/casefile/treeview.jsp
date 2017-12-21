@@ -10,6 +10,7 @@ background: #93cfe5;
 background: #f0f3f5;
 }
 </style>
+ <button class="btn btn-success btn-sm" ng-click="viewAllOrders()">View All Orders</button>
 <c:if test="${isApplication==1}">
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
@@ -300,16 +301,16 @@ background: #f0f3f5;
         </div>
     </div>
 </div>
-<div  ng-show="applications.length > 0" class="panel panel-inverse overflow-hidden">
+<div  ng-show="others.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
 				    <i class="fa fa-plus-circle pull-right"></i> 
 					Others
 					</a>
                </h3>
            </div>
-           <div id="collapseThree" class="panel-collapse collapse in">
+           <div id="collapseEight" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="others" st-safe-src="othersData" class="table table-striped table-bordered">

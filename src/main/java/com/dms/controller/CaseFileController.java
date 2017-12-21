@@ -4,15 +4,19 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
@@ -48,7 +52,7 @@ import com.dms.service.MasterService;
 import com.dms.service.OrderReportService;
 import com.dms.service.SubDocumentService;
 import com.dms.utility.GlobalFunction;
-import com.dms.utility.PDFCreator;
+import com.dms.utility.PDFMerger;
 import com.itextpdf.text.pdf.PdfReader;
 import com.lowagie.text.DocumentException;
 
@@ -271,7 +275,79 @@ public class CaseFileController {
 	        
 	        
 	    }
-	
+	@RequestMapping(value = "/vieworders/{id}", method = RequestMethod.GET)
+	public  String viewOrders(@PathVariable("id") Long docId,Model model) {
+		Long metafieldId=39L;
+		List<SubDocument> subDocuments = subDocumentService.getByField(docId,metafieldId);
+		String returnview="/casefile/view";
+		if(subDocuments.size()==0){
+			returnview="/casefile/notfound";	
+		}else{
+			String uploadPath = context.getRealPath("");
+			CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(docId);
+			String filename="ORDS"+caseFileDetail.getCaseType().getCt_label()+caseFileDetail.getFd_case_no()+caseFileDetail.getFd_case_year();
+			String orderswithbk="Orders"+caseFileDetail.getCaseType().getCt_label()+caseFileDetail.getFd_case_no()+caseFileDetail.getFd_case_year();
+			String outputFilePath=uploadPath+File.separator+"uploads"+File.separator+filename;
+			String bookmarkFile=uploadPath+File.separator+"uploads"+File.separator+orderswithbk;
+			String basePath="";
+			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+			
+			basePath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label();
+			
+			List<InputStream> list = new ArrayList<InputStream>();
+			Map<String,Integer> map=new HashMap<String, Integer>();
+			Integer pagecount=0;
+			int i=0;
+	        try {
+	        	if(subDocuments.size()>1){
+	        	OutputStream out = new FileOutputStream(new File(outputFilePath+".pdf"));
+	        	for(SubDocument subDocument:subDocuments){
+	    			String srcPath=basePath+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+	    			String label=subDocument.getIndexField().getIf_label();
+	    			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+	    			if(subDocument.getSd_submitted_date()!=null){
+	    			String date = formatter.format(subDocument.getSd_submitted_date());
+	    			label=label+"_"+date;
+	    			}
+	    			if(i==0){
+	    				String lastfilePath=srcPath;
+	        			PdfReader reader = new PdfReader(lastfilePath);
+	    				map.put(label, 1);    			
+	    				reader.close();
+	    			}
+	    			if(i>0){
+	    				
+	    				String lastfilePath=basePath+File.separator+subDocuments.get(i-1).getIndexField().getIf_name()+File.separator+subDocuments.get(i-1).getSd_document_name()+".pdf";
+	        			PdfReader reader = new PdfReader(lastfilePath);
+	        			pagecount+=reader.getNumberOfPages();
+	        			map.put(label, pagecount+1);    			
+	    				reader.close();
+	    			}
+	    			list.add(new FileInputStream(new File(srcPath)));
+	    			i++;
+	    		}
+	        	PDFMerger.doMerge(list, out);
+	        
+	        	//globalfunction.doBookmark(outputFilePath+".pdf",bookmarkFile+".pdf",map);
+	            //File f=new File(outputFilePath+".pdf");
+	            //f.delete();
+	        }else{
+	        	String srcPath=basePath+File.separator+subDocuments.get(0).getIndexField().getIf_name()+File.separator+subDocuments.get(0).getSd_document_name();
+        		File src=new File(srcPath+".pdf");
+        		File dest=new File(bookmarkFile+".pdf");
+        		FileUtils.copyFile(src, dest);
+        	}
+	        }catch(Exception e){
+	        	e.printStackTrace();
+	        }
+	        	
+			model.addAttribute("document_name", filename);
+			model.addAttribute("doc_id", docId);
+			model.addAttribute("isApplication",null);
+		}
+		
+		return returnview;
+	}
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
 	public  String view(@PathVariable("id") Long docId,Model model) {
 		
