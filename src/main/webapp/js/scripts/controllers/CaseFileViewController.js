@@ -77,8 +77,9 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 	    			  $scope.others.push($scope.subdocument);
 	    			  break;
 	    		  }
-	    		  getOrderReports();
+	    		  
 	    		});
+	    	getOrderReports();
 	    	$scope.petitionsData = [].concat($scope.petitions);
 	        $scope.rejoindersData = [].concat($scope.rejoinders);
 	        $scope.applicationsData = [].concat($scope.applications);

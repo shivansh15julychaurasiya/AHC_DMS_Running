@@ -203,10 +203,10 @@ public class CauseListService
     	return ra;
     }
 	@Transactional
-	public void deleteCauseList() {
+	public void deleteCauseList(Date date) {
 		// TODO Auto-generated method stub
 		try {
-			Query query  =  em.createQuery("DELETE  from CauseList");
+			Query query  =  em.createQuery("DELETE  from CauseList c WHERE c.cl_dol < :cDate").setParameter("cDate", date);
 			query.executeUpdate();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

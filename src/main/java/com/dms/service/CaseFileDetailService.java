@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.CaseFileDetail;
+import com.dms.model.CauseList;
 import com.dms.model.MetaData;
+import com.efiling.model.EfilingCaseFileDetail;
+import com.efiling.model.RegisteredCaseDetails;
 
 @Service
 public class CaseFileDetailService {
@@ -21,15 +24,53 @@ public class CaseFileDetailService {
 	@Qualifier(value = "entityManagerFactoryDMS")
 	private EntityManager em;
 	
+	@PersistenceContext(unitName="persistenceUnitEfiling")
+	@Qualifier(value = "entityManagerFactoryEfiling")
+	private EntityManager em2;
+	
 	@Transactional
 	public CaseFileDetail getCaseFileDetail(Long id) {
 
 		CaseFileDetail result=new CaseFileDetail();
 	    Query query=null;
-		query = em.createQuery(" SELECT c from CaseFileDetail c where c.fd_id=:id").setParameter("id", id);
+		query = em.createQuery("SELECT c from CaseFileDetail c where c.fd_id=:id").setParameter("id", id);
 		result=(CaseFileDetail) query.getSingleResult();
 		
 		return result;
+	}
+	@Transactional
+	public CaseFileDetail save(CaseFileDetail casefile) {
+
+		CaseFileDetail cfd = null;
+    	try {	
+    		cfd= em.merge(casefile);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();	    	
+		}
+		return cfd;
+	}
+	@Transactional("transactionManagerEfiling")
+	public EfilingCaseFileDetail saveCaseFile(EfilingCaseFileDetail casefile) {
+		EfilingCaseFileDetail cfd = null;
+    	try {	
+    		cfd= em2.merge(casefile);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();	    	
+		}
+		return cfd;
+	}
+	@Transactional
+	public EfilingCaseFileDetail getEfilingCaseFileDetail(Long casetypeId,String caseNo,Integer caseYear) {
+		EfilingCaseFileDetail cfd = null;
+		try {
+			cfd = (EfilingCaseFileDetail) em2.createQuery("SELECT c FROM EfilingCaseFileDetail c where c.fd_case_type=:fd_case_type and c.fd_case_no=:fd_case_no and c.fd_case_year=:fd_case_year")
+					.setParameter("fd_case_type", casetypeId).setParameter("fd_case_no", caseNo).setParameter("fd_case_year", caseYear)
+					.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
+		return cfd;
 	}
 	
 	// Session session=em.unwrap(Session.class);

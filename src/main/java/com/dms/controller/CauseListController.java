@@ -164,8 +164,11 @@ public class CauseListController
     	String xmlPath="";
     	List<CourtMaster> cList=courtService.getCourtLists();
     	// Truncate Causelist data, petitioner advocates and respondent advocates data
-    			
-    	causeListService.deleteCauseList();
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(new Date());
+    	cal.add(Calendar.DATE, -7);
+    	Date dateBefore7Days = cal.getTime();		
+    	causeListService.deleteCauseList(dateBefore7Days);
     	//causeListService.deletePetitionerAdvocates();
     	//causeListService.deleteRespondentAdvocates();
     	

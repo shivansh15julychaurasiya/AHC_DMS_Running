@@ -79,8 +79,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	      });
 	  }
 	  $scope.setModel=function(casefile){
-		  $scope.casefile=casefile;
-		  
+		  $scope.casefile=casefile;		  
 		  $scope.sd_submitted_date='';
 		  $scope.subdocument={};
 		  $scope.picFile='';
@@ -176,5 +175,48 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		}
 	  $scope.viewCaseFile=function(id){
 		  window.open(urlBase+"casefile/view/"+id,"_self");
+	  }
+	  $scope.getSubDocuments=function(doc_id){
+		  $scope.doc_id=doc_id;
+		  $http.get(urlBase+'casefile/getsubdocuments/'+$scope.doc_id).success(function (data) {
+		    	$scope.subDocuments=data.modelList;
+		  }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
+	  }
+	  
+	  $scope.deleteSubDocument=function(id){
+		  var result=confirm("Are you really want to Delete file");
+		  if (result) {
+			  $http({
+				  method : 'DELETE',
+				  url : urlBase + 'casefile/deletesubdocument/' + id
+		   		}).success(function(response) {
+		   			alert("Successfully deleted record");
+		   			$scope.getSubDocuments($scope.doc_id);			
+		   		});	
+		  }
+	  }
+	  $scope.updateCasetype=function(){
+		  
+		  if($scope.new_case_type==$scope.casefile.fd_case_type){
+			  alert("Existing and new case type is same");
+			  return false;
+		  }
+		  $http.post(urlBase+'casefile/updatecasetype?fd_id='+$scope.casefile.fd_id
+				  +"&new_case_type="+$scope.new_case_type
+			  )
+			  .success(function (data) {
+			    	if(data.response=="TRUE")
+			    		alert("Successfully updated case type information");		    	
+			    	else
+			    		alert("Error occurred while updating case type information");
+			    	
+			    	$("#updateCaseType").modal("hide");
+			      }).
+			      error(function(data, status, headers, config) {
+			      	console.log("Error in getting tree data");
+			      });
 	  }
 }]);

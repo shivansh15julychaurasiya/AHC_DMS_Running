@@ -63,6 +63,10 @@
 											ng-click="viewCaseFile(row.fd_id)">View</button>
 										<button class="btn btn-success btn-sm"
 											ng-click="downloadFiles(row.fd_id)">Download</button>
+										<button class="btn btn-success btn-sm" data-toggle="modal"
+											data-target="#viewFiles" ng-click="getSubDocuments(row.fd_id)">View Files</button>
+											<button class="btn btn-success btn-sm" ng-click="setModel(row)" data-toggle="modal"
+											data-target="#updateCaseType">Change Case Type</button>
 										<% }%>	
 										<button type="button" class="btn btn-success btn-sm"
 											data-toggle="modal" ng-click="setModel(row)"
@@ -93,7 +97,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="modal fade" id="stageHistory" tabindex="-1"
+					<div class="modal fade" id="viewFiles" tabindex="-1"
 						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
 							<div class="modal-content">
@@ -106,11 +110,11 @@
 										<strong>Stage History</strong>
 									</h4>
 								</div>
-								<%@ include file="../casefile/stage_history.jsp"%>
+								<%@ include file="../casefile/filelist.jsp"%>
 							</div>
 						</div>
 					</div>
-					<div class="modal fade" id="reporting" tabindex="-1" role="dialog"
+					<div class="modal fade" id="updateCaseType" tabindex="-1" role="dialog"
 						aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
 							<div class="modal-content">
@@ -120,10 +124,10 @@
 										<span aria-hidden="true">&times;</span>
 									</button>
 									<h4 class="modal-title" id="myModalLabel">
-										<strong>Reporting History</strong>
+										<strong>Update Case Type</strong>
 									</h4>
 								</div>
-								<%@ include file="../casefile/reporting.jsp"%>
+								<%@ include file="../casefile/updateCasetype.jsp"%>
 							</div>
 						</div>
 					</div>

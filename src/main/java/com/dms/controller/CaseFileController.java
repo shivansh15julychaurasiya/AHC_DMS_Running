@@ -40,6 +40,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.dms.model.ActionResponse;
 import com.dms.model.CaseFileDetail;
+import com.dms.model.CaseType;
 import com.dms.model.IndexField;
 import com.dms.model.Lookup;
 import com.dms.model.MetaData;
@@ -47,12 +48,14 @@ import com.dms.model.OrderReport;
 import com.dms.model.SubDocument;
 import com.dms.model.User;
 import com.dms.service.CaseFileDetailService;
+import com.dms.service.CasetypeService;
 import com.dms.service.LookupService;
 import com.dms.service.MasterService;
 import com.dms.service.OrderReportService;
 import com.dms.service.SubDocumentService;
 import com.dms.utility.GlobalFunction;
 import com.dms.utility.PDFMerger;
+import com.efiling.model.EfilingCaseFileDetail;
 import com.itextpdf.text.pdf.PdfReader;
 import com.lowagie.text.DocumentException;
 
@@ -77,6 +80,9 @@ public class CaseFileController {
 	
 	@Autowired
 	private SubDocumentService subDocumentService;
+	
+	@Autowired
+	private CasetypeService casetypeService;
 	
 	private GlobalFunction globalfunction;	
 	
@@ -571,6 +577,74 @@ public class CaseFileController {
 		stream.close();
 		bos.close();
 		out.close();
+	}
+	@RequestMapping(value = "/deletesubdocument/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteSubdocument(@PathVariable("id")  Long id, HttpSession session) {
+		ActionResponse<SubDocument> response = new ActionResponse<SubDocument>();
+		String jsonData = null;
+
+		SubDocument sd= subDocumentService.getByPK(id);
+		sd.setSd_rec_status(0);
+		subDocumentService.save(sd);
+		
+		response.setResponse("TRUE");
+		jsonData = globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+	@RequestMapping(value = "/updatecasetype", method = RequestMethod.POST)
+	public @ResponseBody String updateCaseType(HttpServletRequest request,HttpSession session) throws DocumentException 
+	{
+		ActionResponse<CaseFileDetail> response = new ActionResponse();
+		User u=(User) session.getAttribute("USER");
+		String jsonData="";
+		Long caseFileId=Long.parseLong(request.getParameter("fd_id"), 10);
+		Long newCaseTypeId=Long.parseLong(request.getParameter("new_case_type"), 10);
+		CaseFileDetail cfd=caseFileDetailService.getCaseFileDetail(caseFileId);
+		List<SubDocument> subdocuments=subDocumentService.getAllSubDocuments(caseFileId);
+		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+		CaseType newCaseType=casetypeService.getById(newCaseTypeId);
+		boolean copyflag=false;
+		for(SubDocument subDocument:subdocuments){
+		
+			String srcPath=lookupRepo.getLk_longname()+File.separator+cfd.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+			String filename=subDocument.getSd_document_name();
+			filename=filename.replace(cfd.getCaseType().getCt_label(), newCaseType.getCt_label());
+			String destPath=lookupRepo.getLk_longname()+File.separator+newCaseType.getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+filename+".pdf";
+			subDocument.setSd_document_name(filename);
+			
+			File source=new File(srcPath);
+			File dest=new File(destPath);
+			try {
+				if(!dest.exists()){
+				// if copy of file does not exist in new case type folder
+					FileUtils.copyFile(source, dest);
+					subDocumentService.save(subDocument);
+					source.delete();
+					copyflag=true;
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		if(copyflag){
+			if(cfd.getFd_file_source().equals("O")){
+				// update online case type
+				EfilingCaseFileDetail ecfd=caseFileDetailService.getEfilingCaseFileDetail(cfd.getFd_case_type(), cfd.getFd_case_no(), cfd.getFd_case_year());
+				ecfd.setFd_case_type(newCaseTypeId);
+				caseFileDetailService.saveCaseFile(ecfd);
+			}
+			cfd.setFd_case_type(newCaseTypeId);
+			caseFileDetailService.save(cfd);
+	    	response.setResponse("TRUE");
+		}else{
+			response.setResponse("FALSE");	
+		}
+    	jsonData = globalfunction.convert_to_json(response);
+		return jsonData;
 	}
         
 	

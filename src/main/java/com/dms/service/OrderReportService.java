@@ -34,6 +34,7 @@ public class OrderReportService {
 	
 	
 	public List<OrderReport> getOrderReports(Long fd_id) {
+	
 		List<OrderReport> result = em.createQuery("SELECT o FROM OrderReport o where o.ord_fd_mid=:fd_id").setParameter("fd_id", fd_id).getResultList();
 		return result;
 	}
