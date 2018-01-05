@@ -1,15 +1,17 @@
 package com.dms.model;
 
-import java.beans.Transient;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -62,6 +64,26 @@ public class CaseFileDetail{
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fd_case_type",insertable = false, updatable = false)
 	private CaseType caseType;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "pt_fd_mid")
+	private List<Petitioner> petitioners;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "rt_fd_mid")
+	private List<Respondent> respondents;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "pc_fd_mid")
+	private List<PetitionerCounsel> pCounsels;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "rc_fd_mid")
+	private List<RespondentCounsel> rCounsels;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "io_fd_mid")
+	private List<ImpugnedOrder> impugnedOrders;
 	
 	@javax.persistence.Transient
 	private String case_type;
@@ -212,7 +234,44 @@ public class CaseFileDetail{
 		this.judgement_id = judgement_id;
 	}
 
-		
-	
+	public List<ImpugnedOrder> getImpugnedOrders() {
+		return impugnedOrders;
+	}
 
+	public void setImpugnedOrders(List<ImpugnedOrder> impugnedOrders) {
+		this.impugnedOrders = impugnedOrders;
+	}
+
+	public List<Petitioner> getPetitioners() {
+		return petitioners;
+	}
+
+	public void setPetitioners(List<Petitioner> petitioners) {
+		this.petitioners = petitioners;
+	}
+
+	public List<Respondent> getRespondents() {
+		return respondents;
+	}
+
+	public void setRespondents(List<Respondent> respondents) {
+		this.respondents = respondents;
+	}
+
+	public List<PetitionerCounsel> getpCounsels() {
+		return pCounsels;
+	}
+
+	public void setpCounsels(List<PetitionerCounsel> pCounsels) {
+		this.pCounsels = pCounsels;
+	}
+
+	public List<RespondentCounsel> getrCounsels() {
+		return rCounsels;
+	}
+
+	public void setrCounsels(List<RespondentCounsel> rCounsels) {
+		this.rCounsels = rCounsels;
+	}
+	
 }

@@ -10,7 +10,8 @@ background: #93cfe5;
 background: #f0f3f5;
 }
 </style>
- <button class="btn btn-success btn-sm" ng-click="viewAllOrders()">View All Orders</button>
+ <button class="btn btn-success btn-sm" ng-click="viewAllOrders()">View All Orders</button> 
+ <a href="#collapseImpugnedOrders" class="btn btn-success btn-sm">Impugned Orders</a>
 <c:if test="${isApplication==1}">
 <div class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
@@ -332,4 +333,145 @@ background: #f0f3f5;
         </div>
     </div>
 </div>
+<div  ng-show="casefile.impugnedOrders.length > 0" class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseImpugnedOrders">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Impugned Orders
+					</a>
+               </h3>
+           </div>
+           <div id="collapseImpugnedOrders" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
+                   <div class="table-responsive">
+                       <table id="data-table" st-table="casefile.impugnedOrders" class="table table-striped table-bordered">
+                           <thead>
+                               	<tr>
+                                   <th>Case Details</th>
+                                   <th>Type</th>
+                                   <th>District</th>                                  
+                                </tr>
+                                <tr ng-repeat="data in casefile.impugnedOrders">
+                                 <td style="text-decoration: underline;cursor:pointer;padding:10px 5px;width:35%"><span ng-if="data.io_court_type==1">{{data.lcCaseType.ct_name}}<br/>{{data.io_case_no}}/{{data.io_case_year}}</span><span ng-click="showHighCourtCase(data.io_id)"  ng-if="data.io_court_type==2">{{data.hcCaseType.ct_name}}<br/>{{data.io_case_no}}/{{data.io_case_year}}</span></td>
+                                 
+                                 <td style="text-align:justify"><span ng-if="data.io_court_type==1">Lower Court</span><span ng-if="data.io_court_type==2">High Court</span></td>
+                                 <td style="text-align:justify">{{data.district.dt_name}}</td>
+                         		</tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div  ng-show="casefile.petitioners.length > 0" class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapsePetitioners">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Petitioners
+					</a>
+               </h3>
+           </div>
+           <div id="collapsePetitioners" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
+                   <div class="table-responsive">
+                       <table id="data-table" st-table="casefile.petitioners" class="table table-striped table-bordered">
+                           <thead>
+                               	<tr>
+                                   <th>Name</th>                                  
+                                </tr>
+                                <tr ng-repeat="data in casefile.petitioners">
+                                 <td style="text-align:justify">{{data.pt_name}}</td>                                 
+                         		</tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div  ng-show="casefile.respondents.length > 0" class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseRespondents">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Respondents
+					</a>
+               </h3>
+           </div>
+           <div id="collapseRespondents" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
+                   <div class="table-responsive">
+                       <table id="data-table" st-table="casefile.respondents" class="table table-striped table-bordered">
+                           <thead>
+                               	<tr>
+                                   <th>Name</th>                                  
+                                </tr>
+                                <tr ng-repeat="data in casefile.respondents">
+                                 <td style="text-align:justify">{{data.rt_name}}</td>                                 
+                         		</tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div  ng-show="casefile.pCounsels.length > 0" class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapsePCounsels">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Petitioner Counsels
+					</a>
+               </h3>
+           </div>
+           <div id="collapsePCounsels" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
+                   <div class="table-responsive">
+                       <table id="data-table" st-table="casefile.pCounsels" class="table table-striped table-bordered">
+                           <thead>
+                               	<tr>
+                                   <th>Name</th>                                  
+                                </tr>
+                                <tr ng-repeat="data in casefile.pCounsels">
+                                 <td style="text-align:justify">{{data.pc_name}}</td>                                 
+                         		</tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div  ng-show="casefile.rCounsels.length > 0" class="panel panel-inverse overflow-hidden">
+           <div class="panel-heading">
+               <h3 class="panel-title">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseRCounsels">
+				    <i class="fa fa-plus-circle pull-right"></i> 
+					Respondent Counsels
+					</a>
+               </h3>
+           </div>
+           <div id="collapseRCounsels" class="panel-collapse collapse in">
+               <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
+                   <div class="table-responsive">
+                       <table id="data-table" st-table="casefile.rCounsels" class="table table-striped table-bordered">
+                           <thead>
+                               	<tr>
+                                   <th>Name</th>                                  
+                                </tr>
+                                <tr ng-repeat="data in casefile.rCounsels">
+                                 <td style="text-align:justify">{{data.rc_name}}</td>                                 
+                         		</tr>
+                    </thead>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>

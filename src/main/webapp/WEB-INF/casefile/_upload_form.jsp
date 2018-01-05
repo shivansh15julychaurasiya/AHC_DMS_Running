@@ -1,5 +1,5 @@
 
-<form class="form-horizontal reduce-gap" name="masterForm" novalidate enctype="multipart/form-data" role="form">      
+<form class="form-horizontal reduce-gap" name="uploadForm" novalidate enctype="multipart/form-data" role="form">      
 	<div class="modal-body">
 		<div ng-if="errorlist" class="alert alert-block alert-danger">
 				<ul>
@@ -72,7 +72,7 @@
 	</div>
 	<div class="modal-footer"> 
 		<div>
-		<input type="submit" value="Submit" ng-disabled="masterForm.$invalid" ng-click="save()"   class="btn btn-success"/>      
+		<input type="submit" value="Submit" ng-disabled="uploadForm.$invalid" ng-click="save()"   class="btn btn-success"/>      
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>  
 		</div>	     
 	</div>

@@ -41,6 +41,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.dms.model.ActionResponse;
 import com.dms.model.CaseFileDetail;
 import com.dms.model.CaseType;
+import com.dms.model.ImpugnedOrder;
 import com.dms.model.IndexField;
 import com.dms.model.Lookup;
 import com.dms.model.MetaData;
@@ -350,6 +351,7 @@ public class CaseFileController {
 			model.addAttribute("document_name", filename);
 			model.addAttribute("doc_id", docId);
 			model.addAttribute("isApplication",null);
+			model.addAttribute("isImpugnedOrder",null);
 		}
 		
 		return returnview;
@@ -368,6 +370,47 @@ public class CaseFileController {
 			model.addAttribute("document_name", subDocument.getSd_document_name());
 			model.addAttribute("doc_id", docId);
 			model.addAttribute("isApplication",null);
+			model.addAttribute("isImpugnedOrder",null);
+			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+			String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+			
+			File source = new File(srcPath);	
+	
+			String uploadPath = context.getRealPath("");		
+			File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
+	
+			try {
+			    FileUtils.copyFile(source, dest);
+			} 
+			catch (IOException e) {
+			    e.printStackTrace();
+			}
+		}
+		
+		return returnview;
+	}
+	@RequestMapping(value = "/impugnedorder/{id}", method = RequestMethod.GET)
+	public  String impugnedorder(@PathVariable("id") Long ioId,Model model) {
+		
+		ImpugnedOrder io=caseFileDetailService.getImpugnedOrder(ioId);
+		Integer caseYear=Integer.parseInt(io.getIo_case_year());
+		CaseFileDetail cfd=caseFileDetailService.getCaseFileDetail(io.getIo_hc_case_type(),io.getIo_case_no(),caseYear);
+		Long docId=io.getIo_fd_mid();
+		
+		SubDocument subDocument = subDocumentService.getPetitionSubDocument(cfd.getFd_id());
+		String returnview="/casefile/view";
+		if(subDocument==null){
+			returnview="/casefile/notfound";	
+		}else{
+			
+			CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(cfd.getFd_id());
+			model.addAttribute("document_name", subDocument.getSd_document_name());
+			model.addAttribute("doc_id", docId);
+			model.addAttribute("isApplication",null);
+			model.addAttribute("isImpugnedOrder",1);
+			model.addAttribute("casetype",cfd.getCaseType().getCt_label());
+			model.addAttribute("caseno",cfd.getFd_case_no());
+			model.addAttribute("caseyear",cfd.getFd_case_year());
 			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
 			String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
 			
@@ -400,6 +443,7 @@ public class CaseFileController {
 			model.addAttribute("doc_id", docId);
 			model.addAttribute("document_name", subDocument.getSd_document_name());
 			model.addAttribute("isApplication",null);
+			model.addAttribute("isImpugnedOrder",null);
 			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
 			String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
 			
@@ -437,6 +481,7 @@ public class CaseFileController {
 		model.addAttribute("doc_id", docId);
 		model.addAttribute("document_name", subDocument.getSd_document_name());
 		model.addAttribute("isApplication",1);
+		model.addAttribute("isImpugnedOrder",null);
 		model.addAttribute("application_type", subDocument.getDocumentType().getAt_name());
 		model.addAttribute("application_no", subDocument.getSd_document_no());
 		model.addAttribute("application_year", subDocument.getSd_document_year());

@@ -137,4 +137,8 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
 		window.open(urlBase+'casefile/vieworders/'+$scope.doc_id,'_self');
 	};
+	$scope.showHighCourtCase=function(io_id){
+		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
+		window.open(urlBase+'casefile/impugnedorder/'+io_id,'_self');
+	};
 });

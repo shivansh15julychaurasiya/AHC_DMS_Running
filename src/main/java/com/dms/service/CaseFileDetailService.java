@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.CaseFileDetail;
 import com.dms.model.CauseList;
+import com.dms.model.ImpugnedOrder;
 import com.dms.model.MetaData;
 import com.efiling.model.EfilingCaseFileDetail;
 import com.efiling.model.RegisteredCaseDetails;
@@ -109,6 +110,33 @@ public class CaseFileDetailService {
 			e.printStackTrace();
 		}
 		
+		return result;
+	}
+	public ImpugnedOrder getImpugnedOrder(Long ioId) {
+		// TODO Auto-generated method stub
+		ImpugnedOrder result=new ImpugnedOrder();
+	    Query query=null;
+		try {
+			query = em.createQuery("SELECT i from ImpugnedOrder i where i.io_id=:id").setParameter("id", ioId);
+			result=(ImpugnedOrder) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			
+		}
+		
+		return result;
+	}
+	public CaseFileDetail getCaseFileDetail(Long io_hc_case_type, String io_case_no, Integer io_case_year) {
+		// TODO Auto-generated method stub
+		CaseFileDetail result = new CaseFileDetail();
+		try {
+			result = (CaseFileDetail) em.createQuery("SELECT c FROM CaseFileDetail c where c.fd_case_type=:fd_case_type and c.fd_case_no=:fd_case_no and c.fd_case_year=:fd_case_year")
+					.setParameter("fd_case_type", io_hc_case_type).setParameter("fd_case_no", io_case_no).setParameter("fd_case_year", io_case_year)
+					.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
 		return result;
 	}
 	

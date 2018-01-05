@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "court_user_mappinag")
+@Table(name = "court_user_mapping")
 public class CourtUserMapping 
 {
 
