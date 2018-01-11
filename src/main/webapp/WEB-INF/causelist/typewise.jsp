@@ -23,7 +23,7 @@
 								<tr>
 									<td>
 										<select class="form-control" ng-model="report.cl_stage_id" ng-options="lookup.lk_id as lookup.lk_longname for lookup in applicationStages  | orderBy:'lk_longname'">
-											<option value="">Select Case Type</option>
+											<option value="">Select Status</option>
 										</select>
 									</td>
 									<td width="25%">
