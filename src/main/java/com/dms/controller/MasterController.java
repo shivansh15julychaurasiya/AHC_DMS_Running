@@ -17,6 +17,7 @@ import com.dms.model.ActionResponse;
 import com.dms.model.ApplicationTypes;
 import com.dms.model.CaseType;
 import com.dms.model.IndexField;
+import com.dms.model.Lookup;
 import com.dms.model.User;
 import com.dms.service.LookupService;
 import com.dms.service.MasterService;
@@ -88,6 +89,15 @@ public class MasterController {
 		IndexField index_field=masterService.getIndexField(if_id);
 		List<ApplicationTypes> indexFields=masterService.getApplicationsByType(index_field.getIf_label());
 		response.setModelList(indexFields);		
+		jsonData=globalfunction.convert_to_json(response);		
+		return jsonData;
+	}
+	@RequestMapping(value = "/getapplicationstages", method = RequestMethod.GET)
+	public @ResponseBody String getApplicationstages(Model model) {
+		String jsonData="";
+		ActionResponse<Lookup> response=new ActionResponse<>();
+		List<Lookup> stages=lookupService.getAll("APPLICATION_FILE_STAGES");
+		response.setModelList(stages);		
 		jsonData=globalfunction.convert_to_json(response);		
 		return jsonData;
 	}

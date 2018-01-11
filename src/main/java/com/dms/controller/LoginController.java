@@ -129,6 +129,8 @@ public class LoginController extends HttpServlet {
 				response.setData("causelist/home");
 			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("ECOURT"))
 				response.setData("ecourt/home");
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Private_Secretory"))
+				response.setData("ecourt/home");
 
 		}
 		else

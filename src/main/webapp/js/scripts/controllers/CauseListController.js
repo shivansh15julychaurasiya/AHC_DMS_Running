@@ -30,7 +30,11 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	  //$scope.usingFlash = FileAPI && FileAPI.upload != null;
 		$scope.model={};
 	  $scope.invalidFiles = [];
+	  $scope.checkListObj=[];
+	  $scope.model={};
+	  $scope.report={};
 	  $scope.type_id= $('#type_id').val();
+	  $scope.checkListObj=[];
 	  $scope.$watch('files', function (files) {
 	    $scope.formUpload = false;
 	    if (files != null) {
@@ -64,6 +68,7 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	$scope.format = $scope.formats[0];
     $scope.today = function() {
     	$scope.model.cl_dol = new Date();
+    	$scope.report.cl_date = null;
 	};
 	if($scope.type_id!='' && $scope.type_id!=null){
 		$scope.model.cl_list_type_mid=$scope.type_id;
@@ -74,6 +79,7 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	
 	$scope.clear = function () {
 		$scope.model.cl_dol = null;
+		$scope.report.cl_date=null;
 	};	
 
 	 $scope.open = function($event,opened) {
@@ -94,6 +100,16 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 		var response = $http.get(urlBase+'causelist/getCauseListTypes');
 		response.success(function(data, status, headers, config) {
 			$scope.causeListTypes = data.modelList;
+		});
+		response.error(function(data, status, headers, config) {
+			alert("Error");
+		});
+
+	}
+	$scope.getApplicationStages=function() {
+		var response = $http.get(urlBase+'master/getapplicationstages');
+		response.success(function(data, status, headers, config) {
+			$scope.applicationStages = data.modelList;
 		});
 		response.error(function(data, status, headers, config) {
 			alert("Error");
@@ -228,6 +244,37 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 			alert("Error");
 		});
 	  }
+	$scope.submitReport=function(){
+		var confirmbox = confirm("Do you really want to proceed");
+	   	 if (confirmbox) 
+	   	 {
+	   		 angular.forEach($scope.displayedCollection,function(value,index){							 
+				if(value.checked == true)
+				{
+					$scope.Obj=value;
+					$scope.Obj.cl_stage_id=$scope.report.cl_stage_id;
+					$scope.Obj.cl_date=$scope.report.cl_date;
+					$scope.checkListObj.push($scope.Obj);
+				}
+				
+			});
+	   		 if($scope.checkListObj.length>0){
+	   			$http.post(urlBase+'causelist/updateapplicationstatus',$scope.checkListObj)
+				.success(function(data) {
+					if(data.response=="TRUE"){
+						alert(data.data);
+					}else{
+						alert(data.data);
+					}
+					window.location.reload();
+				//$scope.SearchList = data.SearchedData;
+				}).error(function(data, status, headers, config) {					
+				});	
+	   		 }else{
+	   			 alert('Please select atleast one application');
+	   		 }
+	   	 }
+	}
 	
 		
 }]);

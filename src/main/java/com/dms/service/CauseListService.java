@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.CauseList;
 import com.dms.model.CauseListType;
+import com.dms.model.CourtOrder;
 import com.dms.model.PetitionerAdvocate;
 import com.dms.model.RespondentAdvocate;
 
@@ -123,7 +124,7 @@ public class CauseListService
 		}
 		
 		try {
-			Query query  =  em.createQuery("SELECT c from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" order by c.cl_serial_no");
+			Query query  =  em.createQuery("SELECT c from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" order by c.cl_serial_no,c.cl_id");
 			list= query.getResultList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -234,5 +235,43 @@ public class CauseListService
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Transactional
+	public CourtOrder saveCourtOrder(CourtOrder co) {
+		// TODO Auto-generated method stub
+		CourtOrder order = null;
+    	try {	
+    		order= em.merge(co);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();	    	
+		}
+    	return order;
+	}
+
+	public List<CourtOrder> getOrdersList(Integer cum_court_mid) {
+		// TODO Auto-generated method stub
+		List<CourtOrder> orders=new ArrayList<>();
+		try {
+			String query  ="SELECT co from CourtOrder co WHERE co.co_court_no =:co_court_no";
+			orders=em.createQuery(query).setParameter("co_court_no", cum_court_mid).getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return orders;
+	}
+	
+	public CourtOrder getCourtOrder(Long co_id) {
+		// TODO Auto-generated method stub
+		CourtOrder co=new CourtOrder();
+		try {
+			String query  ="SELECT c from CourtOrder c where c.co_id=:co_id";
+			co=(CourtOrder) em.createQuery(query).setParameter("co_id", co_id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return co;
 	}
 }

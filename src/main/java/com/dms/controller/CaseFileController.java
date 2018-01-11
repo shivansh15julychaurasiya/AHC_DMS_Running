@@ -393,7 +393,13 @@ public class CaseFileController {
 	public  String impugnedorder(@PathVariable("id") Long ioId,Model model) {
 		
 		ImpugnedOrder io=caseFileDetailService.getImpugnedOrder(ioId);
-		Integer caseYear=Integer.parseInt(io.getIo_case_year());
+		Integer caseYear = null;
+		try {
+			caseYear = Integer.parseInt(io.getIo_case_year());
+		} catch (NumberFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		CaseFileDetail cfd=caseFileDetailService.getCaseFileDetail(io.getIo_hc_case_type(),io.getIo_case_no(),caseYear);
 		Long docId=io.getIo_fd_mid();
 		

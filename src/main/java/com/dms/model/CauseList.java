@@ -87,6 +87,18 @@ public class CauseList {
     @JoinColumn(name = "cl_case_type_mid",insertable = false, updatable = false)
 	private CaseType caseType;
 	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cl_stage_id",insertable = false, updatable = false)
+	private Lookup applicationStage;
+	
+	@Column(name = "cl_stage_id")
+	private Long cl_stage_id;
+	
+	@Column(name = "cl_date")
+	private Date cl_date;
+	
+	@Transient
+	private boolean checked;
 	
 	public Long getCl_id() {
 		return cl_id;
@@ -255,6 +267,39 @@ public class CauseList {
 	public void setCl_sequence(Integer cl_sequence) {
 		this.cl_sequence = cl_sequence;
 	}
+
+	public Long getCl_stage_id() {
+		return cl_stage_id;
+	}
+
+	public void setCl_stage_id(Long cl_stage_id) {
+		this.cl_stage_id = cl_stage_id;
+	}
+
+	public Date getCl_date() {
+		return cl_date;
+	}
+
+	public void setCl_date(Date cl_date) {
+		this.cl_date = cl_date;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setStatus(boolean checked) {
+		this.checked = checked;
+	}
+
+	public Lookup getApplicationStage() {
+		return applicationStage;
+	}
+
+	public void setApplicationStage(Lookup applicationStage) {
+		this.applicationStage = applicationStage;
+	}
+	
 	
 	
 

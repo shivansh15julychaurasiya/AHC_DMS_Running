@@ -1,7 +1,10 @@
 package com.dms.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,8 +16,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,6 +46,7 @@ import com.dms.model.CaseType;
 import com.dms.model.CauseList;
 import com.dms.model.CauseListType;
 import com.dms.model.CourtMaster;
+import com.dms.model.CourtOrder;
 import com.dms.model.CourtUserMapping;
 import com.dms.model.Lookup;
 import com.dms.model.Rec;
@@ -99,6 +105,13 @@ public class CauseListController
 	{
 		return "/causelist/manage";
 	}
+	@RequestMapping(value = "/causelist/orders", method = RequestMethod.GET)
+	public String courtOrders() {
+		
+		return "/causelist/orders";
+
+	}
+
 	@RequestMapping(value = "/causelist/type/{typeId}", method = RequestMethod.GET)
 	public String manage(Model model,@PathVariable Long typeId,HttpSession session)
 	{
@@ -535,7 +548,115 @@ public class CauseListController
 	        {
 	        	e.printStackTrace();
 	        }
-	        
-	        
 	    }
+	@RequestMapping(value = "/causelist/updateapplicationstatus", method = RequestMethod.POST)
+	public @ResponseBody String updateapplicationstatus(@RequestBody List<CauseList> applications,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<CauseList> response=new ActionResponse<>();
+		int i=0;
+		for(CauseList causelist:applications){
+			SubDocument subDocument = subDocumentService.getApplication(causelist.getCl_ano(),causelist.getCl_ayr());
+			if(subDocument!=null){
+				subDocument.setSd_status(causelist.getCl_stage_id());
+				subDocument.setSd_date(causelist.getCl_date());
+				subDocumentService.save(subDocument);
+				causeListService.save(causelist);
+				i++;
+			}
+		}
+		if(i>0){
+			response.setResponse("TRUE");
+		}else{
+			response.setResponse("False");
+		}
+		response.setData(i+" No.of records updated");
+		
+		jsonData = globalfunction.convert_to_json(response);
+
+		return jsonData;
+	}
+	@RequestMapping(value = "/causelist/uploadorders", method = RequestMethod.POST)
+	public @ResponseBody String uploadOrders(MultipartHttpServletRequest request,HttpSession session) throws DocumentException 
+	{
+		ActionResponse<CourtOrder> response = new ActionResponse();
+		User user=(User) session.getAttribute("USER");
+		CourtUserMapping mapping=courtMasterService.getCourtMapping(user.getUm_id());
+		
+		String jsonData="";
+		Lookup ordersPath=lookupService.getLookUpObject("ORDERS_PATH");
+		MultipartFile mpf = null;
+    	Iterator<String> itr = request.getFileNames();
+    	while (itr.hasNext()) 
+		{
+			mpf = request.getFile(itr.next());
+			String filename=UUID.randomUUID()+".pdf";
+			String filePath=ordersPath.getLk_longname() + File.separator+filename;
+
+			try {
+				FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(filePath));	
+				CourtOrder co=new CourtOrder();
+				co.setCo_document_name(filename);
+				co.setCo_cr_by(user.getUm_id());
+				co.setCo_cr_date(new Date());
+				co.setCo_court_no(mapping.getCum_court_mid());
+				causeListService.saveCourtOrder(co);
+				response.setResponse("TRUE");
+				response.setData("Successfully uploaded file");
+			}catch (IOException e) {
+				response.setResponse("FALSE");
+				response.setData("Error occurred while uploaded file");
+			}
+			
+		}
+    	jsonData=globalfunction.convert_to_json(response);
+    	return jsonData;
+	}
+	@RequestMapping(value = "/causelist/getallorders", method = RequestMethod.GET)
+	public @ResponseBody String getAllOrders(HttpSession session) 
+	{
+		ActionResponse<CourtOrder> response=new ActionResponse<CourtOrder>();
+		String jsonData="";
+		User user=(User) session.getAttribute("USER");
+		CourtUserMapping mapping=courtMasterService.getCourtMapping(user.getUm_id());
+		List<CourtOrder> orderList=causeListService.getOrdersList(mapping.getCum_court_mid());
+		response.setData("TRUE");
+		response.setModelList(orderList);		
+		jsonData=globalfunction.convert_to_json(response);
+		return jsonData;
+	}
+	@RequestMapping(value = "causelist/vieworder/{id}", method = RequestMethod.GET)
+	public void viewOrder(@PathVariable("id") Long co_id,HttpSession session,HttpServletResponse response) {
+		CourtOrder courtorder=causeListService.getCourtOrder(co_id);
+		Lookup lookupRepo=lookupService.getLookUpObject("ORDERS_PATH");
+		String srcPath=lookupRepo.getLk_longname()+File.separator+courtorder.getCo_document_name();
+		File file = new File(srcPath);	
+		response.setHeader("content-disposition", "inline" );
+		response.setContentType("application/pdf");       
+		response.setContentLength((int)file.length());
+		  
+		try {
+			ServletOutputStream out = response.getOutputStream();
+			FileInputStream stream = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(stream);
+			BufferedOutputStream bos = new BufferedOutputStream(out);
+			  
+			byte[] buff = new byte[2048];
+			int bytesRead;
+			  
+			while(-1 != (bytesRead = bis.read(buff, 0, buff.length))) 
+			{
+			bos.write(buff, 0, bytesRead);
+			}
+			bis.close();
+			stream.close();
+			bos.close();
+			out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

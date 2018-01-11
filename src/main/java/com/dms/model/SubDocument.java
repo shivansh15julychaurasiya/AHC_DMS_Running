@@ -77,6 +77,12 @@ public class SubDocument {
 	@Column (name="sd_counsel")
 	private String sd_counsel;
 	
+	@Column (name="sd_status")
+	private Long sd_status;
+	
+	@Column (name="sd_date")
+	private Date sd_date;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sd_if_mid",insertable = false, updatable = false)
 	private IndexField indexField;
@@ -84,7 +90,11 @@ public class SubDocument {
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sd_document_id",insertable = false, updatable = false)
 	private ApplicationTypes documentType;
-
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "sd_status",insertable = false, updatable = false)
+	private Lookup applicationStatus;
+	
 	public Long getSd_id() {
 		return sd_id;
 	}
@@ -253,6 +263,30 @@ public class SubDocument {
 
 	public void setDocumentType(ApplicationTypes documentType) {
 		this.documentType = documentType;
+	}
+
+	public Long getSd_status() {
+		return sd_status;
+	}
+
+	public void setSd_status(Long sd_status) {
+		this.sd_status = sd_status;
+	}
+
+	public Lookup getApplicationStatus() {
+		return applicationStatus;
+	}
+
+	public void setApplicationStatus(Lookup applicationStatus) {
+		this.applicationStatus = applicationStatus;
+	}
+
+	public Date getSd_date() {
+		return sd_date;
+	}
+
+	public void setSd_date(Date sd_date) {
+		this.sd_date = sd_date;
 	}
 	
 	

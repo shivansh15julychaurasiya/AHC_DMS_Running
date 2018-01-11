@@ -1,7 +1,6 @@
 
 <%@ include file="../content/header2.jsp"%>
-
-        <%@page import="java.io.FileInputStream"%>
+<%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.File"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.net.URL"%>
@@ -16,7 +15,35 @@
 		          <h4 class="panel-title">${listType.getClt_description()} Cause List</h4>
 		       </div>
 				<div class="panel-body">
-					<div class="row">
+				<div class="table-responsive">
+				<% if(role.equals("Private_Secretory")){ %>
+				
+						<table id="data-table" ng-init="getApplicationStages()" st-table="displayedCollection" class="table table-striped table-bordered nowrap table-hover">
+							<thead>
+								<tr>
+									<td>
+										<select class="form-control" ng-model="report.cl_stage_id" ng-options="lookup.lk_id as lookup.lk_longname for lookup in applicationStages  | orderBy:'lk_longname'">
+											<option value="">Select Case Type</option>
+										</select>
+									</td>
+									<td width="25%">
+										<div class="input-group date" >
+										<input type="text" class="form-control"
+											datepicker-popup="{{format}}" ng-model="report.cl_date"
+											is-open="opened1" datepicker-options="dateOptions"
+											ng-disabled="true" /> <span class="input-group-addon"
+											ng-click="open($event,'opened1')"><i
+											class="glyphicon glyphicon-calendar"></i></span>
+										</div>
+									</td>
+									<td>
+										<button id="search" type="submit" class="btn btn-primary btn-sm" ng-click="submitReport()">Submit</button>
+									</td>
+								</tr>
+
+							</thead>
+						</table>
+						<% } %>	
 						<table st-table="displayedCollection" style="font-size:14px;" st-safe-src="masterdata"  class="table table-striped table-bordered table-hover">
 						<thead>
 						<tr>
@@ -25,6 +52,10 @@
 						<th style="text-align:center">Petitioner vs Respondent</th>
 						<th style="text-align:center">Petitioner Council</th>
 						<th style="text-align:center">Respondent Council</th>
+						<% if(role.equals("Private_Secretory")){ %>
+						<th style="text-align:center">Status</th>
+						<th style="text-align:center">Action</th>
+						<% } %>	
 						</tr>
 						</thead>
 						<tbody>
@@ -35,19 +66,24 @@
 						<td style="text-align:center;cursor: pointer;text-decoration: underline;">
 						<span ng-if="data.cl_list_type_mid==1 || data.cl_list_type_mid==2" ng-click="viewApplication(data.cl_ano,data.cl_ayr)">Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/>{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
 						<span ng-if="data.cl_list_type_mid !=1 && data.cl_list_type_mid !=2" ng-click="viewCaseFile(data.cl_fd_mid)">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
-						
 						</td>
 						<td style="text-align:center">{{data.cl_first_petitioner}} <br/> vs <br/> {{data.cl_first_respondent}} </td>
 						<td style="text-align:center">{{data.cl_petitioner_council}}</td>
 						<td style="text-align:center">{{data.cl_respondent_council}}</td>
+						<% if(role.equals("Private_Secretory")){ %>
+						<td style="text-align:center">{{data.applicationStage.lk_longname}}</td>						
+						<td>
+                        	<input type="checkbox" name="checked" id="checked" value={{row.cl_id}} ng-model="data.checked" />
+                         </td>
+                         <% } %>	
 						</tr>
 						</tbody>
 						<tfoot>
-									<tr>
-										<td colspan="5" class="text-center">
-											<div st-pagination="" st-items-by-page="5000"  st-displayed-pages="4" ></div>
-										</td>
-									</tr>
+							<tr>
+								<td colspan="5" class="text-center">
+									<div st-pagination="" st-items-by-page="5000"  st-displayed-pages="4" ></div>
+								</td>
+							</tr>
 						</tfoot>
 						</table>
 					</div>
