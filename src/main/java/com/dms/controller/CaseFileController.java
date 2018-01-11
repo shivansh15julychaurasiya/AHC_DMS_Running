@@ -653,6 +653,7 @@ public class CaseFileController {
 		String jsonData="";
 		Long caseFileId=Long.parseLong(request.getParameter("fd_id"), 10);
 		Long newCaseTypeId=Long.parseLong(request.getParameter("new_case_type"), 10);
+		String newCaseNo=request.getParameter("new_case_no");
 		CaseFileDetail cfd=caseFileDetailService.getCaseFileDetail(caseFileId);
 		List<SubDocument> subdocuments=subDocumentService.getAllSubDocuments(caseFileId);
 		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
@@ -663,6 +664,7 @@ public class CaseFileController {
 			String srcPath=lookupRepo.getLk_longname()+File.separator+cfd.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
 			String filename=subDocument.getSd_document_name();
 			filename=filename.replace(cfd.getCaseType().getCt_label(), newCaseType.getCt_label());
+			filename=filename.replace(cfd.getFd_case_no(), newCaseNo);
 			String destPath=lookupRepo.getLk_longname()+File.separator+newCaseType.getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+filename+".pdf";
 			subDocument.setSd_document_name(filename);
 			
@@ -686,9 +688,16 @@ public class CaseFileController {
 				// update online case type
 				EfilingCaseFileDetail ecfd=caseFileDetailService.getEfilingCaseFileDetail(cfd.getFd_case_type(), cfd.getFd_case_no(), cfd.getFd_case_year());
 				ecfd.setFd_case_type(newCaseTypeId);
+				ecfd.setFd_case_no(newCaseNo);
 				caseFileDetailService.saveCaseFile(ecfd);
 			}
+			String documentname=cfd.getFd_document_name();
+			documentname=documentname.replace(cfd.getCaseType().getCt_label(), newCaseType.getCt_label());
+			documentname=documentname.replace(cfd.getFd_case_no(), newCaseNo);
+			
+			cfd.setFd_document_name(documentname);
 			cfd.setFd_case_type(newCaseTypeId);
+			cfd.setFd_case_no(newCaseNo);
 			caseFileDetailService.save(cfd);
 	    	response.setResponse("TRUE");
 		}else{

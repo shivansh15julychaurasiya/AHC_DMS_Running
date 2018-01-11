@@ -206,12 +206,16 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 		  }
 		  $http.post(urlBase+'casefile/updatecasetype?fd_id='+$scope.casefile.fd_id
 				  +"&new_case_type="+$scope.new_case_type
+				  +"&new_case_no="+$scope.new_case_no
 			  )
 			  .success(function (data) {
 			    	if(data.response=="TRUE")
 			    		alert("Successfully updated case type information");		    	
 			    	else
 			    		alert("Error occurred while updating case type information");
+			    	
+			    	$scope.new_case_type='';
+			    	$scope.new_case_no='';
 			    	
 			    	$("#updateCaseType").modal("hide");
 			      }).

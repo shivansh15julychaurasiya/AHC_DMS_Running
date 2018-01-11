@@ -10,6 +10,12 @@
 				</select>
 			</div>
 		</div>
+		<div class="row">							  			      		
+			<div class="form-group">
+				<label class="col-md-4 control-label">Case No<span class="star">*</span></label>
+				<input type="text" name="new_case_no" id="new_case_no" ng-model="new_case_no" required>				
+			</div>
+		</div>
 	</div>
 	<div class="modal-footer"> 
 		<div>
