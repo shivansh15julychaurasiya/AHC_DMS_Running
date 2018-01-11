@@ -84,7 +84,7 @@ public class UserService {
 		//System.out.println("call getUserObjects");
 		// TODO Auto-generated method stub
 		String sql = "select o from ObjectMaster o "
-				+ " where o.om_id in (select ro_om_mid from  RoleObject where ro_role_id in (select ur_role_id from UserRole where ur_um_mid = "+um_id+") and ro_rec_status = 1 order by ro_id) order by o.om_object_name";
+				+ " where o.om_id in (select ro_om_mid from  RoleObject where ro_role_id in (select ur_role_id from UserRole where ur_um_mid = "+um_id+") and ro_rec_status = 1 order by ro_id) order by o.om_object_stages,o.om_id";
 		List<ObjectMaster> l1 = (List<ObjectMaster>) em.createQuery(sql)
 				.getResultList();
 
