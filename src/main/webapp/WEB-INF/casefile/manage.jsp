@@ -63,8 +63,8 @@
 											ng-click="viewCaseFile(row.fd_id)">View</button>
 										<button class="btn btn-success btn-sm"
 											ng-click="downloadFiles(row.fd_id)">Download</button>
-										<button class="btn btn-success btn-sm" data-toggle="modal"
-											data-target="#viewFiles" ng-click="getSubDocuments(row.fd_id)">View Files</button>
+<!-- 										<button class="btn btn-success btn-sm" data-toggle="modal" -->
+<!-- 											data-target="#viewFiles" ng-click="getSubDocuments(row.fd_id)">View Files</button> -->
 											<button class="btn btn-success btn-sm" ng-click="setModel(row)" data-toggle="modal"
 											data-target="#updateCaseType">Change Case Type</button>
 										<% }%>	

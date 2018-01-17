@@ -112,7 +112,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $http) {
 	      	console.log("Error in getting sub documents");
 	      });
 	}
-	function generateReportData(){
+	function generateReportData(){s
 		$scope.orderData=[];
 		angular.forEach($scope.order_sheets, function(value, key) {
 			$scope.ordermodel={'sd_id':value.sd_id,'document_type':value.documentType.at_description,'sd_created_date':value.sd_cr_date,'sd_submitted_date':value.sd_submitted_date,'sd_party':value.sd_party,'sd_description':value.sd_description,'ord_remark':''};

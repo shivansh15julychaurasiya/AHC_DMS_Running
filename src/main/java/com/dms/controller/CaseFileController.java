@@ -46,6 +46,10 @@ import com.dms.model.IndexField;
 import com.dms.model.Lookup;
 import com.dms.model.MetaData;
 import com.dms.model.OrderReport;
+import com.dms.model.Petitioner;
+import com.dms.model.PetitionerCounsel;
+import com.dms.model.Respondent;
+import com.dms.model.RespondentCounsel;
 import com.dms.model.SubDocument;
 import com.dms.model.User;
 import com.dms.service.CaseFileDetailService;
@@ -95,6 +99,11 @@ public class CaseFileController {
 	public String Manage() {
 
 		return "/casefile/manage";
+	}
+	@RequestMapping(value = "/viewdetail/{id}", method = RequestMethod.GET)
+	public  String viewDetail(@PathVariable("id") Long docId,Model model) {
+		model.addAttribute("doc_id",docId);
+		return "/casefile/viewdetail";
 	}
 	@RequestMapping(value = "/getCaseFileList", method = RequestMethod.POST)
 	public @ResponseBody String getCaseList(@RequestBody CaseFileDetail casefile,HttpSession session) {
@@ -553,7 +562,7 @@ public class CaseFileController {
 
 		return jsonData;
 	}
-
+	
 	
 	@RequestMapping(value = "/getmetadata/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getMetadata(@PathVariable("id") Long fd_id,HttpSession session) {
@@ -645,6 +654,27 @@ public class CaseFileController {
 		return jsonData;
 
 	}
+	@RequestMapping(value = "/deleteofficereport/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public String officereport(@PathVariable("id")  Long id, HttpSession session) {
+		ActionResponse<OrderReport> response = new ActionResponse<OrderReport>();
+		String jsonData = null;
+
+		OrderReport or= orderReportService.getOrderReport(id);
+		or.setOrd_rec_status(0);
+		orderReportService.save(or);
+		if(or.getSubDocument()!=null){
+			SubDocument sd= subDocumentService.getByPK(or.getSubDocument().getSd_id());
+			sd.setSd_rec_status(0);
+			subDocumentService.save(sd);
+		}
+		
+		response.setResponse("TRUE");
+		jsonData = globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
 	@RequestMapping(value = "/updatecasetype", method = RequestMethod.POST)
 	public @ResponseBody String updateCaseType(HttpServletRequest request,HttpSession session) throws DocumentException 
 	{
@@ -706,7 +736,67 @@ public class CaseFileController {
     	jsonData = globalfunction.convert_to_json(response);
 		return jsonData;
 	}
-        
+	@RequestMapping(value = "/deletepetitioner/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody String deletepetitioner(@PathVariable("id")  Long id, HttpSession session) {
+		ActionResponse<Petitioner> response = new ActionResponse<Petitioner>();
+		String jsonData = null;
+
+		Petitioner pet= caseFileDetailService.getPetitioner(id);
+		pet.setPt_rec_status(0);
+		caseFileDetailService.save(pet);
+		
+		response.setResponse("TRUE");
+		jsonData = globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+	@RequestMapping(value = "/deleterespondent/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody String deleterespondent(@PathVariable("id")  Long id, HttpSession session) {
+		ActionResponse<Respondent> response = new ActionResponse<Respondent>();
+		String jsonData = null;
+
+		Respondent res= caseFileDetailService.getRespondent(id);
+		res.setRt_rec_status(0);
+		caseFileDetailService.save(res);
+		
+		response.setResponse("TRUE");
+		jsonData = globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+	@RequestMapping(value = "/deletepcounsel/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody String deletepcounsel(@PathVariable("id")  Long id, HttpSession session) {
+		ActionResponse<PetitionerCounsel> response = new ActionResponse<PetitionerCounsel>();
+		String jsonData = null;
+
+		PetitionerCounsel pc= caseFileDetailService.getPetitionerCounsel(id);
+		pc.setPc_rec_status(0);
+		caseFileDetailService.save(pc);
+		
+		response.setResponse("TRUE");
+		jsonData = globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+	@RequestMapping(value = "/deletercounsel/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody String deletercounsel(@PathVariable("id")  Long id, HttpSession session) {
+		ActionResponse<RespondentCounsel> response = new ActionResponse<RespondentCounsel>();
+		String jsonData = null;
+
+		RespondentCounsel rc= caseFileDetailService.getRespondentCounsel(id);
+		rc.setRc_rec_status(0);
+		caseFileDetailService.save(rc);
+		
+		response.setResponse("TRUE");
+		jsonData = globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+
 	
 }
 

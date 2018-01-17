@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
 
 
 @Entity
@@ -61,24 +63,49 @@ public class CaseFileDetail{
 	@Column(name="fd_mod_date")
 	private Date fd_mod_date;
 	
+	@Column(name="fd_disposal_date")
+	private Date fd_disposal_date;		
+
+	@Column(name="fd_category_code")
+	private Long fd_category_code;
+  
+	@Column(name="fd_district")
+	private Long fd_district;
+  
+	@Column(name="fd_bench_type")
+	private Long fd_bench_type;
+  
+	@Column(name="fd_act_section")
+	private String fd_act_section;  
+  
+	@Column(name="fd_keywords")
+	private String fd_keywords;
+  
+	@Column(name="fd_bench_code")
+	private Long fd_bench_code;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fd_case_type",insertable = false, updatable = false)
 	private CaseType caseType;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "pt_fd_mid")
+	@Where(clause="pt_rec_status=1")
 	private List<Petitioner> petitioners;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "rt_fd_mid")
+	@Where(clause="rt_rec_status=1")
 	private List<Respondent> respondents;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "pc_fd_mid")
+	@Where(clause="pc_rec_status=1")
 	private List<PetitionerCounsel> pCounsels;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "rc_fd_mid")
+	@Where(clause="rc_rec_status=1")
 	private List<RespondentCounsel> rCounsels;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
@@ -272,6 +299,62 @@ public class CaseFileDetail{
 
 	public void setrCounsels(List<RespondentCounsel> rCounsels) {
 		this.rCounsels = rCounsels;
+	}
+
+	public Date getFd_disposal_date() {
+		return fd_disposal_date;
+	}
+
+	public void setFd_disposal_date(Date fd_disposal_date) {
+		this.fd_disposal_date = fd_disposal_date;
+	}
+
+	public Long getFd_category_code() {
+		return fd_category_code;
+	}
+
+	public void setFd_category_code(Long fd_category_code) {
+		this.fd_category_code = fd_category_code;
+	}
+
+	public Long getFd_district() {
+		return fd_district;
+	}
+
+	public void setFd_district(Long fd_district) {
+		this.fd_district = fd_district;
+	}
+
+	public Long getFd_bench_type() {
+		return fd_bench_type;
+	}
+
+	public void setFd_bench_type(Long fd_bench_type) {
+		this.fd_bench_type = fd_bench_type;
+	}
+
+	public String getFd_act_section() {
+		return fd_act_section;
+	}
+
+	public void setFd_act_section(String fd_act_section) {
+		this.fd_act_section = fd_act_section;
+	}
+
+	public String getFd_keywords() {
+		return fd_keywords;
+	}
+
+	public void setFd_keywords(String fd_keywords) {
+		this.fd_keywords = fd_keywords;
+	}
+
+	public Long getFd_bench_code() {
+		return fd_bench_code;
+	}
+
+	public void setFd_bench_code(Long fd_bench_code) {
+		this.fd_bench_code = fd_bench_code;
 	}
 	
 }

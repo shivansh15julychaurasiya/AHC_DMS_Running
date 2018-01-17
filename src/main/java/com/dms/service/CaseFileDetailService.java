@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.CaseFileDetail;
-import com.dms.model.CauseList;
 import com.dms.model.ImpugnedOrder;
 import com.dms.model.MetaData;
+import com.dms.model.Petitioner;
+import com.dms.model.PetitionerCounsel;
+import com.dms.model.Respondent;
+import com.dms.model.RespondentCounsel;
 import com.efiling.model.EfilingCaseFileDetail;
-import com.efiling.model.RegisteredCaseDetails;
 
 @Service
 public class CaseFileDetailService {
@@ -138,6 +140,95 @@ public class CaseFileDetailService {
 			//e.printStackTrace();
 		}
 		return result;
+	}
+	public Petitioner getPetitioner(Long id) {
+		// TODO Auto-generated method stub
+		Petitioner pet=null;
+		try {
+			pet=(Petitioner) em.createQuery("SELECT pet from Petitioner pet where pet.pt_id=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pet;
+	}
+	@Transactional
+	public Petitioner save(Petitioner pet) {
+		// TODO Auto-generated method stub
+		Petitioner petitioner = null;
+    	try {	
+    		petitioner= em.merge(pet);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();	    	
+		}
+		return petitioner;
+	}
+	public Respondent getRespondent(Long id) {
+		// TODO Auto-generated method stub
+		Respondent ret=null;
+		try {
+			ret=(Respondent) em.createQuery("SELECT ret from Respondent ret where ret.rt_id=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	@Transactional
+	public Respondent save(Respondent ret) {
+		// TODO Auto-generated method stub
+		Respondent respondent = null;
+    	try {	
+    		respondent= em.merge(ret);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();	    	
+		}
+		return respondent;
+	}
+	public PetitionerCounsel getPetitionerCounsel(Long id) {
+		// TODO Auto-generated method stub
+		PetitionerCounsel pet=null;
+		try {
+			pet=(PetitionerCounsel) em.createQuery("SELECT pc from PetitionerCounsel pc where pc.pc_id=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pet;
+	}
+	@Transactional
+	public PetitionerCounsel save(PetitionerCounsel pc) {
+		// TODO Auto-generated method stub
+		PetitionerCounsel counsel = null;
+    	try {	
+    		counsel= em.merge(pc);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();	    	
+		}
+		return counsel;
+	}
+	public RespondentCounsel getRespondentCounsel(Long id) {
+		// TODO Auto-generated method stub
+		RespondentCounsel rc=null;
+		try {
+			rc=(RespondentCounsel) em.createQuery("SELECT rc from RespondentCounsel rc where rc.rc_id=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rc;
+	}
+	
+	@Transactional
+	public RespondentCounsel save(RespondentCounsel rc) {
+		// TODO Auto-generated method stub
+		RespondentCounsel counsel = null;
+    	try {	
+    		counsel= em.merge(counsel);	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();	    	
+		}
+		return counsel;
 	}
 	
 }

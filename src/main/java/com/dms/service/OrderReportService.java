@@ -34,9 +34,21 @@ public class OrderReportService {
 	
 	
 	public List<OrderReport> getOrderReports(Long fd_id) {
-	
-		List<OrderReport> result = em.createQuery("SELECT o FROM OrderReport o where o.ord_fd_mid=:fd_id").setParameter("fd_id", fd_id).getResultList();
+			
+		List<OrderReport> result = em.createQuery("SELECT o FROM OrderReport o where o.ord_fd_mid=:fd_id and o.ord_rec_status=1").setParameter("fd_id", fd_id).getResultList();
 		return result;
 	}
+	
+	@Transactional
+    public OrderReport getOrderReport(Long ord_id) {
+    
+		OrderReport or = null;
+    	try {	
+    		or= (OrderReport) em.createQuery("SELECT o from OrderReport o where o.ord_id=:ord_id").setParameter("ord_id", ord_id).getSingleResult();	    	
+	    }catch (Exception e) {		
+	    	e.printStackTrace();
+		}
+    	return or;
+    }
 	
 }

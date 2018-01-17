@@ -38,6 +38,9 @@ public class OrderReport {
 	@Column(name="ord_sd_mid")
 	private Long ord_sd_mid;
 	
+	@Column(name="ord_rec_status")
+	private Integer ord_rec_status;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ord_sd_mid",insertable = false, updatable = false)
 	private SubDocument subDocument;
@@ -96,6 +99,14 @@ public class OrderReport {
 
 	public void setOrd_created_by(Long ord_created_by) {
 		this.ord_created_by = ord_created_by;
+	}
+
+	public Integer getOrd_rec_status() {
+		return ord_rec_status;
+	}
+
+	public void setOrd_rec_status(Integer ord_rec_status) {
+		this.ord_rec_status = ord_rec_status;
 	}
 	
 	

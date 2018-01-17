@@ -33,14 +33,13 @@ background: #f0f3f5;
                                    <th>Name</th>
                                    <th>Counsel</th>
                                 </tr>
+                          </thead>
                                 <tr>
                                  <td> ${application_type} <br/> ${application_no}/ ${application_year} <br/> ${submitted_date} </td>
                                  <td>${name}</td>
                                  <td>${counsel}</td>
                          		</tr>
-                    </thead>
-                    
-                </table>
+                		</table>
                 </div>
           </div>
     </div>

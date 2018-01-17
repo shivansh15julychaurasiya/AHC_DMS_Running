@@ -105,6 +105,11 @@ public class CauseListController
 	{
 		return "/causelist/manage";
 	}
+	@RequestMapping(value = "/causelist/search", method = RequestMethod.GET)
+	public String search()
+	{
+		return "/causelist/search";
+	}
 	@RequestMapping(value = "/causelist/orders", method = RequestMethod.GET)
 	public String courtOrders() {
 		
