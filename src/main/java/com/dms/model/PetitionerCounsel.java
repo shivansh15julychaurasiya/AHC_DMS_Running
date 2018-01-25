@@ -1,5 +1,7 @@
 package com.dms.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,12 +29,20 @@ public class PetitionerCounsel {
 	@Column(name = "pc_fd_mid")
 	private Long pc_fd_mid;
 
-
 	@Column(name = "pc_sequence")
 	private Integer pc_sequence;
-
 	
+	@Column(name="pc_cr_by")
+	private Long pc_cr_by;
 	
+	@Column(name="pc_cr_date")
+	private Date pc_cr_date;	
+	
+	@Column(name="pc_mod_by")
+	private Long pc_mod_by;	
+	
+	@Column(name="pc_mod_date")
+	private Date pc_mod_date;	
 	
 	public Long getPc_id() {
 		return pc_id;
@@ -72,6 +82,38 @@ public class PetitionerCounsel {
 
 	public void setPc_sequence(Integer pc_sequence) {
 		this.pc_sequence = pc_sequence;
+	}
+
+	public Long getPc_cr_by() {
+		return pc_cr_by;
+	}
+
+	public void setPc_cr_by(Long pc_cr_by) {
+		this.pc_cr_by = pc_cr_by;
+	}
+
+	public Date getPc_cr_date() {
+		return pc_cr_date;
+	}
+
+	public void setPc_cr_date(Date pc_cr_date) {
+		this.pc_cr_date = pc_cr_date;
+	}
+
+	public Long getPc_mod_by() {
+		return pc_mod_by;
+	}
+
+	public void setPc_mod_by(Long pc_mod_by) {
+		this.pc_mod_by = pc_mod_by;
+	}
+
+	public Date getPc_mod_date() {
+		return pc_mod_date;
+	}
+
+	public void setPc_mod_date(Date pc_mod_date) {
+		this.pc_mod_date = pc_mod_date;
 	}
 
 	

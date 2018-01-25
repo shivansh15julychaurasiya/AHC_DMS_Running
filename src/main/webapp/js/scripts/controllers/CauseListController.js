@@ -60,6 +60,7 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
     $scope.displayedCollection = []
     $scope.courtList=[];
     $scope.causelist={};
+    $scope.clmodel={};
     $scope.search=false;
     getCourtList();
     getCauseListTypes();
@@ -68,6 +69,7 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	$scope.format = $scope.formats[0];
     $scope.today = function() {
     	$scope.model.cl_dol = new Date();
+    	$scope.clmodel.cl_dol = new Date();
     	$scope.report.cl_date = null;
 	};
 	if($scope.type_id!='' && $scope.type_id!=null){
@@ -80,6 +82,7 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	$scope.clear = function () {
 		$scope.model.cl_dol = null;
 		$scope.report.cl_date=null;
+		$scope.clmodel.cl_dol = null;
 	};	
 
 	 $scope.open = function($event,opened) {
@@ -100,6 +103,16 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 		var response = $http.get(urlBase+'causelist/getCauseListTypes');
 		response.success(function(data, status, headers, config) {
 			$scope.causeListTypes = data.modelList;
+		});
+		response.error(function(data, status, headers, config) {
+			alert("Error");
+		});
+
+	}
+	$scope.getCaseTypes=function() {
+		var response = $http.get(urlBase+'master/getcasetypes');
+		response.success(function(data, status, headers, config) {
+			$scope.caseTypes = data.modelList;
 		});
 		response.error(function(data, status, headers, config) {
 			alert("Error");
@@ -275,6 +288,105 @@ edmsApp.controller("causeListController",['$scope','$http','Upload', function($s
 	   		 }
 	   	 }
 	}
+	$scope.deletecase=function(id){
+		  var result=confirm("Are you really want to delete this record");
+		  if (result) {
+			  $http({
+				  method : 'DELETE',
+				  url : urlBase + 'causelist/delete/' + id
+		   		}).success(function(response) {
+		   			alert("Successfully deleted record");
+		   			window.location.reload();			
+		   		});	
+		  }
+	  }
 	
-		
+	$scope.checkAll = function () 
+	{		
+  	  if ($scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+  	  	angular.forEach($scope.displayedCollection,function(value,index){
+  		  
+  		  value.checked=$scope.selectedAll;
+  		 // $scope.bundlelist.splice($scope.bundlelist.indexOf(value), 1);
+  		  
+        });
+
+	 };
+	 $scope.updatecauselist=function(){
+			var confirmbox = confirm("Do you really want to proceed");
+		   	 if (confirmbox) 
+		   	 {
+		   		 angular.forEach($scope.displayedCollection,function(value,index){							 
+					if(value.checked == true)
+					{
+						$scope.Obj=value;
+						$scope.Obj.cl_new_court_no=$scope.cl_new_court_no;
+						$scope.checkListObj.push($scope.Obj);
+					}
+				});
+		   		 if($scope.checkListObj.length>0){
+		   			$http.post(urlBase+'causelist/updatecauselist',$scope.checkListObj)
+					.success(function(data) {
+						if(data.response=="TRUE"){
+							alert(data.data);
+						}else{
+							alert(data.data);
+						}
+						window.location.reload();
+					//$scope.SearchList = data.SearchedData;
+					}).error(function(data, status, headers, config) {					
+					});	
+		   		 }else{
+		   			 alert('Please select atleast one record');
+		   		 }
+		   	 }
+		}
+	 $scope.deleteall=function(){
+			var confirmbox = confirm("Do you really want to proceed");
+		   	 if (confirmbox) 
+		   	 {
+		   		 angular.forEach($scope.displayedCollection,function(value,index){							 
+					if(value.checked == true)
+					{
+						$scope.Obj=value;
+						$scope.Obj.cl_new_court_no=$scope.cl_new_court_no;
+						$scope.checkListObj.push($scope.Obj);
+					}
+				});
+		   		 if($scope.checkListObj.length>0){
+		   			$http.post(urlBase+'causelist/deleteall',$scope.checkListObj)
+					.success(function(data) {
+						if(data.response=="TRUE"){
+							alert(data.data);
+						}else{
+							alert(data.data);
+						}
+						window.location.reload();
+					//$scope.SearchList = data.SearchedData;
+					}).error(function(data, status, headers, config) {					
+					});	
+		   		 }else{
+		   			 alert('Please select atleast one record');
+		   		 }
+		   	 }
+		}
+	 $scope.create=function(){	
+			$http.post(urlBase+'causelist/addcase',$scope.clmodel)
+				.success(function(data) {
+					if(data.response=="TRUE"){
+						alert(data.data);
+					}else{
+						alert(data.data);
+					}
+					$("#caseAdd").modal("hide");
+				//$scope.SearchList = data.SearchedData;
+			}).error(function(data, status, headers, config) {
+				console.log("Error in adding causelist ");
+			});	
+		};
+
 }]);

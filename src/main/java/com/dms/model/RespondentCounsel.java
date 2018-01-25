@@ -1,5 +1,7 @@
 package com.dms.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +33,17 @@ public class RespondentCounsel {
 	@Column(name = "rc_sequence")
 	private Integer rc_sequence;
 
+	@Column(name="rc_cr_by")
+	private Long rc_cr_by;
 	
+	@Column(name="rc_cr_date")
+	private Date rc_cr_date;	
+	
+	@Column(name="rc_mod_by")
+	private Long rc_mod_by;	
+	
+	@Column(name="rc_mod_date")
+	private Date rc_mod_date;
 	
 	
 	public Long getRc_id() {
@@ -72,6 +84,38 @@ public class RespondentCounsel {
 
 	public void setRc_sequence(Integer rc_sequence) {
 		this.rc_sequence = rc_sequence;
+	}
+
+	public Long getRc_cr_by() {
+		return rc_cr_by;
+	}
+
+	public void setRc_cr_by(Long rc_cr_by) {
+		this.rc_cr_by = rc_cr_by;
+	}
+
+	public Date getRc_cr_date() {
+		return rc_cr_date;
+	}
+
+	public void setRc_cr_date(Date rc_cr_date) {
+		this.rc_cr_date = rc_cr_date;
+	}
+
+	public Long getRc_mod_by() {
+		return rc_mod_by;
+	}
+
+	public void setRc_mod_by(Long rc_mod_by) {
+		this.rc_mod_by = rc_mod_by;
+	}
+
+	public Date getRc_mod_date() {
+		return rc_mod_date;
+	}
+
+	public void setRc_mod_date(Date rc_mod_date) {
+		this.rc_mod_date = rc_mod_date;
 	}
 
 	

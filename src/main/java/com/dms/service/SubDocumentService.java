@@ -116,11 +116,11 @@ public class SubDocumentService
 		return result;
 	}
 	@Transactional
-	public SubDocument getPetitionSubDocument(Long fd_id) {
+	public SubDocument getPetitionSubDocument(Long fd_id, Integer rec_status) {
 		// TODO Auto-generated method stub
 		SubDocument subDocument=null;
 		try {
-			Query query=em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid and d.sd_if_mid=1 order by sd_id asc").setParameter("sd_fd_mid",fd_id);
+			Query query=em.createQuery("SELECT d FROM SubDocument d where d.sd_fd_mid=:sd_fd_mid and d.sd_if_mid=1 and d.sd_rec_status=:rec_status order by sd_id asc").setParameter("sd_fd_mid",fd_id).setParameter("rec_status", rec_status);
 			subDocument= (SubDocument) query.setMaxResults(1).getSingleResult();
 		} catch (Exception e) {
 		}finally{

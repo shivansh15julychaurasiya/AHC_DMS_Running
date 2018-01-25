@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="order_report_data")
@@ -41,9 +42,18 @@ public class OrderReport {
 	@Column(name="ord_rec_status")
 	private Integer ord_rec_status;
 	
+	@Column (name = "ord_mod_by")
+	private Long ord_mod_by;
+	
+	@Column (name = "ord_mod_date")
+	private Date ord_mod_date;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ord_sd_mid",insertable = false, updatable = false)
 	private SubDocument subDocument;
+	
+	@Transient
+	private boolean checked;
 
 	public Long getOrd_id() {
 		return ord_id;
@@ -107,6 +117,30 @@ public class OrderReport {
 
 	public void setOrd_rec_status(Integer ord_rec_status) {
 		this.ord_rec_status = ord_rec_status;
+	}
+
+	public Long getOrd_mod_by() {
+		return ord_mod_by;
+	}
+
+	public void setOrd_mod_by(Long ord_mod_by) {
+		this.ord_mod_by = ord_mod_by;
+	}
+
+	public Date getOrd_mod_date() {
+		return ord_mod_date;
+	}
+
+	public void setOrd_mod_date(Date ord_mod_date) {
+		this.ord_mod_date = ord_mod_date;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 	
 	

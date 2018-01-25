@@ -83,6 +83,15 @@ public class CauseList {
 	@Transient
 	private Integer count;
 	
+	@Column(name = "cl_rec_status")
+	private Integer cl_rec_status;
+	
+	@Column(name = "cl_mod_by")
+	private Long cl_mod_by;
+	
+	@Column(name = "cl_mod_date")
+	private Date cl_mod_date;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cl_case_type_mid",insertable = false, updatable = false)
 	private CaseType caseType;
@@ -90,6 +99,10 @@ public class CauseList {
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cl_stage_id",insertable = false, updatable = false)
 	private Lookup applicationStage;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cl_court_no",insertable = false, updatable = false)
+	private CourtMaster courtMaster;
 	
 	@Column(name = "cl_stage_id")
 	private Long cl_stage_id;
@@ -99,6 +112,9 @@ public class CauseList {
 	
 	@Transient
 	private boolean checked;
+	
+	@Transient
+	private Integer cl_new_court_no;
 	
 	public Long getCl_id() {
 		return cl_id;
@@ -298,6 +314,50 @@ public class CauseList {
 
 	public void setApplicationStage(Lookup applicationStage) {
 		this.applicationStage = applicationStage;
+	}
+
+	public Integer getCl_rec_status() {
+		return cl_rec_status;
+	}
+
+	public void setCl_rec_status(Integer cl_rec_status) {
+		this.cl_rec_status = cl_rec_status;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
+	public Long getCl_mod_by() {
+		return cl_mod_by;
+	}
+
+	public void setCl_mod_by(Long cl_mod_by) {
+		this.cl_mod_by = cl_mod_by;
+	}
+
+	public Date getCl_mod_date() {
+		return cl_mod_date;
+	}
+
+	public void setCl_mod_date(Date cl_mod_date) {
+		this.cl_mod_date = cl_mod_date;
+	}
+
+	public CourtMaster getCourtMaster() {
+		return courtMaster;
+	}
+
+	public void setCourtMaster(CourtMaster courtMaster) {
+		this.courtMaster = courtMaster;
+	}
+
+	public Integer getCl_new_court_no() {
+		return cl_new_court_no;
+	}
+
+	public void setCl_new_court_no(Integer cl_new_court_no) {
+		this.cl_new_court_no = cl_new_court_no;
 	}
 	
 	

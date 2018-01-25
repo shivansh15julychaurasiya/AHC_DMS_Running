@@ -176,6 +176,9 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 	  $scope.viewCaseFile=function(id){
 		  window.open(urlBase+"casefile/view/"+id,"_self");
 	  }
+	  $scope.viewDetail=function(id){
+		  window.open(urlBase+"casefile/viewdetail/"+id,"_self");
+	  }
 	  $scope.getSubDocuments=function(doc_id){
 		  $scope.doc_id=doc_id;
 		  $http.get(urlBase+'casefile/getsubdocuments/'+$scope.doc_id).success(function (data) {

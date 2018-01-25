@@ -16,6 +16,10 @@
                     	</div>
                     	<div id="caseDetails" class="panel-collapse collapse in">
 	                        <div class="panel-body">
+	                        <div class="row">
+	                        	<button type="button" class="btn btn-success m-r-5 m-b-5 pull-right" data-toggle="modal" ng-click="setModel()" data-target="#uploadPetition">Upload Petition</button>
+	                        	<button type="button" class="btn btn-success m-r-5 m-b-5 pull-right" data-toggle="modal" ng-click="setModel()" data-target="#uploadDocument">Upload Other Document</button>
+	                        </div>
 	                            <div class="table-responsive">
 	                                <table id="data-table" class="table table-striped table-bordered">
 			                           <tr>
@@ -44,6 +48,7 @@
                     	</div>
                     	<div id="subdocuments" class="panel-collapse collapse">
 	                        <div class="panel-body">
+	                        
 	                            <div class="table-responsive">
 	                                <table id="data-table" class="table table-striped table-bordered">
 			                           <tr>
@@ -81,7 +86,7 @@
 		                                   <th>Action</th>                     
 			                           </tr>
 			                            <tr ng-repeat="data in orderReports">
-											<td><span ng-if="data.subDocument==null">Off. Rep.</span><span ng-if="data.subDocument!=null" ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;">Off. Rep.</span></td>
+											<td><span ng-if="data.subDocument==null">Off. Rep.</span><span ng-if="data.subDocument!=null" ng-click="showSubDocument(data.subDocument.sd_id)" style="text-decoration: underline;cursor:pointer;">Off. Rep.</span></td>
 											<td>{{data.ord_created | date:"dd/MM/yyyy"}}</td>
 											<td>{{data.ord_remark}}</td>
 											<td><button class="btn btn-success btn-sm" ng-click="deleteofficereport(data.ord_id)">Delete</button></td>
@@ -235,7 +240,42 @@
 		        			</div>
 		    			</div>
 					</div>
-				</div>			
+				</div>
+				<div class="modal fade" id="uploadDocument" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">
+										<strong>Upload Document</strong>
+									</h4>
+								</div>
+								<%@ include file="../casefile/_upload_form.jsp"%>
+							</div>
+						</div>
+				</div>
+				<div class="modal fade" id="uploadPetition" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">
+										<strong>Upload Petition</strong>
+									</h4>
+								</div>
+								<%@ include file="../casefile/_upload_petition.jsp"%>
+							</div>
+						</div>
+				</div>
+							
 			</div>
 		</div>
 	</div>
@@ -244,9 +284,12 @@
 </div>
 	
 </body>
-	<script type="text/javascript"	src="${pageContext.request.contextPath}/js/scripts/controllers/CaseFileDetailController.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/angularJs/ng-file-upload.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/angularJs/ngMask.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts/controllers/CaseFileDetailController.js"></script>
 	<script src="${pageContext.request.contextPath}/assets/js/apps.min.js"></script>
-	
+	<script type="text/javascript"src="${pageContext.request.contextPath}/js/bootstrap/angular-datepicker.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap/ui-bootstrap-tpls.0.11.2.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/Smart-Table-master/dist/smart-table.js"></script>
 	<style>
 	 .st-sort-ascent:before {

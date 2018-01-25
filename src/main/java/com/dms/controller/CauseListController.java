@@ -664,4 +664,96 @@ public class CauseListController
 			e.printStackTrace();
 		}
 	}
+	@RequestMapping(value = "causelist/delete/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody String delete(@PathVariable("id")  Long id, HttpSession session) {
+		ActionResponse<CauseList> response = new ActionResponse<CauseList>();
+		String jsonData = null;
+		User u=(User) session.getAttribute("USER");
+		CauseList cl= causeListService.getByPk(id);
+		cl.setCl_rec_status(0);
+		cl.setCl_mod_by(u.getUm_id());
+		cl.setCl_mod_date(new Date());
+		causeListService.save(cl);
+		
+		response.setResponse("TRUE");
+		jsonData = globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+	@RequestMapping(value = "/causelist/updatecauselist", method = RequestMethod.POST)
+	public @ResponseBody String updatecauselist(@RequestBody List<CauseList> causelist,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<CauseList> response=new ActionResponse<>();
+		int i=0;
+		for(CauseList cl:causelist){
+			cl.setCl_court_no(cl.getCl_new_court_no());
+			causeListService.save(cl);	
+			i++;
+		}
+		if(i>0){
+			response.setResponse("TRUE");
+		}else{
+			response.setResponse("False");
+		}
+		response.setData(i+" No.of records updated");
+		
+		jsonData = globalfunction.convert_to_json(response);
+
+		return jsonData;
+	}
+	@RequestMapping(value = "/causelist/deleteall", method = RequestMethod.POST)
+	public @ResponseBody String deleteall(@RequestBody List<CauseList> causelist,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<CauseList> response=new ActionResponse<>();
+		int i=0;
+		for(CauseList cl:causelist){
+			cl.setCl_rec_status(0);
+			causeListService.save(cl);	
+			i++;
+		}
+		if(i>0){
+			response.setResponse("TRUE");
+		}else{
+			response.setResponse("False");
+		}
+		response.setData(i+" No.of records deleted");
+		
+		jsonData = globalfunction.convert_to_json(response);
+
+		return jsonData;
+	}
+	@RequestMapping(value = "/causelist/addcase", method = RequestMethod.POST)
+	public @ResponseBody String addcase(@RequestBody CauseList causelist,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<CauseList> response=new ActionResponse<>();
+		if(causelist.getCl_list_type_mid()!=1){
+			// if type is not application
+			CaseFileDetail casefile=new CaseFileDetail();
+			casefile.setFd_case_no(causelist.getCl_case_no());
+			casefile.setFd_case_type(causelist.getCl_case_type_mid());
+			casefile.setFd_case_year(causelist.getCl_case_year());
+			
+			CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFile(casefile);
+			if(caseFileDetail!=null){
+				causelist.setCl_fd_mid(caseFileDetail.getFd_id());
+			}
+		}
+		causelist.setCl_rec_status(1);
+		CauseList cl=causeListService.save(causelist);	
+		
+		if(cl.getCl_id()!=null){
+			response.setResponse("TRUE");
+			response.setData("Record added successfully");
+		}else{
+			response.setResponse("False");
+			response.setData("Error occurred while adding record");
+		}
+		
+		jsonData = globalfunction.convert_to_json(response);
+
+		return jsonData;
+	}
+
+
 }

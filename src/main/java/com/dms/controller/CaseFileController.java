@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +42,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.dms.model.ActionResponse;
 import com.dms.model.CaseFileDetail;
 import com.dms.model.CaseType;
+import com.dms.model.DownloadFile;
+import com.dms.model.DownloadModel;
+import com.dms.model.DownloadReport;
 import com.dms.model.ImpugnedOrder;
 import com.dms.model.IndexField;
 import com.dms.model.Lookup;
@@ -54,6 +58,7 @@ import com.dms.model.SubDocument;
 import com.dms.model.User;
 import com.dms.service.CaseFileDetailService;
 import com.dms.service.CasetypeService;
+import com.dms.service.DownloadFileService;
 import com.dms.service.LookupService;
 import com.dms.service.MasterService;
 import com.dms.service.OrderReportService;
@@ -89,6 +94,9 @@ public class CaseFileController {
 	@Autowired
 	private CasetypeService casetypeService;
 	
+	@Autowired
+	private DownloadFileService downloadService;
+	
 	private GlobalFunction globalfunction;	
 	
 	public CaseFileController() {
@@ -104,6 +112,41 @@ public class CaseFileController {
 	public  String viewDetail(@PathVariable("id") Long docId,Model model) {
 		model.addAttribute("doc_id",docId);
 		return "/casefile/viewdetail";
+	}
+	@RequestMapping(value = "/downloadlist/{id}", method = RequestMethod.GET)
+	public  String downloadlist(@PathVariable("id") Long docId,Model model) {
+		model.addAttribute("doc_id",docId);
+		return "/casefile/downloadlist";
+	}
+	@RequestMapping(value = "/showfile/{id}", method = RequestMethod.GET)
+	public  String showfile(@PathVariable("id") Long docId,Model model) {
+		SubDocument subDocument = subDocumentService.getByPK(docId);
+		String returnview="/casefile/showfile";
+		if(subDocument==null){
+			returnview="/casefile/notfound";	
+		}else{
+			
+			CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(subDocument.getSd_fd_mid());
+			model.addAttribute("document_name", subDocument.getSd_document_name());
+			System.out.println("filename="+subDocument.getSd_document_name());
+			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+			String srcPath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+			
+			File source = new File(srcPath);	
+	
+			String uploadPath = context.getRealPath("");		
+			File dest = new File(uploadPath+File.separator+"uploads"+File.separator+subDocument.getSd_document_name()+".pdf");
+	
+			try {
+			    FileUtils.copyFile(source, dest);
+			} 
+			catch (IOException e) {
+			    e.printStackTrace();
+			}
+		}
+		
+
+		return returnview;
 	}
 	@RequestMapping(value = "/getCaseFileList", method = RequestMethod.POST)
 	public @ResponseBody String getCaseList(@RequestBody CaseFileDetail casefile,HttpSession session) {
@@ -369,7 +412,7 @@ public class CaseFileController {
 	public  String view(@PathVariable("id") Long docId,Model model) {
 		
 		
-		SubDocument subDocument = subDocumentService.getPetitionSubDocument(docId);
+		SubDocument subDocument = subDocumentService.getPetitionSubDocument(docId,1);
 		String returnview="/casefile/view";
 		if(subDocument==null){
 			returnview="/casefile/notfound";	
@@ -412,7 +455,7 @@ public class CaseFileController {
 		CaseFileDetail cfd=caseFileDetailService.getCaseFileDetail(io.getIo_hc_case_type(),io.getIo_case_no(),caseYear);
 		Long docId=io.getIo_fd_mid();
 		
-		SubDocument subDocument = subDocumentService.getPetitionSubDocument(cfd.getFd_id());
+		SubDocument subDocument = subDocumentService.getPetitionSubDocument(cfd.getFd_id(),1);
 		String returnview="/casefile/view";
 		if(subDocument==null){
 			returnview="/casefile/notfound";	
@@ -643,9 +686,11 @@ public class CaseFileController {
 	public String deleteSubdocument(@PathVariable("id")  Long id, HttpSession session) {
 		ActionResponse<SubDocument> response = new ActionResponse<SubDocument>();
 		String jsonData = null;
-
+		User u=(User) session.getAttribute("USER");
 		SubDocument sd= subDocumentService.getByPK(id);
 		sd.setSd_rec_status(0);
+		sd.setSd_mod_date(new Date());
+		sd.setSd_mod_by(u.getUm_id());
 		subDocumentService.save(sd);
 		
 		response.setResponse("TRUE");
@@ -659,13 +704,17 @@ public class CaseFileController {
 	public String officereport(@PathVariable("id")  Long id, HttpSession session) {
 		ActionResponse<OrderReport> response = new ActionResponse<OrderReport>();
 		String jsonData = null;
-
+		User u=(User) session.getAttribute("USER");
 		OrderReport or= orderReportService.getOrderReport(id);
 		or.setOrd_rec_status(0);
+		or.setOrd_mod_by(u.getUm_id());
+		or.setOrd_mod_date(new Date());
 		orderReportService.save(or);
 		if(or.getSubDocument()!=null){
 			SubDocument sd= subDocumentService.getByPK(or.getSubDocument().getSd_id());
 			sd.setSd_rec_status(0);
+			sd.setSd_mod_date(new Date());
+			sd.setSd_mod_by(u.getUm_id());
 			subDocumentService.save(sd);
 		}
 		
@@ -736,13 +785,16 @@ public class CaseFileController {
     	jsonData = globalfunction.convert_to_json(response);
 		return jsonData;
 	}
+	
 	@RequestMapping(value = "/deletepetitioner/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody String deletepetitioner(@PathVariable("id")  Long id, HttpSession session) {
 		ActionResponse<Petitioner> response = new ActionResponse<Petitioner>();
 		String jsonData = null;
-
+		User u=(User) session.getAttribute("USER");
 		Petitioner pet= caseFileDetailService.getPetitioner(id);
 		pet.setPt_rec_status(0);
+		pet.setPt_mod_by(u.getUm_id());
+		pet.setPt_mod_date(new Date());
 		caseFileDetailService.save(pet);
 		
 		response.setResponse("TRUE");
@@ -755,9 +807,11 @@ public class CaseFileController {
 	public @ResponseBody String deleterespondent(@PathVariable("id")  Long id, HttpSession session) {
 		ActionResponse<Respondent> response = new ActionResponse<Respondent>();
 		String jsonData = null;
-
+		User u=(User) session.getAttribute("USER");
 		Respondent res= caseFileDetailService.getRespondent(id);
 		res.setRt_rec_status(0);
+		res.setRt_mod_by(u.getUm_id());
+		res.setRt_mod_date(new Date());
 		caseFileDetailService.save(res);
 		
 		response.setResponse("TRUE");
@@ -770,9 +824,11 @@ public class CaseFileController {
 	public @ResponseBody String deletepcounsel(@PathVariable("id")  Long id, HttpSession session) {
 		ActionResponse<PetitionerCounsel> response = new ActionResponse<PetitionerCounsel>();
 		String jsonData = null;
-
+		User u=(User) session.getAttribute("USER");
 		PetitionerCounsel pc= caseFileDetailService.getPetitionerCounsel(id);
 		pc.setPc_rec_status(0);
+		pc.setPc_mod_by(u.getUm_id());
+		pc.setPc_mod_date(new Date());
 		caseFileDetailService.save(pc);
 		
 		response.setResponse("TRUE");
@@ -785,7 +841,7 @@ public class CaseFileController {
 	public @ResponseBody String deletercounsel(@PathVariable("id")  Long id, HttpSession session) {
 		ActionResponse<RespondentCounsel> response = new ActionResponse<RespondentCounsel>();
 		String jsonData = null;
-
+		User u=(User) session.getAttribute("USER");
 		RespondentCounsel rc= caseFileDetailService.getRespondentCounsel(id);
 		rc.setRc_rec_status(0);
 		caseFileDetailService.save(rc);
@@ -796,7 +852,202 @@ public class CaseFileController {
 		return jsonData;
 
 	}
+	@RequestMapping(value = "/uploadpetition", method = RequestMethod.POST)
+	public @ResponseBody String uploadPetition(MultipartHttpServletRequest request,HttpSession session) throws DocumentException 
+	{
+		ActionResponse<SubDocument> response = new ActionResponse();
+		response.setResponse("FALSE");
+		User u=(User) session.getAttribute("USER");
+		String jsonData="";
+		Lookup lookup=lookupService.getLookUpObject("REPOSITORYPATH");
+		Long caseFileId=Long.parseLong(request.getParameter("fd_id"), 10);
+		SubDocument sd=subDocumentService.getPetitionSubDocument(caseFileId,1);
+		if(sd!=null){
+			sd.setSd_rec_status(0);
+			sd=subDocumentService.save(sd);
+		}else{
+			sd=subDocumentService.getPetitionSubDocument(caseFileId,0);
+		}
+		
+		MultipartFile mpf = null;
+    	Iterator<String> itr = request.getFileNames();
+    	String newfilepath="";
+    	CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(caseFileId);
+		IndexField indexField=masterService.getIndexField(1L);
+		Integer count=subDocumentService.getCount(caseFileId);
+		count=count+1;
+		
+    	while (itr.hasNext()) 
+		{
+			mpf = request.getFile(itr.next());
+			String filename=caseFileDetail.getFd_document_name()+"_"+indexField.getIf_type_code()+"_"+count;
+			newfilepath=lookup.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label()+File.separator+indexField.getIf_name()+File.separator+filename+".pdf";
+			SubDocument subDocument=new SubDocument();
+			subDocument.setSd_cr_by(u.getUm_id());
+			subDocument.setSd_cr_date(new Date());
+			subDocument.setSd_fd_mid(caseFileId);
+			subDocument.setSd_if_mid(1L);
+			subDocument.setSd_document_name(filename);
+			subDocument.setSd_document_id(sd.getSd_document_id());
+			subDocument.setSd_submitted_date(sd.getSd_submitted_date());
+			subDocument.setSd_rec_status(1);
+			subDocument.setSd_document_no(sd.getSd_document_no());
+			subDocument.setSd_document_year(sd.getSd_document_year());
+			subDocument.setSd_counsel(sd.getSd_counsel());
+			subDocument.setSd_description(sd.getSd_description());
+			subDocument.setSd_party(sd.getSd_party());
+			try {
+				FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(newfilepath));
+				File source=new File(newfilepath);
+				PdfReader reader = new PdfReader(source.getAbsolutePath());
+				Integer no_of_pages = reader.getNumberOfPages();
+		       	subDocument.setSd_no_of_pages(no_of_pages);
+				
+		       	subDocument=subDocumentService.save(subDocument);
+		       	reader.close();
+		       	response.setResponse("TRUE");
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}    	
+    	
+    	jsonData = globalfunction.convert_to_json(response);
+		return jsonData;
+	}
+	@RequestMapping(value = "/addfiles", method = RequestMethod.POST)
+	public @ResponseBody String addfiles(@RequestBody DownloadModel downloadModel,HttpSession session) 
+	{
+		String jsonData="";
+		ActionResponse<DownloadModel> response=new ActionResponse<>();
+		User u=(User) session.getAttribute("USER");
+		List<OrderReport> orderReports= downloadModel.getOrderReports();
+		List<SubDocument> subDocuments=downloadModel.getSubDocuments();
+		DownloadReport dr=new DownloadReport();
+		if(!subDocuments.isEmpty() || !orderReports.isEmpty()){
+			dr.setDr_cr_date(new Date());
+			dr.setDr_fd_mid(downloadModel.getFd_id());
+			dr.setDr_cr_by(u.getUm_id());
+			dr.setDr_rec_status(1);
+			dr=downloadService.saveReport(dr);
+			response.setResponse("TRUE");
+			response.setData("Files added for downloading");
+		}else{
+			response.setResponse("FALSE");
+			response.setData("Please select files for downloading");
+		}
+		if(!subDocuments.isEmpty()){
+			for(SubDocument subDocument:subDocuments){
+				DownloadFile df=new DownloadFile();
+				df.setDf_dr_mid(dr.getDr_id());
+				df.setDf_sd_mid(subDocument.getSd_id());
+				df.setDf_pages(subDocument.getSd_no_of_pages());
+				df.setDf_submitted_date(subDocument.getSd_submitted_date());
+				df=downloadService.saveFile(df);
+			}
+		}
+		if(!orderReports.isEmpty()){
+			for(OrderReport orderReport:orderReports){
+				DownloadFile df=new DownloadFile();
+				df.setDf_dr_mid(dr.getDr_id());
+				df.setDf_ord_mid(orderReport.getOrd_id());
+				df.setDf_pages(1);
+				df.setDf_submitted_date(orderReport.getOrd_created());
+				df=downloadService.saveFile(df);
+				if(orderReport.getSubDocument()!=null){
+					SubDocument subDocument=orderReport.getSubDocument();
+					DownloadFile df2=new DownloadFile();
+					df2.setDf_dr_mid(dr.getDr_id());
+					df2.setDf_sd_mid(subDocument.getSd_id());
+					df2.setDf_pages(subDocument.getSd_no_of_pages());
+					df2.setDf_submitted_date(subDocument.getSd_submitted_date());
+					downloadService.saveFile(df2);
+				}
+			}
+		}
+		jsonData=globalfunction.convert_to_json(response);
+		return jsonData;
+	}
+	@RequestMapping(value = "/getdownloadhistory/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getdownloadhistory(@PathVariable("id") Long fd_id,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<DownloadReport> response=new ActionResponse<>();
+		
+		List<DownloadReport> reports=downloadService.getDownloadReport(fd_id);
+		response.setResponse("TRUE");
+		response.setModelList(reports);
+		
+		jsonData = globalfunction.convert_to_json(response);
 
+		return jsonData;
+	}
+	@RequestMapping(value = "/downloadfile/{id}", method = RequestMethod.GET)
+	public void downloadfiles(@PathVariable("id") Long dr_id,HttpSession session,HttpServletResponse response) {
+		String jsonData = null;
+		
+		DownloadReport report=downloadService.getById(dr_id);
+		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+		Lookup lookupDownload=lookupService.getLookUpObject("DOWNLOADPATH");
+		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(report.getDr_fd_mid());
+		String basePath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label();
+		
+		List<InputStream> list = new ArrayList<InputStream>();
+		
+		List<DownloadFile> files=report.getFiles();
+		String downloadFolder=lookupDownload.getLk_longname()+File.separator+caseFileDetail.getFd_document_name();
+		File dir=new File(downloadFolder);
+		if(!dir.exists()){
+			dir.mkdir();
+		}
+		String outputFilePath=downloadFolder+File.separator+File.separator+caseFileDetail.getFd_document_name();
+		OutputStream out;
+		try {
+			out = new FileOutputStream(new File(outputFilePath+".pdf"));
+		
+			for(DownloadFile file:files){
+				if(file.getDf_sd_mid()!=null){
+					SubDocument subDocument=file.getSubDocument();
+					String srcPath=basePath+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+					list.add(new FileInputStream(new File(srcPath)));
+				
+				}
+				if(file.getDf_ord_mid()!=null){
+					
+				}
+			}
+			PDFMerger.doMerge(list, out);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try
+        {
+			globalfunction.zipFolder(dir.getAbsolutePath(),dir.getAbsolutePath()+".zip");
+        response.setContentType("application/zip");  
+        PrintWriter out1 = response.getWriter();  
+        String filename = dir.getName()+".zip";   
+        String filepath = dir.getAbsolutePath()+".zip";
+        File zipFile=new File(dir+".zip");
+        
+        response.setContentType("APPLICATION/OCTET-STREAM");   
+        response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
+          
+        FileInputStream fileInputStream = new FileInputStream(filepath);  
+                    
+        int i;   
+        while ((i=fileInputStream.read()) != -1) {  
+        out1.write(i);   
+        }   
+        fileInputStream.close();   
+        out1.close();
+        //FileUtils.deleteDirectory(dir); 
+        zipFile.delete();
+        }catch(Exception e)
+        {
+        	e.printStackTrace();
+        }
+	}
 	
 }
 

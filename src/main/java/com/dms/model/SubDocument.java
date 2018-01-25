@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="sub_documents")
@@ -83,6 +84,12 @@ public class SubDocument {
 	@Column (name="sd_date")
 	private Date sd_date;
 	
+	@Column (name = "sd_mod_by")
+	private Long sd_mod_by;
+	
+	@Column (name = "sd_mod_date")
+	private Date sd_mod_date;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sd_if_mid",insertable = false, updatable = false)
 	private IndexField indexField;
@@ -94,6 +101,9 @@ public class SubDocument {
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sd_status",insertable = false, updatable = false)
 	private Lookup applicationStatus;
+	
+	@Transient
+	private boolean checked;
 	
 	public Long getSd_id() {
 		return sd_id;
@@ -287,6 +297,30 @@ public class SubDocument {
 
 	public void setSd_date(Date sd_date) {
 		this.sd_date = sd_date;
+	}
+
+	public Long getSd_mod_by() {
+		return sd_mod_by;
+	}
+
+	public void setSd_mod_by(Long sd_mod_by) {
+		this.sd_mod_by = sd_mod_by;
+	}
+
+	public Date getSd_mod_date() {
+		return sd_mod_date;
+	}
+
+	public void setSd_mod_date(Date sd_mod_date) {
+		this.sd_mod_date = sd_mod_date;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 	
 	

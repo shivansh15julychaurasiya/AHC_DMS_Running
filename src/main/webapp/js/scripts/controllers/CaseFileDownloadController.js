@@ -1,0 +1,93 @@
+var EDMSApp = angular.module("EDMSApp", ['ui.bootstrap']);
+
+
+EDMSApp.controller("DownloadCtrl",	['$scope','$http',function ($scope, $http) {
+	var urlBase="/dms/";
+	$scope.subDocuments=[];
+	$scope.index_fields=[];
+	$scope.applications=[];
+	$scope.casefile={};
+	$scope.subdocument={};
+	$scope.doc_id= $('#doc_id').val();
+	getCaseFileDetails();
+	getSubDocuments();
+	getOrderReports();
+	getDownloadHistory();
+	function getSubDocuments(){
+		$http.get(urlBase+'casefile/getsubdocuments/'+$scope.doc_id).success(function (data) {
+	    	$scope.subDocuments=data.modelList;
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
+	}
+	function getCaseFileDetails(){
+		$http.get(urlBase+'casefile/getcasefiledetails/'+$scope.doc_id).success(function (data) {
+	    	$scope.casefile=data.modelData;
+	    	  
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
+	}
+	function getOrderReports(){
+		$http.get(urlBase+'casefile/getorderreports/'+$scope.doc_id).success(function (data) {
+	    	$scope.orderReports=data.modelList;	    	
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
+	}
+	function getDownloadHistory(){
+		$http.get(urlBase+'casefile/getdownloadhistory/'+$scope.doc_id).success(function (data) {
+	    	$scope.reports=data.modelList;
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
+	}
+	$scope.setFiles=function(data){
+		$scope.files=data.files;
+	}
+	$scope.showSubDocument=function(sd_id){
+		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
+		window.open(urlBase+'casefile/subdocument/'+sd_id,'_self');
+	};
+	$scope.downloadFiles=function(dr_id){
+		window.open(urlBase+'casefile/downloadfile/'+dr_id,'_self');
+	}
+	$scope.addfiles=function(){
+		$scope.subDocumentsList=[];
+		$scope.ordersList=[];
+		angular.forEach($scope.subDocuments,function(value,index)
+		{							 
+			if(value.checked == true)
+			{
+				 $scope.subDocumentsList.push(value);
+			}
+		});
+		angular.forEach($scope.orderReports,function(value,index)
+				{							 
+					if(value.checked == true)
+					{
+						$scope.ordersList.push(value);
+					}
+				});
+		if($scope.subDocumentsList.length > 0 || $scope.ordersList.length>0)
+		{
+			var confirmbox = confirm("Do you really want to add these files for download");
+	   	 	if (confirmbox) 
+	   	 	{
+	   	 		$scope.entity={'subDocuments':$scope.subDocumentsList,'orderReports':$scope.ordersList,'fd_id':$scope.doc_id};
+	   	 		$scope.entity.stampReporterData=$scope.stampReporterData;
+	   	 		var response = $http.post(urlBase+ 'casefile/addfiles',$scope.entity);
+	   	 		response.success(function(data, status, headers, config) {
+	   	 			alert(data.data);
+					window.location.reload();
+	   	 		});
+	   	 		
+	   	 	}	
+		}
+		
+	}
+}]);

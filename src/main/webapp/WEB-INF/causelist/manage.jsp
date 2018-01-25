@@ -36,16 +36,8 @@
 							
 							<td width="25%">
 								<div class='input-group'>
-									<button type="submit" class="btn btn-sm btn-success"
-										ng-click="getList(model)">
-										<span class="glyphicon glyphicon-plus-sign"></span>
-										Submit
-									</button>
-									<button type="submit" class="btn btn-sm btn-success"
-										ng-click="downloadList(model)">
-										<span class="glyphicon glyphicon-plus-sign"></span>
-										Download
-									</button>
+									<button type="submit" class="btn btn-sm btn-success" ng-click="getList(model)">Search</button>
+									<button type="submit" class="btn btn-sm btn-success" ng-click="downloadList(model)">Download</button>
 								</div>
 							</td>
 							
@@ -55,9 +47,18 @@
 <!-- 					</div> -->
 				
 					<div class="row">
-						<div class="col-md-12">
-							<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="refreshModel()" data-toggle="modal" data-target="#causeListCreate">
-								<span class="glyphicon glyphicon-plus-sign"></span> Upload New CauseList
+						<div class="col-xs-offset-7">
+							<button type="button" class="btn btn-sm btn-success" ng-click="refreshModel()" data-toggle="modal" data-target="#causeListCreate">
+								Upload CauseList
+							</button>
+							<button type="button" class="btn btn-sm btn-success" ng-click="getCaseTypes()" data-toggle="modal" data-target="#caseAdd">
+								Add Case
+							</button>
+							<button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#causeListUpdate">
+								Update Court
+							</button>
+							<button type="button" class="btn btn-sm btn-success" ng-click="deleteall()">
+								Delete All
 							</button>
 						</div>
 					</div>
@@ -70,6 +71,11 @@
 						<th style="text-align:center">Petitioner vs Respondent</th>
 						<th style="text-align:center">Petitioner Council</th>
 						<th style="text-align:center">Respondent Council</th>
+						<th style="text-align:center">Court No.</th>
+						<th>Select All
+							<input id="{{data.cl_id}}" type="checkbox" value="{{data.cl_id}}" name="cl_id" ng-click="checkAll()" ng-model="selectedAll" />
+						</th>
+						<th>Action</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -79,10 +85,17 @@
 						<td style="text-align:center">{{data.cl_first_petitioner}} <br/> vs <br/> {{data.cl_first_respondent}} </td>
 						<td style="text-align:center">{{data.cl_petitioner_council}}</td>
 						<td style="text-align:center">{{data.cl_respondent_council}}</td>
-						
+						<td style="text-align:center">{{data.courtMaster.cm_name}}</td>
+						<td>
+                        	<input type="checkbox" name="checked" id="checked" value={{data.cl_id}} ng-model="data.checked" />
+                         </td>
+						<td>
+							<button type="button" class="btn btn-sm btn-success" ng-click="deletecase(data.cl_id)">Delete</button>
+							
+						</td>
 						</tr>
 						<tr ng-if="displayedCollection.length==0 && search" >
-							<td colspan="5" class="alert alert-danger">No Records Found</td>
+							<td colspan="8" class="alert alert-danger">No Records Found</td>
 						</tr>
 						</tbody>
 						</table>
@@ -95,6 +108,28 @@
 						        <h4 class="modal-title" id="myModalLabel"><strong> Upload Cause List </strong></h4>
 						      </div>	     
 					  			<%@ include file="../causelist/_master_form.jsp"%>
+						    </div>
+						  </div>
+					</div>
+					<div class="modal fade" id="causeListUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog modal-lg">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="myModalLabel"><strong>Update Cause List </strong></h4>
+						      </div>	     
+					  			<%@ include file="../causelist/_update_causelist.jsp"%>
+						    </div>
+						  </div>
+					</div>
+					<div class="modal fade" id="caseAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog modal-lg">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="myModalLabel"><strong>Add Cause List </strong></h4>
+						      </div>	     
+					  			<%@ include file="../causelist/_add_case.jsp"%>
 						    </div>
 						  </div>
 					</div>

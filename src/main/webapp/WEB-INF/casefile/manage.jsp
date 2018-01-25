@@ -61,6 +61,8 @@
 										<% if(role.equals("DMSAdmin")) {%>
 										 <button class="btn btn-success btn-sm"
 											ng-click="viewCaseFile(row.fd_id)">View</button>
+											<button class="btn btn-success btn-sm"
+											ng-click="viewDetail(row.fd_id)">View Detail</button>
 										<button class="btn btn-success btn-sm"
 											ng-click="downloadFiles(row.fd_id)">Download</button>
 <!-- 										<button class="btn btn-success btn-sm" data-toggle="modal" -->
