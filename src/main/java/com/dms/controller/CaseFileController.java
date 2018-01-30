@@ -975,7 +975,7 @@ public class CaseFileController {
 			if(pages<=10){
 				dr_amount=15.00;
 			}else{
-				Double amount1=10.00;
+				Double amount1=15.00;
 				Integer pagesremaining=pages-10;
 				Double amount2=Math.ceil(pagesremaining/5.0)*10;
 				dr_amount=amount1+amount2;
@@ -1078,6 +1078,7 @@ public class CaseFileController {
 	        out1.close();
 	        //FileUtils.deleteDirectory(dir); 
 	        zipFile.delete();
+	        dir.delete();
 	        report.setDr_rec_status(2);
 	        downloadService.saveReport(report);
 	        }catch(Exception e)
