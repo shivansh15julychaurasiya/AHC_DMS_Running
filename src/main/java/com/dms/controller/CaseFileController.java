@@ -64,6 +64,7 @@ import com.dms.service.MasterService;
 import com.dms.service.OrderReportService;
 import com.dms.service.SubDocumentService;
 import com.dms.utility.GlobalFunction;
+import com.dms.utility.PDFCreator;
 import com.dms.utility.PDFMerger;
 import com.efiling.model.EfilingCaseFileDetail;
 import com.itextpdf.text.pdf.PdfReader;
@@ -924,6 +925,8 @@ public class CaseFileController {
 		List<OrderReport> orderReports= downloadModel.getOrderReports();
 		List<SubDocument> subDocuments=downloadModel.getSubDocuments();
 		DownloadReport dr=new DownloadReport();
+		Integer pages=0;
+		Double dr_amount = 0.00;
 		if(!subDocuments.isEmpty() || !orderReports.isEmpty()){
 			dr.setDr_cr_date(new Date());
 			dr.setDr_fd_mid(downloadModel.getFd_id());
@@ -944,6 +947,7 @@ public class CaseFileController {
 				df.setDf_pages(subDocument.getSd_no_of_pages());
 				df.setDf_submitted_date(subDocument.getSd_submitted_date());
 				df=downloadService.saveFile(df);
+				pages=pages+subDocument.getSd_no_of_pages();
 			}
 		}
 		if(!orderReports.isEmpty()){
@@ -954,6 +958,7 @@ public class CaseFileController {
 				df.setDf_pages(1);
 				df.setDf_submitted_date(orderReport.getOrd_created());
 				df=downloadService.saveFile(df);
+				pages=pages+1;
 				if(orderReport.getSubDocument()!=null){
 					SubDocument subDocument=orderReport.getSubDocument();
 					DownloadFile df2=new DownloadFile();
@@ -962,9 +967,22 @@ public class CaseFileController {
 					df2.setDf_pages(subDocument.getSd_no_of_pages());
 					df2.setDf_submitted_date(subDocument.getSd_submitted_date());
 					downloadService.saveFile(df2);
+					pages=pages+subDocument.getSd_no_of_pages();
 				}
 			}
 		}
+		if(pages>0){
+			if(pages<=10){
+				dr_amount=15.00;
+			}else{
+				Double amount1=10.00;
+				Integer pagesremaining=pages-10;
+				Double amount2=Math.ceil(pagesremaining/5.0)*10;
+				dr_amount=amount1+amount2;
+			}
+		}
+		dr.setDr_amount(dr_amount);
+		downloadService.saveReport(dr);
 		jsonData=globalfunction.convert_to_json(response);
 		return jsonData;
 	}
@@ -981,72 +999,92 @@ public class CaseFileController {
 
 		return jsonData;
 	}
+	@RequestMapping(value = "/getdownloadedfiles/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getdownloadedfiles(@PathVariable("id") Long dr_id,HttpSession session) {
+		String jsonData = null;
+		ActionResponse<DownloadFile> response=new ActionResponse<>();
+		
+		List<DownloadFile> files=downloadService.getFiles(dr_id);
+		response.setResponse("TRUE");
+		response.setModelList(files);
+		
+		jsonData = globalfunction.convert_to_json(response);
+
+		return jsonData;
+	}
 	@RequestMapping(value = "/downloadfile/{id}", method = RequestMethod.GET)
 	public void downloadfiles(@PathVariable("id") Long dr_id,HttpSession session,HttpServletResponse response) {
 		String jsonData = null;
 		
 		DownloadReport report=downloadService.getById(dr_id);
-		Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
-		Lookup lookupDownload=lookupService.getLookUpObject("DOWNLOADPATH");
-		CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(report.getDr_fd_mid());
-		String basePath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label();
 		
-		List<InputStream> list = new ArrayList<InputStream>();
-		
-		List<DownloadFile> files=report.getFiles();
-		String downloadFolder=lookupDownload.getLk_longname()+File.separator+caseFileDetail.getFd_document_name();
-		File dir=new File(downloadFolder);
-		if(!dir.exists()){
-			dir.mkdir();
-		}
-		String outputFilePath=downloadFolder+File.separator+File.separator+caseFileDetail.getFd_document_name();
-		OutputStream out;
-		try {
-			out = new FileOutputStream(new File(outputFilePath+".pdf"));
-		
-			for(DownloadFile file:files){
-				if(file.getDf_sd_mid()!=null){
-					SubDocument subDocument=file.getSubDocument();
-					String srcPath=basePath+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
-					list.add(new FileInputStream(new File(srcPath)));
-				
-				}
-				if(file.getDf_ord_mid()!=null){
-					
-				}
+		if(report.getDr_rec_status()==1){
+			Lookup lookupRepo=lookupService.getLookUpObject("REPOSITORYPATH");
+			Lookup lookupDownload=lookupService.getLookUpObject("DOWNLOADPATH");
+			CaseFileDetail caseFileDetail=caseFileDetailService.getCaseFileDetail(report.getDr_fd_mid());
+			String basePath=lookupRepo.getLk_longname()+File.separator+caseFileDetail.getCaseType().getCt_label();
+			
+			List<InputStream> list = new ArrayList<InputStream>();
+			
+			List<DownloadFile> files=downloadService.getFiles(report.getDr_id());
+			String downloadFolder=lookupDownload.getLk_longname()+File.separator+caseFileDetail.getFd_document_name();
+			File dir=new File(downloadFolder);
+			if(!dir.exists()){
+				dir.mkdir();
 			}
-			PDFMerger.doMerge(list, out);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String outputFilePath=downloadFolder+File.separator+File.separator+caseFileDetail.getFd_document_name();
+			OutputStream out;
+			try {
+				out = new FileOutputStream(new File(outputFilePath+".pdf"));
+			
+				for(DownloadFile file:files){
+					if(file.getDf_sd_mid()!=null){
+						SubDocument subDocument=file.getSubDocument();
+						String srcPath=basePath+File.separator+subDocument.getIndexField().getIf_name()+File.separator+subDocument.getSd_document_name()+".pdf";
+						list.add(new FileInputStream(new File(srcPath)));
+					
+					}
+					if(file.getDf_ord_mid()!=null){
+						String pdfname=downloadFolder+File.separator+file.getDf_id()+".pdf";
+						PDFCreator.createPDF(file.getOrdeReport(), pdfname);
+						list.add(new FileInputStream(new File(pdfname)));
+					}
+				}
+				PDFMerger.doMerge(list, out);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try
+	        {
+				globalfunction.zipFolder(dir.getAbsolutePath(),dir.getAbsolutePath()+".zip");
+	        response.setContentType("application/zip");  
+	        PrintWriter out1 = response.getWriter();  
+	        String filename = dir.getName()+".zip";   
+	        String filepath = dir.getAbsolutePath()+".zip";
+	        File zipFile=new File(dir+".zip");
+	        
+	        response.setContentType("APPLICATION/OCTET-STREAM");   
+	        response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
+	          
+	        FileInputStream fileInputStream = new FileInputStream(filepath);  
+	                    
+	        int i;   
+	        while ((i=fileInputStream.read()) != -1) {  
+	        out1.write(i);   
+	        }   
+	        fileInputStream.close();   
+	        out1.close();
+	        //FileUtils.deleteDirectory(dir); 
+	        zipFile.delete();
+	        report.setDr_rec_status(2);
+	        downloadService.saveReport(report);
+	        }catch(Exception e)
+	        {
+	        	e.printStackTrace();
+	        }
 		}
-		
-		try
-        {
-			globalfunction.zipFolder(dir.getAbsolutePath(),dir.getAbsolutePath()+".zip");
-        response.setContentType("application/zip");  
-        PrintWriter out1 = response.getWriter();  
-        String filename = dir.getName()+".zip";   
-        String filepath = dir.getAbsolutePath()+".zip";
-        File zipFile=new File(dir+".zip");
-        
-        response.setContentType("APPLICATION/OCTET-STREAM");   
-        response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
-          
-        FileInputStream fileInputStream = new FileInputStream(filepath);  
-                    
-        int i;   
-        while ((i=fileInputStream.read()) != -1) {  
-        out1.write(i);   
-        }   
-        fileInputStream.close();   
-        out1.close();
-        //FileUtils.deleteDirectory(dir); 
-        zipFile.delete();
-        }catch(Exception e)
-        {
-        	e.printStackTrace();
-        }
 	}
 	
 }

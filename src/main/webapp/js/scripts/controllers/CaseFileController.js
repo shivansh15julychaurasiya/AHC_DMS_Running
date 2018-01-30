@@ -171,7 +171,7 @@ EDMSApp.controller('CaseFileController',['$scope','$http','Upload',function ($sc
 			      });
 	  }
 	  $scope.downloadFiles=function(id){
-			window.open(urlBase+"casefile/downloadfiles/"+id,"_self");
+			window.open(urlBase+"casefile/downloadlist/"+id,"_self");
 		}
 	  $scope.viewCaseFile=function(id){
 		  window.open(urlBase+"casefile/view/"+id,"_self");

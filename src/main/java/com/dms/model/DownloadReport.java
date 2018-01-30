@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 
@@ -43,9 +44,7 @@ public class DownloadReport {
 	@Column(name="dr_rec_status")
 	private Integer dr_rec_status;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name = "df_dr_mid")
-	@OrderBy("df_submitted_date")
+	@Transient
 	private List<DownloadFile> files;
 	
 	public Long getDr_id() {

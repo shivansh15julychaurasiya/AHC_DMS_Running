@@ -47,7 +47,13 @@ EDMSApp.controller("DownloadCtrl",	['$scope','$http',function ($scope, $http) {
 	      });
 	}
 	$scope.setFiles=function(data){
-		$scope.files=data.files;
+		
+		$http.get(urlBase+'casefile/getdownloadedfiles/'+data.dr_id).success(function (data) {
+	    	$scope.files=data.modelList;
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
 	}
 	$scope.showSubDocument=function(sd_id){
 		//window.open(urlBase+'casefile/viewdocument/'+sd_id,'_blank');
@@ -90,4 +96,25 @@ EDMSApp.controller("DownloadCtrl",	['$scope','$http',function ($scope, $http) {
 		}
 		
 	}
+	$scope.checkAll = function () 
+	{		
+  	  if ($scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+  	  	angular.forEach($scope.subDocuments,function(value,index){
+  		  
+  		  value.checked=$scope.selectedAll;
+  		 // $scope.bundlelist.splice($scope.bundlelist.indexOf(value), 1);
+  		  
+        });
+  	  	angular.forEach($scope.orderReports,function(value,index){
+  		  
+  		  value.checked=$scope.selectedAll;
+  		 // $scope.bundlelist.splice($scope.bundlelist.indexOf(value), 1);
+  		  
+        });
+
+	 };
 }]);

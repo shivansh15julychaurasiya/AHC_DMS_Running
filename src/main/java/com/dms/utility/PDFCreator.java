@@ -104,5 +104,69 @@ public class PDFCreator {
    	  table.addCell(cell);
    	  
    	 }
+		public static void createPDF(OrderReport orderReport, String pdfname){
+			Document doc = new Document();
+	  	  PdfWriter docWriter = null;
+
+	  	  DecimalFormat df = new DecimalFormat("0.00");
+
+	  	   
+	  	   //special font sizes
+	  	   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0)); 
+	  	   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 12); 
+
+	  	   //file path
+	  	   String path = pdfname;
+	  	   try {
+			docWriter = PdfWriter.getInstance(doc , new FileOutputStream(path));
+			doc.addAuthor("Allahabad High Court");
+		  	   doc.addCreationDate();
+		  	   doc.addProducer();
+		  	   doc.setPageSize(PageSize.A4);
+		  	  
+		  	   //open document
+		  	   doc.open();
+		  	   float[] columnWidths = {2f, 7f};
+		  	   //create PDF table with the given widths
+		  	   PdfPTable table = new PdfPTable(columnWidths);
+		  	   Paragraph paragraph = new Paragraph();
+		  	   // set table width a percentage of the page width
+		  	   table.setWidthPercentage(90f);
+
+		  	   //insert column headings
+		  	   insertCell(table, "Date", Element.ALIGN_LEFT, 1, bfBold12);
+		  	   insertCell(table, "Report Data", Element.ALIGN_LEFT, 1, bfBold12);
+		  	   //table.setHeaderRows(1);
+		  	   
+		  	   //insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
+		  		 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		 		String date = formatter.format(orderReport.getOrd_created());
+		 		insertCell(table, date, Element.ALIGN_LEFT, 1, bf12);
+		 		insertCell(table, orderReport.getOrd_remark(), Element.ALIGN_LEFT, 1, bf12);
+		  	   paragraph.add(table);
+		  	   // add the paragraph to the document
+		  	   doc.add(paragraph);
+		  	   
+		  	   doc.close();
+		  	 docWriter.close();
+	  	   } catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DocumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally
+		  	{
+				   if (doc != null){
+				    //close the document
+				    doc.close();
+				   }
+				   if (docWriter != null){
+				    //close the writer
+				    docWriter.close();
+				   }
+			}
+	  	   
+	  	}
 
 }

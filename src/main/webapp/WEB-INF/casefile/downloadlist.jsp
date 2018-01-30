@@ -52,7 +52,9 @@
 			                           <tr>
 		                                   <th>Type</th>
 		                                   <th>Submitted</th>
-		                                   <th>Action</th>                     
+		                                   <th>Select All
+		                                   <input id="{{data.cl_id}}" type="checkbox" value="{{data.cl_id}}" name="cl_id" ng-click="checkAll()" ng-model="selectedAll" />
+		                                   </th>                     
 			                           </tr>
 			                            <tr ng-repeat="data in subDocuments">
 											<td ng-click="showSubDocument(data.sd_id)" style="text-decoration: underline;cursor:pointer;padding:10px 5px;width:35%"><b>{{data.indexField.if_label}} <br/> {{data.sd_submitted_date | date:'dd-MM-yyyy'}}</b></td>
@@ -100,15 +102,15 @@
 			                           <tr>
 		                                   <th>Amount</th>
 		                                   <th>Created</th>
-		                                   <th>Status</th>
+		                                   <th>Download Status</th>
 		                                   <th>Action</th>                     
 			                           </tr>
 			                            <tr ng-repeat="data in reports">
 											<td>{{data.dr_amount}}</td>
 											<td>{{data.dr_cr_date | date:'dd-MM-yyyy'}}</td>
-											<td>{{data.dr_rec_status}}</td>
+											<td><span ng-if="data.dr_rec_status==1">Pending</span><span ng-if="data.dr_rec_status==2">Done</span></td>
 											<td><button type="button" class="btn btn-success" data-toggle="modal" ng-click="setFiles(data)" data-target="#viewFiles">View Files</button>
-											<button type="button" class="btn btn-success" data-toggle="modal" ng-click="downloadFiles(data.dr_id)" data-target="#viewFiles">Download Files</button>
+											<button ng-if="data.dr_rec_status==1" type="button" class="btn btn-success" ng-click="downloadFiles(data.dr_id)" >Download Files</button>
 											</td>
 			                         	</tr>
 			                		</table>

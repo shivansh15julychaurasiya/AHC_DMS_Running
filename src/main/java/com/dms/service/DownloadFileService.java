@@ -63,4 +63,11 @@ public class DownloadFileService {
 			
 		return result;
 	}
+
+	public List<DownloadFile> getFiles(Long dr_id) {
+		// TODO Auto-generated method stub
+		List<DownloadFile> result = em.createQuery("SELECT d FROM DownloadFile d where d.df_dr_mid=:dr_id order by df_submitted_date")
+				.setParameter("dr_id", dr_id).getResultList();
+		return result;
+	}
 }

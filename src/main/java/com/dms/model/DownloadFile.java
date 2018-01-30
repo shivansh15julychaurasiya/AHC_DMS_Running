@@ -41,6 +41,10 @@ public class DownloadFile {
     @JoinColumn(name = "df_sd_mid",insertable = false, updatable = false)
 	private SubDocument subDocument;
 	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "df_ord_mid",insertable = false, updatable = false)
+	private OrderReport ordeReport;
+	
 	public Long getDf_id() {
 		return df_id;
 	}
@@ -95,6 +99,14 @@ public class DownloadFile {
 
 	public void setSubDocument(SubDocument subDocument) {
 		this.subDocument = subDocument;
+	}
+
+	public OrderReport getOrdeReport() {
+		return ordeReport;
+	}
+
+	public void setOrdeReport(OrderReport ordeReport) {
+		this.ordeReport = ordeReport;
 	}
 	
 	
