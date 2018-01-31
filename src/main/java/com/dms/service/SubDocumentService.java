@@ -98,7 +98,7 @@ public class SubDocumentService
 		// TODO Auto-generated method stub
 		SubDocument subDocument=null;
 		try {
-			Query query=em.createQuery("SELECT d FROM SubDocument d where d.sd_document_no=:app_no and d.sd_document_year=:app_year and d.sd_if_mid=14").setParameter("app_no",app_no).setParameter("app_year", app_year);
+			Query query=em.createQuery("SELECT d FROM SubDocument d where d.sd_document_no=:app_no and d.sd_document_year=:app_year").setParameter("app_no",app_no).setParameter("app_year", app_year);
 			subDocument= (SubDocument) query.getSingleResult();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
