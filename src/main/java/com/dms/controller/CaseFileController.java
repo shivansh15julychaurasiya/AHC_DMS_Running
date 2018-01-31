@@ -101,7 +101,6 @@ public class CaseFileController {
 	private GlobalFunction globalfunction;	
 	
 	public CaseFileController() {
-		// registrationPartyValidation = new RegistrationpartyValidation();
 		globalfunction = new GlobalFunction();
 	}
 	@RequestMapping(value = "/manage", method = RequestMethod.GET)
@@ -917,13 +916,14 @@ public class CaseFileController {
 		return jsonData;
 	}
 	@RequestMapping(value = "/addfiles", method = RequestMethod.POST)
-	public @ResponseBody String addfiles(@RequestBody DownloadModel downloadModel,HttpSession session) 
+	public @ResponseBody String addfiles(@RequestBody DownloadModel downloadModel,HttpSession session,HttpServletRequest request) 
 	{
 		String jsonData="";
 		ActionResponse<DownloadModel> response=new ActionResponse<>();
 		User u=(User) session.getAttribute("USER");
 		List<OrderReport> orderReports= downloadModel.getOrderReports();
 		List<SubDocument> subDocuments=downloadModel.getSubDocuments();
+		String ipaddress = request.getRemoteAddr();
 		DownloadReport dr=new DownloadReport();
 		Integer pages=0;
 		Double dr_amount = 0.00;
@@ -932,6 +932,7 @@ public class CaseFileController {
 			dr.setDr_fd_mid(downloadModel.getFd_id());
 			dr.setDr_cr_by(u.getUm_id());
 			dr.setDr_rec_status(1);
+			dr.setDr_ip_address(ipaddress);
 			dr=downloadService.saveReport(dr);
 			response.setResponse("TRUE");
 			response.setData("Files added for downloading");

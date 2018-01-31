@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -44,8 +45,19 @@ public class DownloadReport {
 	@Column(name="dr_rec_status")
 	private Integer dr_rec_status;
 	
+	@Column(name="dr_ip_address")
+	private String dr_ip_address;
+	
 	@Transient
 	private List<DownloadFile> files;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "dr_fd_mid",insertable = false, updatable = false)
+	private CaseFileDetail caseFileDetail;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "dr_cr_by",insertable = false, updatable = false)
+	private User userDetail;
 	
 	public Long getDr_id() {
 		return dr_id;
@@ -101,6 +113,30 @@ public class DownloadReport {
 
 	public void setFiles(List<DownloadFile> files) {
 		this.files = files;
+	}
+
+	public String getDr_ip_address() {
+		return dr_ip_address;
+	}
+
+	public void setDr_ip_address(String dr_ip_address) {
+		this.dr_ip_address = dr_ip_address;
+	}
+
+	public CaseFileDetail getCaseFileDetail() {
+		return caseFileDetail;
+	}
+
+	public void setCaseFileDetail(CaseFileDetail caseFileDetail) {
+		this.caseFileDetail = caseFileDetail;
+	}
+
+	public User getUserDetail() {
+		return userDetail;
+	}
+
+	public void setUserDetail(User userDetail) {
+		this.userDetail = userDetail;
 	}
 	
 	

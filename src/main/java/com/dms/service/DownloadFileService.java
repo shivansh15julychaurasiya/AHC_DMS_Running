@@ -70,4 +70,25 @@ public class DownloadFileService {
 				.setParameter("dr_id", dr_id).getResultList();
 		return result;
 	}
+
+	public List<DownloadReport> getDownloadReports(int itemsPerPage,int pagenumber) {
+		// TODO Auto-generated method stub
+		int pageSize=itemsPerPage;
+		List<DownloadReport> result = em.createQuery("SELECT d FROM DownloadReport d order by dr_cr_date")
+				.setFirstResult((pagenumber-1) * pageSize).setMaxResults(itemsPerPage).getResultList();
+		return result;
+	}
+
+	public Integer getDownloadReportsCount() {
+		// TODO Auto-generated method stub
+		Integer count=0;
+		try {			
+			String query = "select count(d) from DownloadReport d";
+			count= Integer.parseInt(em.createQuery(query).getSingleResult().toString());			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return count;
+	}
 }
