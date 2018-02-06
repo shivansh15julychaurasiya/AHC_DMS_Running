@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.ApplicationTypes;
 import com.dms.model.CaseType;
+import com.dms.model.District;
 import com.dms.model.IndexField;
+import com.dms.model.LowerCourtCaseType;
 
 @Service
 public class MasterService {
@@ -87,6 +89,19 @@ public class MasterService {
 	public List<ApplicationTypes> getApplicationsByType(String at_type) {
 		List<ApplicationTypes> result = em.createQuery("SELECT a FROM ApplicationTypes a where a.at_type=:at_type and a.at_rec_status=1").setParameter("at_type",at_type)
 		.getResultList();
+		return result;
+	}
+	public List<LowerCourtCaseType> getLowerCourtCaseTypes() {
+		// TODO Auto-generated method stub
+		List<LowerCourtCaseType> result = em.createQuery("SELECT c FROM LowerCourtCaseType c")
+				.getResultList();
+
+		return result;
+	}
+	public List<District> getDistricts() {
+		// TODO Auto-generated method stub
+		List<District> result = em.createQuery("SELECT d FROM District d")
+				.getResultList();
 		return result;
 	}
 } 

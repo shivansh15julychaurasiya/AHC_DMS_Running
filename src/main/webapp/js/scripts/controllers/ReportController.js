@@ -5,7 +5,7 @@ EDMSApp.controller('ReportController',['$scope','$http',function ($scope, $http)
 	$scope.downloadhistory = [];
     $scope.pageno = 1;
     $scope.total_count = 0;
-    $scope.itemsPerPage = 3; 
+    $scope.itemsPerPage = 10; 
     $scope.getData = function(pageno){ 
     	$scope.pageno=pageno;     
     	$http.get(urlBase+'reports/getdownloadhistory',{params:{'itemsPerPage':$scope.itemsPerPage,'pagenumber':$scope.pageno}}).success(function(response){ 

@@ -585,6 +585,7 @@ public class CaseFileController {
 		ActionResponse<CaseFileDetail> response=new ActionResponse<>();
 		
 		CaseFileDetail casefile=caseFileDetailService.getCaseFileDetail(fd_id);
+		
 		response.setResponse("TRUE");
 		response.setModelData(casefile);
 		

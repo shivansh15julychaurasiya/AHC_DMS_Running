@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dms.model.Judge;
 import com.dms.model.Lookup;
 
 @Service
@@ -247,5 +248,23 @@ public class LookupService {
 		}
 		return result;
 	}
-	
+
+
+	public List<Judge> getHighCourtJudges() {
+		// TODO Auto-generated method stub
+		List<Judge> result = new ArrayList<Judge>() ;
+		try
+		{		
+			String sql = "SELECT j FROM Judge j WHERE j.jg_rec_status=1 AND j.jg_bench_code=8 "+ 
+						" AND j.jg_type=(select lk_id from Lookup where lk_longname = 'High Court')";
+			result = em.createQuery(sql).getResultList();	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return result;
+
+	}
 }
+
