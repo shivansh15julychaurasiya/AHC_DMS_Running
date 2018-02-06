@@ -230,5 +230,75 @@ public class CaseFileDetailService {
 		}
 		return counsel;
 	}
+	public List<Petitioner> getPetitionerList(Long fd_id) {
+		// TODO Auto-generated method stub
+		List<Petitioner> result =new ArrayList<Petitioner>();
+		
+		try {
+			result=em.createQuery("select p from Petitioner p where pt_fd_mid=:pt_fd_mid AND pt_rec_status=1").setParameter("pt_fd_mid", fd_id).getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+
+	}
+	public List<Respondent> getRespondentList(Long fd_id) {
+		// TODO Auto-generated method stub
+		List<Respondent> result =new ArrayList<Respondent>();
+		
+		try {
+			result=em.createQuery("select rt from Respondent rt where rt_fd_mid=:rt_fd_mid AND rt_rec_status=1").setParameter("rt_fd_mid", fd_id).getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+
+	}
+	public List<PetitionerCounsel> getPetitionerCouselList(Long fd_id) {
+		// TODO Auto-generated method stub
+		List<PetitionerCounsel> result =new ArrayList<PetitionerCounsel>();
+		
+		try {
+			result=em.createQuery("select pc from PetitionerCounsel pc where pc_fd_mid=:pc_fd_mid AND pc_rec_status=1").setParameter("pc_fd_mid", fd_id).getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+
+	}
+	public List<RespondentCounsel> getRespondentCouselList(Long fd_id) {
+		// TODO Auto-generated method stub
+		List<RespondentCounsel> result =new ArrayList<RespondentCounsel>();
+		
+		try {
+			result=em.createQuery("select rc from RespondentCounsel rc where rc_fd_mid=:rc_fd_mid AND rc_rec_status=1 ").setParameter("rc_fd_mid", fd_id).getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+
+	}
+	public List<ImpugnedOrder> getImpungedList(Long fd_id) {
+		// TODO Auto-generated method stub
+		List<ImpugnedOrder> result =new ArrayList<ImpugnedOrder>();
+		
+		try {
+			result=em.createQuery("select io from ImpugnedOrder io where io_fd_mid=:io_fd_mid AND io_rec_status=1").setParameter("io_fd_mid", fd_id).getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+
+	}
 	
 }

@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 
@@ -112,19 +113,25 @@ public class CaseFileDetail{
 	@JoinColumn(name = "io_fd_mid")
 	private List<ImpugnedOrder> impugnedOrders;
 	
-	@javax.persistence.Transient
+	@Transient
 	private String case_type;
 	
 	
-	@javax.persistence.Transient
+	@Transient
 	private String judgement_date;
 	
-	@javax.persistence.Transient
+	@Transient
 	private String bench_code;
 	
-	@javax.persistence.Transient
+	@Transient
 	private Long judgement_id;
-		
+	
+	@Transient
+	private String first_petitioner;
+	
+	@Transient
+	private String first_respondent;
+	
 	public Long getFd_id() {
 		return fd_id;
 	}
@@ -355,6 +362,22 @@ public class CaseFileDetail{
 
 	public void setFd_bench_code(Long fd_bench_code) {
 		this.fd_bench_code = fd_bench_code;
+	}
+
+	public String getFirst_petitioner() {
+		return first_petitioner;
+	}
+
+	public void setFirst_petitioner(String first_petitioner) {
+		this.first_petitioner = first_petitioner;
+	}
+
+	public String getFirst_respondent() {
+		return first_respondent;
+	}
+
+	public void setFirst_respondent(String first_respondent) {
+		this.first_respondent = first_respondent;
 	}
 	
 }

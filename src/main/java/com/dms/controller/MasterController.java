@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dms.model.ActionResponse;
 import com.dms.model.ApplicationTypes;
 import com.dms.model.CaseType;
+import com.dms.model.District;
 import com.dms.model.IndexField;
+import com.dms.model.Judge;
 import com.dms.model.Lookup;
+import com.dms.model.LowerCourtCaseType;
 import com.dms.model.User;
 import com.dms.service.LookupService;
 import com.dms.service.MasterService;
@@ -101,5 +104,37 @@ public class MasterController {
 		jsonData=globalfunction.convert_to_json(response);		
 		return jsonData;
 	}
-	
+	@RequestMapping(value = "/gethighcourtjudges", method = RequestMethod.GET)
+	public @ResponseBody String getHighcourtJudges(Model model) {
+		String jsonData="";
+		ActionResponse<Judge> response=new ActionResponse<>();
+		List<Judge> stages=lookupService.getHighCourtJudges();
+		response.setModelList(stages);		
+		jsonData=globalfunction.convert_to_json(response);		
+		return jsonData;
+	}
+	@RequestMapping(value = "/getlccasetypes", method = RequestMethod.GET)
+	public @ResponseBody String getLCCaseTypes(HttpSession session) {
+		String jsonData="";
+		ActionResponse<LowerCourtCaseType> response=new ActionResponse<>();
+		List<LowerCourtCaseType> caseTypes=new ArrayList<>();
+		
+		caseTypes=masterService.getLowerCourtCaseTypes();
+		
+		response.setModelList(caseTypes);
+		
+		jsonData=globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+	@RequestMapping(value = "/getdistricts", method = RequestMethod.GET)
+	public @ResponseBody String getdistricts() {
+		String jsonData="";
+		ActionResponse<District> response=new ActionResponse<>();
+		List<District> districts=masterService.getDistricts();
+		response.setModelList(districts);		
+		jsonData=globalfunction.convert_to_json(response);		
+		return jsonData;
+	}
 }
