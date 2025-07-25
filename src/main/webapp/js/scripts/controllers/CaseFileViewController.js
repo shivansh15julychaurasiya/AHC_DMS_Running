@@ -787,6 +787,7 @@ $scope.changeTop = function (){
 			/*PDFViewerApplication.pdfSidebar.isOpen=true;
 			console.log(PDFViewerApplication.pdfSidebar.isOpen);*/
 			//PDFViewerApplication.open(DEFAULT_URL);
+			console.log(PDFViewerApplication.pdfSidebar.isOpen)
 			PDFViewerApplication.open({
 				  url: DEFAULT_URL
 				});
