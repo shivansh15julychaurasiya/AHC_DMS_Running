@@ -1,9 +1,14 @@
 package com.dms.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dms.model.ActionResponse;
+import com.dms.model.CaseFileDetail;
 import com.dms.model.DownloadFile;
 import com.dms.model.DownloadReport;
+import com.dms.model.Lookup;
+import com.dms.model.SubDocument;
+import com.dms.service.CaseFileDetailService;
 import com.dms.service.DownloadFileService;
 import com.dms.service.LookupService;
+import com.dms.service.SubDocumentService;
 import com.dms.utility.GlobalFunction;
 
 @Controller
@@ -25,6 +35,13 @@ public class ReportController {
 	
 	@Autowired
 	private LookupService lookupService;
+	
+	@Autowired
+	private SubDocumentService subDocumentService;
+	@Autowired
+	private CaseFileDetailService caseFileDetailService;
+	@Autowired
+	ServletContext context;
 	
 	@Autowired
 	private DownloadFileService downloadService;
@@ -38,6 +55,11 @@ public class ReportController {
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public String Download() {
 		return "/reports/download";
+	}
+
+	@RequestMapping(value = "/officeReport", method = RequestMethod.GET)
+	public String searchByParty() {
+		return "/reports/officeReport";
 	}
 	
 	@RequestMapping(value = "/getdownloadhistory", method = RequestMethod.GET)
@@ -68,5 +90,8 @@ public class ReportController {
 		return jsonData;
 	}
 
+	
+	
+	
 
 }

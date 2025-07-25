@@ -387,7 +387,7 @@ html[dir='rtl'] #outerContainer.sidebarOpen > #mainContainer {
   background-color: hsla(0,0%,0%,.1);
 }
 html[dir='ltr'] #sidebarContent {
-  left: 0;
+  
   box-shadow: inset -1px 0 0 hsla(0,0%,0%,.25);
 }
 html[dir='rtl'] #sidebarContent {
@@ -745,6 +745,7 @@ html[dir='rtl'] .splitToolbarButton > .toolbarButton {
 .splitToolbarButton > .toolbarButton:hover,
 .splitToolbarButton > .toolbarButton:focus,
 .dropdownToolbarButton:hover,
+.dropdownToolbarPage:hover,
 .overlayButton:hover,
 .overlayButton:focus,
 .toolbarButton.textButton:hover,
@@ -828,19 +829,50 @@ html[dir='rtl'] .splitToolbarButtonSeparator {
   transition-timing-function: ease;
 }
 
+
+.dropdownToolbarPage{
+	
+  min-width: 45px;
+  min-height: 30px;
+  padding: 2px 6px 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: hsla(0,0%,100%,.8);
+  font-size: 12px;
+  line-height: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  /* Opera does not support user-select, use <... unselectable="on"> instead */
+  cursor: default;
+  -webkit-transition-property: background-color, border-color, box-shadow;
+  -webkit-transition-duration: 150ms;
+  -webkit-transition-timing-function: ease;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+  
+}
+.dropdownToolbarPage option{
+	background-color :#C0C0C0;
+	}
+
 html[dir='ltr'] .toolbarButton,
 html[dir='ltr'] .overlayButton,
+html[dir='ltr'] .dropdownToolbarPage,
 html[dir='ltr'] .dropdownToolbarButton {
   margin: 3px 2px 4px 0;
 }
 html[dir='rtl'] .toolbarButton,
 html[dir='rtl'] .overlayButton,
+html[dir='rtl'] .dropdownToolbarPage,
 html[dir='rtl'] .dropdownToolbarButton {
   margin: 3px 0 4px 2px;
 }
 
 .toolbarButton:hover,
 .toolbarButton:focus,
+.dropdownToolbarPage,
 .dropdownToolbarButton,
 .overlayButton,
 .secondaryToolbarButton:hover,
@@ -857,6 +889,7 @@ html[dir='rtl'] .dropdownToolbarButton {
 
 .toolbarButton:hover:active,
 .overlayButton:hover:active,
+.dropdownToolbarPage:hover:active,
 .dropdownToolbarButton:hover:active,
 .secondaryToolbarButton:hover:active {
   background-color: hsla(0,0%,0%,.2);
@@ -907,6 +940,15 @@ html[dir='rtl'] .dropdownToolbarButton {
   overflow: hidden;
   background: url(images/toolbarButton-menuArrows.png) no-repeat;
 }
+
+.dropdownToolbarPage {
+  width: 20px;
+  max-width: 20px;
+  padding: 0;
+  overflow: hidden;
+  background: url(images/toolbarButton-menuArrows.png) no-repeat;
+}
+
 html[dir='ltr'] .dropdownToolbarButton {
   background-position: 95%;
 }
@@ -927,6 +969,31 @@ html[dir='rtl'] .dropdownToolbarButton {
 .dropdownToolbarButton > select > option {
   background: hsl(0,0%,24%);
 }
+
+
+     /* sushant */
+html[dir='ltr'] .dropdownToolbarPage {
+  background-position: 95%;
+}
+html[dir='rtl'] .dropdownToolbarPage {
+  background-position: 5%;
+}
+
+.dropdownToolbarPage > select {
+  min-width: 140px;
+  font-size: 12px;
+  color: hsl(0,0%,95%);
+  margin: 0;
+  padding: 3px 2px 2px;
+  border: none;
+  background: rgba(0,0,0,0); /* Opera does not support 'transparent' <select> background */
+}
+
+.dropdownToolbarPage > select > option {
+  background: hsl(0,0%,24%);
+}
+
+        /* sushant */
 
 #customScaleOption {
   display: none;
@@ -1698,6 +1765,11 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   }
 
   .dropdownToolbarButton {
+    background: url(images/toolbarButton-menuArrows@2x.png) no-repeat;
+    background-size: 7px 16px;
+  }
+  
+   .dropdownToolbarPage {
     background: url(images/toolbarButton-menuArrows@2x.png) no-repeat;
     background-size: 7px 16px;
   }

@@ -6,21 +6,19 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
+@DynamicUpdate
 @Table(name="download_report")
 public class DownloadReport {
 	
@@ -47,6 +45,7 @@ public class DownloadReport {
 	
 	@Column(name="dr_ip_address")
 	private String dr_ip_address;
+	
 	
 	@Transient
 	private List<DownloadFile> files;
@@ -138,6 +137,8 @@ public class DownloadReport {
 	public void setUserDetail(User userDetail) {
 		this.userDetail = userDetail;
 	}
+
+	
 	
 	
 }

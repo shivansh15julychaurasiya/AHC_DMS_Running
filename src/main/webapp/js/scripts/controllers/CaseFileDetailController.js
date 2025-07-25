@@ -1,13 +1,120 @@
 var EDMSApp = angular.module("EDMSApp", ['ngFileUpload','ngMask','ui.bootstrap']);
 
 
-EDMSApp.controller("CaseFileCtrl",	['$scope','$http','Upload',function ($scope, $http,Upload) {
+EDMSApp.controller("CaseFileCtrl",	['$scope','$sce','$http','Upload',function ($scope,$sce, $http,Upload) {
 	var urlBase="/dms/";
 	$scope.subDocuments=[];
 	$scope.index_fields=[];
 	$scope.applications=[];
+	$scope.applicationsTypeList =[];
+	$scope.applicationWithPetition =[];
 	$scope.casefile={};
 	$scope.subdocument={};
+	$scope.appWithPetition={};
+	
+	 $scope.editablerow = '';
+	 
+	 
+	 $scope.deleteApplicationWithPetition =function (indx,awp){
+		  $http.post(urlBase+'casefile/deleteAppWithPetition',awp).success(function (data) {
+		    	if(data.response=="TRUE"){
+		    		console.log("data daaaaaa",data);
+		    		$scope.reset();  
+		    		getApplicationWithPetition1();
+		        
+		    	}
+		    	else if(data.response == "FALSE") {
+		    		console.log("Dataaaaaaaaaaa");
+		    		/*$scope.courtmaster1 =data.modelData;*/
+		/*    		bootbox.confirm({
+		    		    title: "Please Read The Content",
+		    		    message: "The Bench Id - "+data.modelData.cm_bench_id+ " you want to update is already exists in "+data.modelData.cm_name
+		    		            +" if you want to update it than please click confirm else click cancel",
+		    		    buttons: {
+		    		        cancel: {
+		    		            label: '<i class="fa fa-times"></i> Cancel'
+		    		        },
+		    		        confirm: {
+		    		            label: '<i class="fa fa-check"></i> Confirm'
+		    		        }
+		    		    },
+		    		    callback: function (result) {
+		    		        console.log('This was logged in the callback: ' + result);
+		    		        if(result){
+		    		        	courtmaster.updateFlag =true;
+		    		        	 $http.post(urlBase+'bench/updateCourt',courtmaster).success(function (data) {
+		    		 		    	if(data.response=="TRUE"){
+		    		 		    		console.log("data daaaaaa",data);
+		    		 		    		 $scope.courtList[indx] = angular.copy(data.modelData);
+		    		 		    		 $scope.reset();  
+		    		 		    		getAllCourts();
+		    		 		       
+		    		 		    	}
+		    		        	 }).
+		    				      error(function(data, status, headers, config) {
+		    				      	console.log("Error in getting tree data");
+		    				      });
+		    		        	
+		    		        	
+		    		        }
+		    		        else {
+		    		        	getAllCourts();
+		    		        }
+		    		    }
+		    		});*/
+		    	}
+		    	else
+		    		{
+		    		console.log("Some problem")
+		    		}
+		    		
+		      }).
+		      error(function(data, status, headers, config) {
+		      	console.log("Error in getting tree data");
+		      });
+		 
+	 }
+	 
+	  $scope.updateApplicationWithPetition = function (indx,awp) {
+		  console.log("Court Master",awp);
+		  $http.post(urlBase+'casefile/updateAppWithPetition',awp).success(function (data) {
+		    	if(data.response=="TRUE"){
+		    		console.log("data daaaaaa",data);
+		    		 $scope.applicationWithPetition[indx] = angular.copy(data.modelData);
+		        $scope.reset();  
+		    	}
+		    	else if(data.response == "FALSE") {
+		    		console.log("Dataaaaaaaaaaa",data);
+		    	}
+		    	else
+		    		{
+		    		console.log("Some problem")
+		    		}
+		    		
+		      }).
+		      error(function(data, status, headers, config) {
+		      	console.log("Error in getting tree data");
+		      });
+		  
+		        $scope.courtList[indx] = angular.copy($scope.editablerow);
+		        $scope.reset();
+	    };
+	 
+	 $scope.reset = function(){
+	    	$scope.editablerow = [];
+	    	}
+	  
+	  $scope.editBench = function(content) { 
+		  console.log("dataaaaaaaaaaaaaaaa",content);
+	        $scope.editablerow = angular.copy(content);   
+		
+	 }
+	  
+	  $scope.getData = function(content) { 
+		    if (content.awp_id == $scope.editablerow.awp_id) return 'edit';
+		        else return 'view';
+		 }
+
 	$scope.doc_id= $('#doc_id').val();
 	$scope.open1 = function($event,type) {
 		$event.preventDefault();
@@ -15,6 +122,30 @@ EDMSApp.controller("CaseFileCtrl",	['$scope','$http','Upload',function ($scope, 
 		if(type=="fromDate1")
 			$scope.fromDate1= true;		
 	};
+	
+$scope.getApplicationWithPetition =function (){
+		
+		console.log("app called");
+		
+		$http.get(urlBase+'casefile/getApplicationWithPetition/'+$scope.doc_id).success(function (data) {
+			$scope.applicationWithPetition=data.modelList;
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
+	}
+
+function getApplicationWithPetition1() {
+	
+	console.log("app called");
+	
+	$http.get(urlBase+'casefile/getApplicationWithPetition/'+$scope.doc_id).success(function (data) {
+		$scope.applicationWithPetition=data.modelList;
+      }).
+      error(function(data, status, headers, config) {
+      	console.log("Error in getting sub documents");
+      });
+}
 	
 	$scope.toggleMax = function() {
 	    //$scope.minDate = $scope.minDate ? null : new Date();
@@ -44,9 +175,13 @@ EDMSApp.controller("CaseFileCtrl",	['$scope','$http','Upload',function ($scope, 
 		  var d = new Date(inputFormat);
 		  return [ d.getFullYear(), pad(d.getMonth()+1),pad(d.getDate())].join('-');
 	}
+	
+	
+	
 	getSubDocuments();
 	getCaseFileDetails();
 	getOrderReports();
+	getApplicationsTypeList();
 	$scope.setModel=function(){
 		  $scope.sd_submitted_date='';
 		  $scope.subdocument={};
@@ -72,6 +207,14 @@ EDMSApp.controller("CaseFileCtrl",	['$scope','$http','Upload',function ($scope, 
 	      	console.log("Error in getting indexfields");
 	      });
 	  }
+	  function getApplicationsTypeList(){
+		  $http.get(urlBase+'master/getApplicationsTypeList').success(function (data) {
+	    		$scope.applicationsTypeList=data.modelList;
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting indexfields");
+	      });
+	  }
 	function getSubDocuments(){
 		$http.get(urlBase+'casefile/getsubdocuments/'+$scope.doc_id).success(function (data) {
 	    	$scope.subDocuments=data.modelList;
@@ -91,7 +234,13 @@ EDMSApp.controller("CaseFileCtrl",	['$scope','$http','Upload',function ($scope, 
 	}
 	function getOrderReports(){
 		$http.get(urlBase+'casefile/getorderreports/'+$scope.doc_id).success(function (data) {
-	    	$scope.orderReports=data.modelList;	    	
+	    	$scope.orderReports=data.modelList;	
+	    	
+	    	angular.forEach($scope.orderReports,function(value,index)
+	    			{
+	    		 value[0].ord_remark=$sce.trustAsHtml(value[0].ord_remark);
+	    	
+	    			});
 	      }).
 	      error(function(data, status, headers, config) {
 	      	console.log("Error in getting sub documents");
@@ -118,6 +267,57 @@ EDMSApp.controller("CaseFileCtrl",	['$scope','$http','Upload',function ($scope, 
 		   		});	
 		  }
 	  }
+	
+$scope.setModel=function(subdocument){
+		
+			$scope.sd_id=subdocument.sd_id;
+			$scope.sd_fd_mid=subdocument.sd_fd_mid;
+		
+}
+	$scope.fileReplace=function(){
+		$scope.subdocument={'sd_id':$scope.sd_id,'sd_fd_mid':$scope.sd_fd_mid};
+		var file=$scope.picFile;
+		  var flag=confirm("Are you sure");
+		  if (flag)
+		  {
+			  if(file!="")
+			  {				  
+			    file.upload = Upload.upload({
+			      url: urlBase + 'casefile/replaceSubDocument',
+			      headers: {
+			    	  'optional-header': 'header-value'
+			        },
+	  		   file:file,
+	  		   fields:$scope.subdocument,
+			    });
+	
+			    file.upload.then(function (response) {
+			        if(response.data.response=="TRUE"){
+			        	$scope.errorlist =null;
+			        	alert("Successfully Replace File");
+			        	$("#uploadModel").modal("hide");
+			        	window.location.reload();
+			        	$scope.picFile='';	        	
+			        }else{
+			        	alert(response.data.data);
+			        }
+			      }, function (response) {
+			        
+			      }, function (evt) {
+			       
+			      });
+	
+			      file.upload.xhr(function (xhr) {
+			      });
+			  }
+		  }else{
+			  alert("Please select valid PDF file for upload")
+		  }
+		}
+	
+	
+	
+	
 	$scope.deleteofficereport=function(id){
 		  var result=confirm("Are you really want to delete this record");
 		  if (result) {
@@ -246,6 +446,57 @@ EDMSApp.controller("CaseFileCtrl",	['$scope','$http','Upload',function ($scope, 
 			      	console.log("Error in getting tree data");
 			      });
 	  }
+	 $scope.loading = true;
+	  $scope.cancel= function()
+	  {
+		  $scope.loading = true;
+	  }
+	  
+	 $scope.saveAWP= function(){
+		  $scope.loading = false;
+		  $scope.appWithPetition.fd_id=$scope.casefile.fd_id;
+		  for ( var i=0; i<$scope.subDocuments.length;i++) {
+			  if($scope.subDocuments[i].sd_if_mid==1)
+				  {
+				  	console.log("ver--"+$scope.subDocuments[i].sd_if_mid);
+					console.log("ver--"+$scope.subDocuments[i].sd_id);
+					$scope.appWithPetition.awp_sd_mid=$scope.subDocuments[i].sd_id
+				  	break;
+				  }
+		  }
+		  if($scope.appWithPetition.awp_ap_at_mid==null ||$scope.appWithPetition.awp_ap_no== null ||$scope.appWithPetition.awp_ap_year== null){
+				
+				 alert("Please select required fields");
+				 $scope.loading = true;
+				 return false;
+				
+			 }
+		  
+		  $http.post(urlBase+'casefile/addAppWithPetition?at_id='+$scope.appWithPetition.awp_ap_at_mid
+				  +"&fd_id="+$scope.appWithPetition.fd_id
+				  +"&awp_sd_mid="+$scope.appWithPetition.awp_sd_mid
+				  +"&awp_ap_no="+$scope.appWithPetition.awp_ap_no
+				  +"&awp_ap_year="+$scope.appWithPetition.awp_ap_year
+			  )
+			  .success(function (data) {
+			    	if(data.response=="TRUE"){
+			    		$scope.loading = true;
+			    		alert("Successfully added");
+			    		$("#addWithPetition").modal("hide");
+			    		$("#uploadForm").trigger("reset");
+			    	}
+			    	else{
+			    		$scope.loading = true;
+			    		alert("Error occurred while adding data");
+			    	}
+			    	
+			    	
+			      }).
+			      error(function(data, status, headers, config) {
+			      	console.log("Error in getting tree data");
+			      });
+	  }
+	  
 	  $scope.savePetition=function() 
 	  {
 		 var file=$scope.petitionFile;

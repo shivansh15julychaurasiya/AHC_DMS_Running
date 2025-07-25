@@ -20,7 +20,7 @@ public class Judge {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "judgeseq")
 	@SequenceGenerator(name = "judgeseq", sequenceName = "judgeseq", allocationSize = 1)
 	@Column(name = "jg_id")
-	private Long jg_id;
+	private Long jg_id;	
 
 	@Column(name = "jg_name")
 	private String jg_name;
@@ -162,4 +162,15 @@ public class Judge {
 	public void setJg_retirement_year(Long jg_retirement_year) {
 		this.jg_retirement_year = jg_retirement_year;
 	}
+
+	@Override
+	public String toString() {
+		return "Judge [jg_id=" + jg_id + ",  jg_name=" + jg_name + ", jg_code=" + jg_code
+				+ ", jg_type=" + jg_type + ", jg_rec_status=" + jg_rec_status + ", cr_by=" + cr_by + ", cr_date="
+				+ cr_date + ", mod_by=" + mod_by + ", mod_date=" + mod_date + ", jg_bench_code=" + jg_bench_code
+				+ ", lk_jgtype=" + lk_jgtype + ", jg_joining_year=" + jg_joining_year + ", jg_retirement_year="
+				+ jg_retirement_year + "]";
+	}
+	
+	
 }

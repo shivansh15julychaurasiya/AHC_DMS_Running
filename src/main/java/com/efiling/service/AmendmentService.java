@@ -25,6 +25,10 @@ public class AmendmentService {
 	@PersistenceContext(unitName="persistenceUnitEfiling")
 	@Qualifier(value = "entityManagerFactoryEfiling")
 	private EntityManager em2;
+	
+	@PersistenceContext(unitName="persistenceUnitDMS")
+	@Qualifier(value = "entityManagerFactoryDMS")
+	private EntityManager emDMS;
 
 	public RegisteredCaseDetails getRegisterCase(Long fd_case_type, Integer fd_case_no, Integer fd_case_year) {
 		RegisteredCaseDetails result=new RegisteredCaseDetails();
@@ -38,6 +42,7 @@ public class AmendmentService {
 		return result;		
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<EfilingUser> getApplicationUsers(Long fd_id,Long ap_stage_lid) {
 		// TODO Auto-generated method stub
 		List<EfilingUser> result=new ArrayList<EfilingUser>();
@@ -64,12 +69,25 @@ public class AmendmentService {
 		return result;
 	}
 
-	public List<EfilingUser> searchUser(String name) {
+	/*public List<EfilingUser> searchUser(String name) {
 		// TODO Auto-generated method stub
 		List<EfilingUser> result=new ArrayList<>();
 	    try {
 			String query="SELECT u from EfilingUser u where lower(u.um_fullname) like '%"+name.toLowerCase()+"%' ";
 			result= em2.createQuery(query).getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return result;
+	}*/
+	
+	public EfilingUser searchUser(String username) {
+		// TODO Auto-generated method stub
+		EfilingUser result=new EfilingUser();
+	    try {
+			String query="SELECT u from EfilingUser u where u.username=:username";
+			result= (EfilingUser) em2.createQuery(query).setParameter("username", username).getSingleResult();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,12 +121,12 @@ public class AmendmentService {
 		return master;
 	}
 
-	public Amendment getAmendment(Long am_fd_mid, String am_type, Long am_status) {
+	public Amendment getAmendment(Long am_fd_mid, String am_type, Long am_createstatus ,Long am_uploadstatus) {
 		// TODO Auto-generated method stub
 		Amendment master = null;
 	    try {
-			String query="SELECT a from Amendment a where a.am_fd_mid=:am_fd_mid and a.am_type=:am_type and am_status=:am_status";
-			master= (Amendment) em2.createQuery(query).setParameter("am_fd_mid", am_fd_mid).setParameter("am_type", am_type).setParameter("am_status", am_status).getSingleResult();
+			String query="SELECT a from Amendment a where a.am_fd_mid=:am_fd_mid and a.am_type=:am_type and a.am_status=:am_createstatus or a.am_status=:am_uploadstatus";
+			master= (Amendment) em2.createQuery(query).setParameter("am_fd_mid", am_fd_mid).setParameter("am_type", am_type).setParameter("am_createstatus", am_createstatus).setParameter("am_uploadstatus", am_uploadstatus).getSingleResult();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,6 +134,23 @@ public class AmendmentService {
 		
 		return master;
 	}
+	
+	public Amendment getAmendmentApplication(Long am_fd_mid,Long am_at_mid, Integer am_document_no, Integer am_document_year, Long am_status) {
+		Amendment master = null;
+	    try {
+			String query="SELECT a from Amendment a where a.am_fd_mid=:am_fd_mid and a.am_at_mid=:am_at_mid and a.am_document_no=:am_document_no "
+					+ "and a.am_document_year=:am_document_year and am_status=:am_status";
+			master= (Amendment) em2.createQuery(query).setParameter("am_fd_mid", am_fd_mid).setParameter("am_at_mid", am_at_mid)
+					.setParameter("am_document_no", am_document_no).setParameter("am_document_year", am_document_year)
+					.setParameter("am_status", am_status).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return master;
+	}
+	
 
 	public List<Amendment> getAmendments(Long am_fd_mid) {
 		// TODO Auto-generated method stub
@@ -142,11 +177,12 @@ public class AmendmentService {
 		}		
 		return result;
 	}
-	public List<EfilingApplicationTypes> getApplicationTypes() 
+	public List<Object> getApplicationTypes(Long caseyear,Long casetype,String caseno) 
 	{
-		List<EfilingApplicationTypes> result=null;
+		List<Object> result=null;
 		Query query=null;
-		query = em2.createQuery(" SELECT app from EfilingApplicationTypes app where app.at_rec_status=1 ");
+		query = emDMS.createNativeQuery(" select sd_id,(select at_name from application_types where at_id=sd_document_id),sd_document_id,sd_document_no,sd_document_year from sub_documents  where sd_if_mid  =14 and sd_fd_mid =(select fd_id from case_file_details  where fd_case_no  =:fd_case_no and fd_case_type=:fd_case_type and fd_case_year=:fd_case_year)" + 
+				"").setParameter("fd_case_year", caseyear).setParameter("fd_case_type", casetype).setParameter("fd_case_no", caseno);
 		result=query.getResultList();
 		return result;
 	}
@@ -172,6 +208,20 @@ public class AmendmentService {
 		
 		return result;
 	}
+	public EfilingCaseFileDetail getEilingCaseFileDetails(Long caseyear,Long casetype,String caseno) {
+		EfilingCaseFileDetail result=null;
+		try {
+			String query=" SELECT cfd from EfilingCaseFileDetail cfd where cfd.fd_case_year="+caseyear+" and cfd.fd_case_type="+casetype+" and cfd.fd_case_no='"+caseno+"' ";
+			result= (EfilingCaseFileDetail) em2.createQuery(query).getSingleResult();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    
+		
+		return result;
+	}
+	
 	public EfilingUser getUser(Long id) {
 		EfilingUser r = em2.find(EfilingUser.class, id);
 		return r;

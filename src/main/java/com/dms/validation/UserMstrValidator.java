@@ -56,14 +56,14 @@ public ActionResponse doValidation(User ur){
 			}*/
 			error=validation.getError();
 			
-			if(ur.getPassword()!="")
+			/*if(ur.getPassword()!="")
 			{
 				Lookup lk =new Lookup();
 				List<Lookup> lkup=lookupservice.CheckRegex("REGEX_COMPLEXITY");
 				String regex=lkup.get(0).getLk_longname();
 				String msg=lkup.get(0).getLk_value();
 				validation.checkRegEx("password", ur.getPassword(),regex, msg);
-			}
+			}*/
 			if(ur.getPassword()!="" && ur.getConfirmpassword()!="")
 			{
 				if(ur.getPassword()!=null && ur.getConfirmpassword()!=null)

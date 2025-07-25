@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="application_types")
@@ -30,7 +31,9 @@ public class ApplicationTypes
 	
 	@Column(name="at_sequence")
 	private Integer at_sequence;
-
+	
+	@Column(name="at_ald_lko_mapping")
+	private Integer at_ald_lko_mapping;
 	
 
 	public Integer getAt_id() {
@@ -88,6 +91,16 @@ public class ApplicationTypes
 	public void setAt_sequence(Integer at_sequence) {
 		this.at_sequence = at_sequence;
 	}
+
+	public Integer getAt_ald_lko_mapping() {
+		return at_ald_lko_mapping;
+	}
+
+	public void setAt_ald_lko_mapping(Integer at_ald_lko_mapping) {
+		this.at_ald_lko_mapping = at_ald_lko_mapping;
+	}
+
+	
 
 	
 

@@ -37,13 +37,24 @@ EDMSApp.controller('CasefileSearchController',['$scope','$http',function ($scope
 	 };
 	 
 	 $scope.searchCaseFile=function(){
+		 
+		 $scope.showLoader =true;
+	    	$scope.showStatus =false;
 		 $http.get(urlBase+'amendment/searchCaseFile', {params : {'case_year' :$scope.model.fd_case_year,'case_type' :$scope.model.fd_case_type,'case_no' :$scope.model.fd_case_no}}).
 	        success(function (data) {
 	        	
 	        	if(data.modelList.length>0){
 	        	$scope.caseFileList=data.modelList;
+	        	if($scope.caseFileList.length > 0){
+	                
+	            }
+	            else {
+	           	 $scope.showStatus =true;
+	            }
+	            $scope.showLoader =false;
 	        	}else{
-	        		alert("Case not found...!");
+	        		  $scope.showLoader =false;
+	        		  $scope.showStatus =true;
 	        	}
 	        	
 	        }).
@@ -53,6 +64,7 @@ EDMSApp.controller('CasefileSearchController',['$scope','$http',function ($scope
 		 
 	 }
 	 $scope.viewAmendment=function(data){
+		 console.log(data);
 		 window.open(urlBase+"amendment/manage/"+data.fd_id,'_self');
 	 }
 	  $scope.viewAdvocates=function(data){

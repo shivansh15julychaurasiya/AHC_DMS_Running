@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.CourtMaster;
 import com.dms.model.CourtUserMapping;
+import com.dms.model.Judge;
+import com.dms.model.JudgeMapping;
+import com.dms.model.JudgeName;
 
 
 
@@ -60,6 +63,22 @@ public class CourtMasterService
 		}
 		return cm;
 	}
+	
+	
+	@Transactional
+	public CourtMaster getCourtMaster(Integer Id) 
+	{		
+		CourtMaster cm=null;
+		try {
+			Query query  =  em.createQuery("SELECT c from CourtMaster c WHERE c.cm_id =:id");
+			query.setParameter("id", Id);
+			cm= (CourtMaster) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cm;
+	}
 	@Transactional
 	public List<CourtMaster> getCourtLists() {
 		List<CourtMaster> result = em.createQuery("SELECT c FROM CourtMaster c").getResultList();
@@ -69,6 +88,20 @@ public class CourtMasterService
 	@Transactional
 	public CourtUserMapping getCourtMapping(Long userId) {
 		CourtUserMapping cm=new CourtUserMapping();
+		try {
+			Query query  =  em.createQuery("SELECT c from CourtUserMapping c WHERE c.cum_user_mid =:userId");
+			query.setParameter("userId", userId);
+			cm= (CourtUserMapping) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cm;
+	}
+	
+	@Transactional
+	public CourtUserMapping getCourtMappingForUser(Long userId) {
+		CourtUserMapping cm=null;
 		try {
 			Query query  =  em.createQuery("SELECT c from CourtUserMapping c WHERE c.cum_user_mid =:userId");
 			query.setParameter("userId", userId);
@@ -92,4 +125,50 @@ public class CourtMasterService
 		}
 		return cm;
 	}
+	
+	@Transactional
+	public Judge getJudgeDetailsByCourtMapping(Integer cmid) {
+		Judge jg=null;
+		try {
+			Query query  =  em.createQuery("select j from Judge j where j.jg_id  = (select cum_jg_mid  from CourtUserMapping where cum_court_mid =:courtId)");
+			query.setParameter("courtId", cmid);
+			jg= (Judge) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jg;
+	}
+	
+	@Transactional
+	public Judge getJudgeByCourtMappingUmid(Long umid) {
+		Judge jg=null;
+		try {
+			Query query  =  em.createQuery("select j from Judge j where j.jg_id  = (select cum_jg_mid  from CourtUserMapping where cum_user_mid =:userId)");
+			query.setParameter("userId", umid);
+			jg= (Judge) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jg;
+	}
+	
+	@Transactional
+	public List<JudgeName> getJudgeByECourtMappingUmid(Integer umid) {
+		List<JudgeName> jg=null;
+		
+		try {
+			Query query  =  em.createQuery("select j from JudgeName j where j.jn_jo_code  in (select ejm_jo_code  "
+					+ "from JudgeMapping where ejm_bench_id =:userId)");
+			query.setParameter("userId", umid);
+			jg=  query.getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jg;
+	}
+	
+
 }

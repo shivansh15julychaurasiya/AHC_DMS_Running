@@ -63,7 +63,7 @@ public class Respondent {
 	private Integer rt_rec_status;
 	
 	@Column(name = "rt_sequence")
-	private Long rt_sequence;
+	private Integer rt_sequence;
 
 	@Column(name="rt_s_mid")
 	private Long rt_s_mid;	
@@ -186,16 +186,15 @@ public class Respondent {
 	
 	
 	
+
 	
 	
 	
-	
-	
-	public Long getRt_sequence() {
+	public Integer getRt_sequence() {
 		return rt_sequence;
 	}
 
-	public void setRt_sequence(Long rt_sequence) {
+	public void setRt_sequence(Integer rt_sequence) {
 		this.rt_sequence = rt_sequence;
 	}
 

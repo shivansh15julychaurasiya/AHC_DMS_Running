@@ -25,16 +25,20 @@ var edmsApp = angular.module("EDMSApp", ['smart-table','ui.bootstrap']);
  * Controller in index.jsp
  */
 
-edmsApp.controller("causeListController",['$scope','$http', function($scope,$http) {
+edmsApp.controller("causeListController",['$scope','$http','$filter', function($scope,$http,$filter) {
 	var urlBase="/dms/";
 	  //$scope.usingFlash = FileAPI && FileAPI.upload != null;
-	$scope.search=false;	
+	$scope.search=false;
+	$scope.getTransferFlag =false;
 	$scope.model={};
     $scope.formats = ['dd-MM-yyyy', 'yyyy-MM-dd', 'shortDate'];
 	$scope.format = $scope.formats[0];
     $scope.today = function() {
     	$scope.model.cl_dol = new Date();
+    	$scope.model.cl_dol = $filter('date')(new Date(),'yyyy-MM-dd');
 	};
+	
+	
 	
 	$scope.today();
 	
@@ -75,11 +79,58 @@ edmsApp.controller("causeListController",['$scope','$http', function($scope,$htt
 			console.log("Error in getting Cause List Data ");
 		});	
 	};
+	
+	
+	
+	
+	$scope.getListOnSearch = function(){	
+		console.log("dataaaaa",$scope.getTransferFlag);
+		$scope.showLoader =true;
+    	$scope.showStatus =false;
+		$scope.search=true;
+		if($scope.getTransferFlag){
+		$http.post(urlBase+'causelist/getCauseListOnSearch',$scope.model)
+			.success(function(data) {
+				$scope.masterdata=data.modelList;
+				$scope.displayedCollection = [].concat($scope.masterdata);
+				if($scope.displayedCollection.length > 0){
+			        
+		         }
+		         else {
+		        	 $scope.showStatus =true;
+		         }
+		         $scope.showLoader =false;
+				
+				
+			//$scope.SearchList = data.SearchedData;
+		}).error(function(data, status, headers, config) {
+			console.log("Error in getting Cause List Data ");
+		});	
+		}
+		else {
+			$http.post(urlBase+'causelist/getCauseList',$scope.model)
+			.success(function(data) {
+				$scope.masterdata=data.modelList;
+				$scope.displayedCollection = [].concat($scope.masterdata);
+				if($scope.displayedCollection.length > 0){
+			        
+		         }
+		         else {
+		        	 $scope.showStatus =true;
+		         }
+		         $scope.showLoader =false;
+			//$scope.SeasrchList = data.SearchedData;
+		}).error(function(data, status, headers, config) {
+			console.log("Error in getting Cause List Data ");
+		});	
+			
+		}
+	};
 	$scope.viewCaseFile=function(id){
 		  window.open(urlBase+"casefile/view/"+id,"_blank");
 	  }
-	$scope.viewApplication=function(application_no,application_year){
-		  window.open(urlBase+"casefile/applicationview/?app_no="+application_no+"&app_year="+application_year,"_blank");
+	$scope.viewApplication=function(application_no,application_year,case_id){
+		  window.open(urlBase+"casefile/applicationview/?app_no="+application_no+"&app_year="+application_year+"&case_id="+case_id,"_blank");
 	  }
 	
 }]);

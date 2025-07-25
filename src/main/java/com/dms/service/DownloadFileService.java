@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dms.model.CaseFileDetail;
 import com.dms.model.DownloadFile;
 import com.dms.model.DownloadReport;
+import com.dms.model.OrderReport;
 import com.dms.model.SubDocument;
 
 @Service
@@ -20,6 +21,11 @@ public class DownloadFileService {
 	@PersistenceContext(unitName="persistenceUnitDMS")
 	@Qualifier(value = "entityManagerFactoryDMS")
 	EntityManager em;
+	
+	@PersistenceContext(unitName="persistenceUnitLKODMS")
+	@Qualifier(value = "entityManagerFactoryLKODMS")
+	private EntityManager lko;
+	
 	
 	@Transactional
     public DownloadReport saveReport(DownloadReport report) {
@@ -43,6 +49,8 @@ public class DownloadFileService {
     	return df;
 	}
 
+
+	
 	public List<DownloadReport> getDownloadReport(Long fd_id) {
 		// TODO Auto-generated method stub
 		List<DownloadReport> result = em.createQuery("SELECT d FROM DownloadReport d where d.dr_fd_mid=:fd_id and d.dr_rec_status=1 order by dr_cr_date")
@@ -91,4 +99,41 @@ public class DownloadFileService {
 		}	
 		return count;
 	}
+
+	  @Transactional
+	public boolean deleteDownloadHistory(Long dr_id) {
+            
+		boolean result=false;
+		    DownloadReport oldreport= em.find(DownloadReport.class,dr_id);
+		          oldreport.setDr_rec_status(2);
+		          em.merge(oldreport);
+                  result=true;           
+		          
+		return result;
+	}
+	   @Transactional
+		public List<SubDocument> getSubFiles(Long fd_id) {
+		  
+	    	 List<SubDocument> subDoc=null;
+	    		subDoc = em.createQuery("SELECT sd FROM SubDocument sd where sd.sd_fd_mid=:fd_id and sd.sd_rec_status in (1,7,9)  and (sd.sd_document_id != 100002 or sd.sd_document_id is null) order by  sd.sd_submitted_date  ").setParameter("fd_id", fd_id).getResultList();
+			    try{
+			    	
+			    }catch(Exception e){
+			    	e.printStackTrace();
+			    }
+	    		return subDoc;
+			        
+			        
+		}
+       @Transactional
+	public OrderReport getOrderReport(Long sd_id) {
+		OrderReport orderReport=null;
+		orderReport = (OrderReport) em.createQuery("SELECT ord FROM OrderReport ord where ord.ord_sd_mid=:sd_id").setParameter("sd_id", sd_id).getSingleResult();
+		    try{
+		    	
+		    }catch(Exception e){
+		    	e.printStackTrace();
+		    }
+ 		return orderReport;
+}
 }

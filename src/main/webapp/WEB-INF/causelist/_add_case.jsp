@@ -49,7 +49,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="form-group">
 				<label class="control-label col-md-4">First Petitioner<span class="text-danger"> * </span></label>
 				<div class="col-md-4">
@@ -80,7 +80,7 @@
 					<input type="text" required name="cl_respondent_council" id="cl_respondent_council" ng-model="clmodel.cl_respondent_council" class="form-control col-md-4" />
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div class="row">
 			<div class="form-group">
 				<label class="control-label col-md-4">Application No.</label>

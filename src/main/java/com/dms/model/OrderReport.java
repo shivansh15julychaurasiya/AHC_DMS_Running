@@ -27,6 +27,8 @@ public class OrderReport {
 	@Column(name="ord_remark")
 	private  String ord_remark;
 	
+	private transient Integer cl_flag =0;
+	
 	@Column(name="ord_created")
 	private Date ord_created;
 	
@@ -48,12 +50,31 @@ public class OrderReport {
 	@Column (name = "ord_mod_date")
 	private Date ord_mod_date;
 	
+	@Column(name ="ord_consignment_no")
+	private String ord_consignment_no;
+	
+	@Column(name ="ord_submitted_date")
+	private Date ord_submitted_date;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ord_sd_mid",insertable = false, updatable = false)
 	private SubDocument subDocument;
 	
 	@Transient
 	private boolean checked;
+	
+	
+	
+
+	
+
+	public Integer getCl_flag() {
+		return cl_flag;
+	}
+
+	public void setCl_flag(Integer cl_flag) {
+		this.cl_flag = cl_flag;
+	}
 
 	public Long getOrd_id() {
 		return ord_id;
@@ -142,6 +163,24 @@ public class OrderReport {
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
+
+	public String getOrd_consignment_no() {
+		return ord_consignment_no;
+	}
+
+	public void setOrd_consignment_no(String ord_consignment_no) {
+		this.ord_consignment_no = ord_consignment_no;
+	}
+
+	public Date getOrd_submitted_date() {
+		return ord_submitted_date;
+	}
+
+	public void setOrd_submitted_date(Date ord_submitted_date) {
+		this.ord_submitted_date = ord_submitted_date;
+	}
+	
+	
 	
 	
 }

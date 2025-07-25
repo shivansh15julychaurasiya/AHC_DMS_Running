@@ -1,18 +1,26 @@
 package com.dms.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Where;
+
+import com.efiling.model.EfilingApplication;
 
 @Entity
 @Table(name="sub_documents")
@@ -32,6 +40,9 @@ public class SubDocument {
 	
 	@Column (name="sd_document_name")
 	private String sd_document_name;
+	
+	@Column (name="sd_application_status")
+	private String sd_application_status;
 	
 	@Column (name = "sd_no_of_pages")
 	private int sd_no_of_pages;
@@ -87,9 +98,49 @@ public class SubDocument {
 	@Column (name = "sd_mod_by")
 	private Long sd_mod_by;
 	
+	private transient Long judgmentID;
+	
 	@Column (name = "sd_mod_date")
 	private Date sd_mod_date;
 	
+	@Column(name="sd_nonmaintainable")
+	private boolean sd_nonmaintainable;
+	
+	@Column(name = "checked")
+	private boolean checked;
+	
+	
+	
+	private transient boolean checkBoxValue;
+	
+	
+	
+	
+	
+	public boolean isCheckBoxValue() {
+		return checkBoxValue;
+	}
+
+	public void setCheckBoxValue(boolean checkBoxValue) {
+		this.checkBoxValue = checkBoxValue;
+	}
+
+	public String getSd_application_status() {
+		return sd_application_status;
+	}
+
+	public void setSd_application_status(String sd_application_status) {
+		this.sd_application_status = sd_application_status;
+	}
+
+	public Long getJudgmentID() {
+		return judgmentID;
+	}
+
+	public void setJudgmentID(Long judgmentID) {
+		this.judgmentID = judgmentID;
+	}
+
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sd_if_mid",insertable = false, updatable = false)
 	private IndexField indexField;
@@ -102,9 +153,41 @@ public class SubDocument {
     @JoinColumn(name = "sd_status",insertable = false, updatable = false)
 	private Lookup applicationStatus;
 	
-	@Transient
-	private boolean checked;
 	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval=true)
+	@JoinColumn(name = "awp_sd_mid",referencedColumnName="sd_id",insertable = false, updatable = false)	
+	@Where(clause="awp_rec_status=1")
+	private List<ApplicationWithPetition> applicationWithPetition;
+	
+	
+
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval=true)
+	@JoinColumn(name = "sb_ap_sd_mid",referencedColumnName="sd_id",insertable = false, updatable = false)	
+	@Where(clause="sb_ap_rec_status=1")
+	private List<SubApplication> subApplications;
+
+	
+	/*@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sd_cr_by" , insertable = false, updatable = false)
+	private User user;*/
+	
+
+	public List<SubApplication> getSubApplications() {
+		return subApplications;
+	}
+
+	public void setSubApplications(List<SubApplication> subApplications) {
+		this.subApplications = subApplications;
+	}
+
+	public List<ApplicationWithPetition> getApplicationWithPetition() {
+		return applicationWithPetition;
+	}
+
+	public void setApplicationWithPetition(List<ApplicationWithPetition> applicationWithPetition) {
+		this.applicationWithPetition = applicationWithPetition;
+	}
+
 	public Long getSd_id() {
 		return sd_id;
 	}
@@ -322,8 +405,15 @@ public class SubDocument {
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
-	
-	
+
+	public boolean isSd_nonmaintainable() {
+		return sd_nonmaintainable;
+	}
+
+	public void setSd_nonmaintainable(boolean sd_nonmaintainable) {
+		this.sd_nonmaintainable = sd_nonmaintainable;
+	}
+
 
 	
 }

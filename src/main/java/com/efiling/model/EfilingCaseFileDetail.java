@@ -28,6 +28,14 @@ public class EfilingCaseFileDetail {
 	@Column(name="fd_case_no")
 	private String fd_case_no="";
 	
+	public Long getFd_cr_by() {
+		return fd_cr_by;
+	}
+
+	public void setFd_cr_by(Long fd_cr_by) {
+		this.fd_cr_by = fd_cr_by;
+	}
+
 	@Column(name="fd_case_year")
 	private Integer fd_case_year;	
 	
@@ -43,8 +51,14 @@ public class EfilingCaseFileDetail {
 	@Column(name="fd_case_type")
 	private Long fd_case_type;
 	
+	@Column(name="fd_cr_by")
+	private Long fd_cr_by;
+	
 	@Column(name="fd_rec_status")
 	private int fd_rec_status;
+	
+	@Column(name="fd_rd_status")
+	private String fd_rd_status;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fd_case_type",insertable = false, updatable = false)
@@ -120,6 +134,14 @@ public class EfilingCaseFileDetail {
 
 	public void setCaseType(EfilingCaseType caseType) {
 		this.caseType = caseType;
+	}
+
+	public String getFd_rd_status() {
+		return fd_rd_status;
+	}
+
+	public void setFd_rd_status(String fd_rd_status) {
+		this.fd_rd_status = fd_rd_status;
 	}
 	
 	

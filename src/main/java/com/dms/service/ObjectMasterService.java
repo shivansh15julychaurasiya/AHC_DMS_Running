@@ -96,6 +96,8 @@ public class ObjectMasterService {
 			Query query = em.createQuery("SELECT u FROM ObjectMaster u WHERE (om_object_link=:om_object_link)");
 			query.setParameter("om_object_link", om_object_link);
 			objectMaster = (ObjectMaster)query.getSingleResult();
+			
+			
 		}catch(Exception e) {			
 			e.printStackTrace();
 			

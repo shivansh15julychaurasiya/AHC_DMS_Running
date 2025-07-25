@@ -51,7 +51,7 @@ public class MasterController {
 		String jsonData="";
 		ActionResponse<CaseType> response=new ActionResponse<>();
 		List<CaseType> caseTypes=new ArrayList<>();
-		if(role.equals("Review_Officer"))
+		if(role.equals("Review_Officer") || role.equals("Assistant Review Officer"))
 		{
 			caseTypes=masterService.getCaseTypesByUser(user.getUm_id());
 		}
@@ -66,11 +66,38 @@ public class MasterController {
 
 	}
 	
-	@RequestMapping(value = "/getindexfields", method = RequestMethod.GET)
-	public @ResponseBody String getIndexFields() {
+	@RequestMapping(value = "/getcasetypesforchange", method = RequestMethod.GET)
+	public @ResponseBody String getCaseTypesForChange(HttpSession session) {
+		User user=(User) session.getAttribute("USER");
+		String role=user.getUserroles().get(0).getLk().getLk_longname();
 		String jsonData="";
+		ActionResponse<CaseType> response=new ActionResponse<>();
+		List<CaseType> caseTypes=new ArrayList<>();
+		
+			caseTypes=masterService.getCaseTypes();
+		
+		response.setModelList(caseTypes);
+		
+		jsonData=globalfunction.convert_to_json(response);
+		
+		return jsonData;
+
+	}
+	
+	@RequestMapping(value = "/getindexfields", method = RequestMethod.GET)
+	public @ResponseBody String getIndexFields(HttpSession session) {
+		String jsonData="";
+		User u=(User) session.getAttribute("USER");
 		ActionResponse<IndexField> response=new ActionResponse<>();
-		List<IndexField> indexFields=masterService.getSelectecdIndexFields();
+		List<IndexField> indexFields=null;
+		if(u.getUserroles().get(0).getLk().getLk_longname().equals("Stamp_Reporter")) {
+			indexFields=masterService.getSelectecdIndexFieldsStamp();
+		}
+		else {
+			indexFields=masterService.getSelectecdIndexFields();
+		}
+		
+		
 		response.setModelList(indexFields);		
 		jsonData=globalfunction.convert_to_json(response);		
 		return jsonData;
@@ -85,13 +112,39 @@ public class MasterController {
 		jsonData=globalfunction.convert_to_json(response);		
 		return jsonData;
 	}
+	
+	@RequestMapping(value = "/getApplicationsTypeList", method = RequestMethod.GET)
+	public @ResponseBody String getapplicationTypelist() 
+	{
+		String jsonData="";
+		ActionResponse<ApplicationTypes> response=new ActionResponse<>();
+		List<ApplicationTypes> applicationType = masterService.getApplicationsTypeList();
+		response.setModelList(applicationType);		
+		jsonData=globalfunction.convert_to_json(response);		
+		return jsonData;
+	}
+	
 	@RequestMapping(value = "/getapplications/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getApplications(@PathVariable("id") Long if_id,Model model) {
+	public @ResponseBody String getApplications(@PathVariable("id") Long if_id,Model model,HttpSession session) 
+	{
+		User user=(User) session.getAttribute("USER");
+		String role=user.getUserroles().get(0).getLk().getLk_longname();
+		
 		String jsonData="";
 		ActionResponse<ApplicationTypes> response=new ActionResponse<>();
 		IndexField index_field=masterService.getIndexField(if_id);
+		
 		List<ApplicationTypes> indexFields=masterService.getApplicationsByType(index_field.getIf_label());
-		response.setModelList(indexFields);		
+		if(role.equals("Review_Officer"))
+		{
+			indexFields.remove(1);
+			response.setModelList(indexFields);
+		
+		}
+		else
+		{
+			response.setModelList(indexFields);
+		}
 		jsonData=globalfunction.convert_to_json(response);		
 		return jsonData;
 	}

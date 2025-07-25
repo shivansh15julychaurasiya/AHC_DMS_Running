@@ -1,29 +1,51 @@
-var DocumentApp = angular.module("EDMSApp", [ 'ui.bootstrap','smart-table']);
+var EDMSApp = angular.module("EDMSApp", ['ngMask','ui.bootstrap']);
 
-DocumentApp.controller("editProfileCtrl", function($scope, $http) {
+EDMSApp.controller("editProfileCtrl", function($scope, $http) {
 
 	
 	$scope.userobj = {};
 	$scope.errors = [];
 	$scope.date={};
 	$scope.validitydate={};
+	$scope.old_password;
+	$scope.matchflag =false;
 	var baseUrl = "/dms/";
 
-/*	$scope.getEditProfileData = function() {
-		//alert(11);
-		console.log("Edit Profile");
+	$scope.matchOldPassword = function(){
+		console.log("Passworddddddd"+$scope.old_password);
+		
+		if($scope.old_password){
+		
+		$scope.entity = {
+				'old_password' : $scope.old_password
+			}
+		var response = $http.post(baseUrl + 'user/matchOldPassword',
+				$scope.entity);
+		response.success(function(data, status, headers, config) {
+			if (data.response == "TRUE") {
+				$scope.matchflag =true;
+				
+				
+				$scope.errorlist = [];
 
-		$http.get(baseUrl + 'user/getUserDetails').success(function(data) {
-			console.log(data);
+			} else {
+				
+				bootbox.alert({
+		    	    message: "Your old Password did not match",
+		    	    className: 'rubberBand animated'
+		    	});
+				$scope.errorlist = data.dataMapList;
 
-			$scope.userobj = data.data;
+			}
 
-			console.log($scope.userobj);
-		}).error(function(data, status, headers, config) {
-			console.log("Error in getting property details");
 		});
-
-	};*/
+		response.error(function(data, status, headers, config) {
+			console.log("Error in getting Master");
+		});
+		}
+		
+	}
+	
 
 
 	function convertDate(inputFormat) 
@@ -37,7 +59,7 @@ DocumentApp.controller("editProfileCtrl", function($scope, $http) {
        getEditProfileData();
 	
 	  function getEditProfileData() 
-	  {
+	  {debugger
 		//alert(11);
 		console.log("Edit Profile");
 		$http.get(baseUrl+'user/getUserDetails').success(function(data) {
@@ -95,24 +117,78 @@ DocumentApp.controller("editProfileCtrl", function($scope, $http) {
 	
 	
 	$scope.changePassword = function(data) {
-		alert(1);
+		$scope.passwordn;
+		$scope.passwordcn;
+	
 		console.log(data);
 		console.log("********");
 
-				
-			$scope.passwordn;
-			$scope.passwordcn;
-			$scope.entity={'password':$scope.passwordn,'passwordc':$scope.passwordcn}
+		if(!$scope.matchflag){
+			
+			bootbox.alert({
+	    	    message: "Old Password did not match",
+	    	    className: 'rubberBand animated'
+	    	});
+			return false;
+		}
 		
-			alert("Password:"+$scope.passwordn+"confirm password:"+$scope.passwordcn);
+		if(!$scope.passwordn && !$scope.passwordcn && !$scope.old_password ){
+			
+			bootbox.alert({
+		    	    message: "Plese Fill all the fields",
+		    	    className: 'rubberBand animated'
+		    	});
+			return false;
+		}
+		if($scope.passwordn == $scope.passwordcn){
+			
+		}
+		else{
+			
+			bootbox.alert({
+	    	    message: "New Password and Confirmed Password are not Matched",
+	    	    className: 'rubberBand animated'
+	    	});
+			return false;
+		}
+		
+		
+				
+			
+			$scope.entity={'password':$scope.passwordn,'passwordc':$scope.passwordcn}
+			
+			$scope.userobj.password=$scope.passwordn;
+		
+			/*alert("Password:"+$scope.passwordn+"confirm password:"+$scope.passwordcn);*/
         
-		    var response = $http.post('/dms/user/changePassword',$scope.entity);
+		    var response = $http.post('/dms/user/changepassword',$scope.userobj);
 		    response.success(function(data, status, headers, config) {
 			if (data.response == "TRUE") {
-				bootbox.alert("Password changed Successfully!");
+				
+				
+				/*bootbox.alert({
+		    	    message: "Password changed Successfully Press Ok to login",
+		    	    className: 'rubberBand animated'
+		    	    	
+		    	});*/
+				bootbox.confirm({ 
+				    size: "small",
+				    message: "Password changed Successfully Press Ok to login?", 
+				    className: 'rubberBand animated',
+				    callback: function(result){ 
+				    	if(result){
+				    		window.location.href=baseUrl;
+				    	}
+				    }
+				})
+				
+				
+				
+				
 				//window.location.href = "/pdms/pdms/logout";
-				window.location.href=baseUrl+"views/landingPage";
+				
 				$scope.errorlist = [];
+				
 			} else 
 			{ 
 				$scope.errorlist = data.dataMapList;
@@ -138,11 +214,9 @@ DocumentApp.controller("editProfileCtrl", function($scope, $http) {
 	
 	$scope.save = function(userobj) 
 	 { 
-	   //alert(1);	
 	   $scope.entity = userobj;
-	   
-		console.log("List before save");
-		var response = $http.post('/dms/user/updateName',$scope.entity);
+
+		var response = $http.post(baseUrl+'user/updateUser',$scope.entity);
 		response.success(function(data, status, headers, config) {
 			$scope.errorlist = {};
 			if (data.response == "FALSE") {
@@ -150,35 +224,36 @@ DocumentApp.controller("editProfileCtrl", function($scope, $http) {
 			}
 			else 
 			{
-				 bootbox.alert("Successfully updated record", function() {
-					
-			});
+				 alert("User updated successfully");
 		  }
 
 		});
 	};
 	
+	$scope.resetModel = function(userobj) 
+	 { 
+	   $scope.entity = userobj;
+
+		var response = $http.post(baseUrl+'user/updateUser',$scope.entity);
+		response.success(function(data, status, headers, config) {
+			$scope.errorlist = {};
+			if (data.response == "FALSE") {
+				$scope.errorlist = data.dataMapList;
+			}
+			else 
+			{
+				 alert("User updated successfully");
+		  }
+
+		});
+	};
 	
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/*
 	 $scope.landingForm= function() 
 	   {
               window.location.href=baseUrl+"views/landingPage";
-	   }         	
+	   } */        	
   
 });

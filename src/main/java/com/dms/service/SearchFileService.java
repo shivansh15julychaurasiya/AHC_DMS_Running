@@ -26,5 +26,22 @@ public class SearchFileService
 		
 		return result;
 	}
+	
+	@Transactional
+	public CaseFileDetail getCaseFileDetails(Long caseyear,Long casetype,String caseno) {
+		
+		CaseFileDetail result=null;
+		try 
+		{
+			 String query=" SELECT cfd from CaseFileDetail cfd where cfd.fd_case_year="+caseyear+" and cfd.fd_case_type="+casetype+" and cfd.fd_case_no='"+caseno+"' ";
+			result= (CaseFileDetail) em.createQuery(query).getSingleResult();
+				
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	   
+		
+		return result;
+	}
 
 }

@@ -33,7 +33,7 @@
 	</div>
 	<div class="modal-footer"> 
 		<div>
-		<input type="submit" value="Submit" ng-disabled="masterForm.$invalid" ng-click="save()"   class="btn btn-success"/>      
+		<input type="submit" value="Submit" ng-disabled="masterForm.$invalid || loading==false" ng-click="save()"   class="btn btn-success"/>      
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>  
 		</div>	     
 	</div>

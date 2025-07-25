@@ -77,34 +77,65 @@ EDMSApp.controller('SearchController',['$scope','$http','$q',function ($scope, $
 		      	console.log("Error in getting casetypes");
 		      });
 	 }
-    $scope.searchByCaseDetail = function(pageno){ 
+    $scope.searchByCaseDetail = function(pageno){
+    	
+    	$scope.showLoader =true;
+    	$scope.showStatus =false;
     	$scope.caseFileDetails=[];
     	$scope.total_count =0;
     	$scope.searchmodel.pageNumber=pageno;
     	$scope.searchmodel.itemsPerPage=$scope.itemsPerPage;
     	$http.post(urlBase+'search/getByCaseDetail',$scope.searchmodel).success(function(response){ 
          $scope.caseFileDetails = response.modelList;
+         if($scope.caseFileDetails.length > 0){
+        
+         }
+         else {
+        	 $scope.showStatus =true;
+         }
+         $scope.showLoader =false;
+         
          $scope.total_count = response.data;
         });
     };
     
     $scope.searchByParty = function(pageno){ 
+    	$scope.showLoader =true;
+    	$scope.showStatus =false;
     	$scope.caseFileDetails=[];
     	$scope.total_count =0;
     	$scope.searchmodel.pageNumber=pageno;
     	$scope.searchmodel.itemsPerPage=$scope.itemsPerPage;
     	$http.post(urlBase+'search/getByParty',$scope.searchmodel).success(function(response){ 
          $scope.caseFileDetails = response.modelList;
+         
+         $scope.caseFileDetails = response.modelList;
+         if($scope.caseFileDetails.length > 0){
+        
+         }
+         else {
+        	 $scope.showStatus =true;
+         }
+         $scope.showLoader =false;
          $scope.total_count = response.data;
         });
     };
     $scope.searchByCounsel = function(pageno){
+    	$scope.showLoader =true;
+    	$scope.showStatus =false;
     	$scope.caseFileDetails=[];
     	$scope.total_count =0;
     	$scope.searchmodel.pageNumber=pageno;
     	$scope.searchmodel.itemsPerPage=$scope.itemsPerPage;
     	$http.post(urlBase+'search/getByCounsel',$scope.searchmodel).success(function(response){ 
          $scope.caseFileDetails = response.modelList;
+         if($scope.caseFileDetails.length > 0){
+             
+         }
+         else {
+        	 $scope.showStatus =true;
+         }
+         $scope.showLoader =false;
          $scope.total_count = response.data;
         });
     };

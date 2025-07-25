@@ -4,7 +4,7 @@
 <%@page import="com.dms.model.UserRole"%>
 <%@ page import="java.util.List" %>
    
-   <jsp:include page="../content/header.jsp"></jsp:include> 
+   <jsp:include page="../content/header2.jsp"></jsp:include> 
 <% 
 User user = null;
 if(session.getAttribute("USER")!=null)

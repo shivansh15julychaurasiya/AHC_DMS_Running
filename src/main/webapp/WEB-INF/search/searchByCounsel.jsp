@@ -71,7 +71,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-show="caseFileDetails.length <= 0">
+								<tr ng-show="showStatus">
 									<td colspan="6" style="text-align:center;">No data found!!</td>
 								</tr>
 								<tr dir-paginate="casefile in caseFileDetails | itemsPerPage:itemsPerPage " total-items="total_count" pagination-id="id2">
@@ -85,6 +85,9 @@
 								</tr>
 							</tbody>
 						</table>
+						<div ng-if="showLoader" style="height: 60px">
+							<div id="loader" class="center"></div>
+						</div>
 						<dir-pagination-controls
 							max-size="8"
 							direction-links="true"
@@ -110,7 +113,7 @@
 </body>
 
 
-<script type="text/javascript"	src="${pageContext.request.contextPath}/js/scripts/controllers/SearchController.js"></script>	
+<script type="text/javascript"	src="${pageContext.request.contextPath}/js/scripts/controllers/SearchController.js?v=1"></script>	
 <script type="text/javascript"	src="${pageContext.request.contextPath}/js/bootstrap/angular-datepicker.js"></script>
 <script type="text/javascript"	src="${pageContext.request.contextPath}/js/bootstrap/ui-bootstrap-tpls.0.11.2.js"></script>
 <script type="text/javascript"	src="${pageContext.request.contextPath}/js/angularJs/dirPagination.js"></script>

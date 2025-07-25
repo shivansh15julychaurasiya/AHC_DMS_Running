@@ -14,6 +14,7 @@
  <tx:annotation-driven proxy-target-class="true"/>
  <tx:annotation-driven transaction-manager="transactionManager" />
 <tx:annotation-driven transaction-manager="transactionManagerEfiling" />
+<tx:annotation-driven transaction-manager="transactionManagerLKODMS" />
    <context:annotation-config/>
     <context:component-scan base-package="com.dms.*" />
     <context:component-scan base-package="com.efiling.*" />
@@ -25,6 +26,22 @@
         </property>
         <property name="suffix">
             <value>.jsp</value>
+        </property>
+    </bean>
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="465" />
+        <property name="username" value="bilalkhan0408@gmail.com" />
+        <property name="password" value="4545" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.debug">true</prop>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.port">465</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
         </property>
     </bean>
 <!--     <security:http> -->
@@ -47,20 +64,101 @@
       	
 	</bean> -->
 	
-	 <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+	
+	 <!-- Local System connection --> 
+	 
+	  
+	  <!-- <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
      	<property name="driverClassName" value="org.postgresql.Driver"/>
-      	<property name="url" value="jdbc:postgresql://localhost:5432/edms?charSet=LATIN1"/> 
-      	<property name="username" value="edms"/> 
-        <property name="password" value="edms"/>
+      	<property name="url" value="jdbc:postgresql://localhost:5432/New_EDMS?charSet=LATIN1"/> 
+      	<property name="username" value="postgres"/> 
+        <property name="password" value="postgres"/>
 	</bean>
+	
 	<bean class="org.apache.commons.dbcp.BasicDataSource" id="eFilingDataSource">
      	<property name="driverClassName" value="org.postgresql.Driver"/>
-      	<property name="url" value="jdbc:postgresql://localhost:5432/efiling?charSet=LATIN1"/> 
-      	<property name="username" value="efiling"/> 
-        <property name="password" value="efiling"/>
+      	<property name="url" value="jdbc:postgresql://localhost:5432/New_Efiling?charSet=LATIN1"/> 
+      	<property name="username" value="postgres"/> 
+        <property name="password" value="postgres"/>
+	</bean> 
+	
+	 <bean class="org.apache.commons.dbcp.BasicDataSource" id="dmsDataSourceLKO">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://localhost:5432/LKO_edms?charSet=LATIN1"/> 
+      	<property name="username" value="postgres"/> 
+        <property name="password" value="postgres"/>
+	</bean>     -->
+	
+	 <!-- Bilal Local System connection --> 
+	 
+	  
+	<!--   <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://localhost:5433/edmsNew?charSet=LATIN1"/> 
+      	<property name="username" value="postgres"/> 
+        <property name="password" value="postgres"/>
 	</bean>
+	
+	
+	
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="eFilingDataSource">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://localhost:5432/New_Efiling2021?charSet=LATIN1"/> 
+      	<property name="username" value="postgres"/> 
+        <property name="password" value="postgres"/>
+	</bean> 
+	
+	 <bean class="org.apache.commons.dbcp.BasicDataSource" id="dmsDataSourceLKO">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://localhost:5432/EDMS_ALD_NEW_2020?charSet=LATIN1"/> 
+      	<property name="username" value="postgres"/> 
+        <property name="password" value="postgres"/>
+	</bean>     -->
+	    
+	 
+	
+	
+
+	
+    
+    
+    
+    
    
 	
+	 
+ <!--  High Court server  connection  --> 
+	
+	  <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://192.168.0.176:5444/edms?charSet=LATIN1"/> 
+      	<property name="username" value="edms_user"/> 
+        <property name="password" value="edms123"/>
+	</bean>
+	
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="eFilingDataSource">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://192.168.0.160:5432/efiling?charSet=LATIN1"/> 
+      	<property name="username" value="dms"/> 
+        <property name="password" value="dms"/>
+	</bean> 
+	
+	
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dmsDataSourceLKO">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      		<property name="url" value="jdbc:postgresql://192.168.0.176:5444/edms?charSet=LATIN1"/> 
+      	<property name="username" value="edms_user"/> 
+        <property name="password" value="edms123"/>
+	</bean>   
+	
+	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://192.168.0.176:5444/edms?charSet=LATIN1"/> 
+      	<property name="username" value="edms_user"/> 
+        <property name="password" value="edms123"/>
+	</bean>   -->
+	     
+	    
    
       <!-- EntityManagerFactory -->
   <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactoryDMS">
@@ -69,12 +167,23 @@
      <property name="jpaProperties">
         <props>
             <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+            <!--  <prop key="hibernate.hbm2ddl.auto">update</prop> -->
         </props>
     </property> 
   </bean>
  <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactoryEfiling">
     <property name="persistenceUnitName" value="persistenceUnitEfiling"/>
     <property name="dataSource" ref="eFilingDataSource"/>
+     <property name="jpaProperties">
+        <props>
+            <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+        </props>
+    </property> 
+  </bean>
+  
+  <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactoryLKODMS">
+    <property name="persistenceUnitName" value="persistenceUnitLKODMS"/>
+    <property name="dataSource" ref="dmsDataSourceLKO"/>
      <property name="jpaProperties">
         <props>
             <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
@@ -91,7 +200,7 @@
          
 <!--         max size of file in memory (in bytes) -->
 <!--         <property name="maxInMemorySize" value="1048576" /> 1MB -->
-	<property name="maxUploadSize" value="268435456"/> 
+	<property name="maxUploadSize" value="524288000"/> 
     </bean>
     
   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -99,6 +208,9 @@
 </bean>
 <bean id="transactionManagerEfiling" class="org.springframework.orm.jpa.JpaTransactionManager">
     <property name="entityManagerFactory" ref="entityManagerFactoryEfiling" />
+</bean>
+<bean id="transactionManagerLKODMS" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactoryLKODMS" />
 </bean>
 
     <!-- Enable @Transactional annotation -->
@@ -108,6 +220,7 @@
        <mvc:interceptor> 
             <mvc:mapping path="/dms/index" /> 
              <mvc:mapping path="/**"/>
+              <mvc:exclude-mapping path="/userregistration/**"/>
             <bean class="com.dms.controller.RequestProcessingTimeInterceptor"></bean> 
         </mvc:interceptor>
    </mvc:interceptors>

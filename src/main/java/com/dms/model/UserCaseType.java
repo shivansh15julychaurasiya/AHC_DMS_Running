@@ -2,9 +2,12 @@ package com.dms.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -12,6 +15,8 @@ import javax.persistence.Table;
 public class UserCaseType {
 	
 	@Id
+	@GeneratedValue (strategy = GenerationType.SEQUENCE, generator="ucm_seq")
+	@SequenceGenerator(name="ucm_seq", sequenceName="ucm_seq", allocationSize=1)
 	@Column(name="ucm_id")
 	private Long ucm_id;
 	

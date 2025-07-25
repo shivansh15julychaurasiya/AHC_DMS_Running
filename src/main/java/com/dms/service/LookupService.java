@@ -21,7 +21,9 @@ public class LookupService {
 	@Qualifier(value = "entityManagerFactoryDMS")
 	private EntityManager em;
 
-
+	@PersistenceContext(unitName="persistenceUnitLKODMS")
+	@Qualifier(value = "entityManagerFactoryLKODMS")
+	private EntityManager lko;
 
 	@Transactional
 	public List<Lookup> getAll(){
@@ -167,7 +169,7 @@ public class LookupService {
 
 	@Transactional
 	public Lookup getLookUpObject(String setname) {
-		Lookup result = new Lookup() ;
+		Lookup result = new Lookup();
 		try{			
 			String sql = "SELECT l FROM Lookup l WHERE l.lk_setname= :setname  AND l.lk_rec_status=1";
 			result = (Lookup) em.createQuery(sql).setParameter("setname", setname).getSingleResult();
@@ -176,6 +178,16 @@ public class LookupService {
 		}return result;
 	}
 
+	@Transactional
+	public Lookup getLookUpObjectLKO(String setname) {
+		Lookup result = new Lookup();
+		try{			
+			String sql = "SELECT l FROM Lookup l WHERE l.lk_setname= :setname  AND l.lk_rec_status=1";
+			result = (Lookup) em.createQuery(sql).setParameter("setname", setname).getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+		}return result;
+	}
 	
 		@Transactional
 	public Lookup getLookup(String lk_setname,String lk_longname) {

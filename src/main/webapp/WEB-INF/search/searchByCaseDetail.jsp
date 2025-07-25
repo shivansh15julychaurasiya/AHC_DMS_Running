@@ -20,7 +20,7 @@
 							<thead>
 								<tr>
 									<td>
-										<select class="form-control" ng-model="searchmodel.caseTypeId" ng-options="caseType.ct_id as caseType.ct_name for caseType in caseTypes  | orderBy:'ct_name'">
+										<select class="form-control" ng-model="searchmodel.caseTypeId" ng-options="caseType.ct_id as (caseType.ct_label+'-'+caseType.ct_name+'') for caseType in caseTypes  | orderBy:'ct_label'">
 											<option value="">Select Case Type</option>
 										</select>
 									</td>
@@ -51,9 +51,10 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-show="caseFileDetails.length <= 0">
+								<tr ng-show="showStatus">
 									<td colspan="6" style="text-align:center;">No data found!!</td>
 								</tr>
+								
 								<tr dir-paginate="casefile in caseFileDetails | itemsPerPage:itemsPerPage " total-items="total_count" pagination-id="id2">
 									 <td>{{casefile.caseType.ct_name}}</td>
 									 <td>{{casefile.fd_case_no}}</td>
@@ -65,6 +66,11 @@
 								</tr>
 							</tbody>
 						</table>
+						
+						<div ng-if="showLoader" style="height: 60px">
+							<div id="loader" class="center"></div>
+						</div>
+						
 						<dir-pagination-controls
 							max-size="8"
 							direction-links="true"
@@ -90,7 +96,7 @@
 </body>
 
 
-<script type="text/javascript"	src="${pageContext.request.contextPath}/js/scripts/controllers/SearchController.js"></script>	
+<script type="text/javascript"	src="${pageContext.request.contextPath}/js/scripts/controllers/SearchController.js?v=1"></script>	
 <script type="text/javascript"	src="${pageContext.request.contextPath}/js/bootstrap/angular-datepicker.js"></script>
 <script type="text/javascript"	src="${pageContext.request.contextPath}/js/bootstrap/ui-bootstrap-tpls.0.11.2.js"></script>
 <script type="text/javascript"	src="${pageContext.request.contextPath}/js/angularJs/dirPagination.js"></script>

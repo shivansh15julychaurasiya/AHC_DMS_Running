@@ -46,6 +46,11 @@ public class RequestProcessingTimeInterceptor extends HandlerInterceptorAdapter 
 				Long role_id=user.getUserroles().get(0).getUr_role_id();
 				RoleObject ro=roleMappingService.getByRoleAndObject(role_id, om.getOm_id());
 				if(ro.getRo_role_id()==null){
+					/*if(!user.getUserroles().get(0).getUr_role_id().equals(351424L)) {
+					response.sendRedirect(request.getContextPath()+"/dms/access_denied");
+					return false;
+					}*/
+					
 					response.sendRedirect(request.getContextPath()+"/dms/access_denied");
 					return false;
 				}
@@ -53,7 +58,8 @@ public class RequestProcessingTimeInterceptor extends HandlerInterceptorAdapter 
 			}
 			return true;
 			
-		}else{
+		}else
+		{
 			response.sendRedirect(request.getContextPath());
 			return false;
 		}

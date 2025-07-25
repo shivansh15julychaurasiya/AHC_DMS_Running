@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dms.model.ActionResponse;
+import com.dms.model.CourtMaster;
+import com.dms.model.CourtUserMapping;
 import com.dms.model.LoginLog;
 import com.dms.model.ObjectMaster;
 import com.dms.model.User;
+import com.dms.service.CourtMasterService;
 import com.dms.service.LookupService;
 import com.dms.service.UserRoleService;
 import com.dms.service.UserService;
@@ -43,6 +46,9 @@ public class LoginController extends HttpServlet {
 	
 	@Autowired  
 	private MessageSource messageSource;
+	
+	@Autowired
+	private CourtMasterService courtMasterService;
 	
 	
 	@Autowired
@@ -86,6 +92,10 @@ public class LoginController extends HttpServlet {
 		return "redirect:/";
 	}
 	
+	
+	
+	
+	
 	@RequestMapping(value = "/dms/userlogin", method = RequestMethod.POST, consumes = { "application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
 	public @ResponseBody String userlogin(@RequestBody User user, HttpSession session,HttpServletRequest request) throws ParseException {
 		// System.out.println("call user login");
@@ -98,7 +108,7 @@ public class LoginController extends HttpServlet {
 		ActionResponse<User> response = new ActionResponse();
 		ActionResponse<ObjectMaster> response2 = new ActionResponse();
 	
-		if (user.getUm_id() != null)
+		if (user.getUm_id() != null && user.getUm_rec_status()==1)
 		{
 			
 				Date date1=new Date();
@@ -116,22 +126,65 @@ public class LoginController extends HttpServlet {
 				
 				user = userService.getByuserid(user.getUm_id());
 				List<ObjectMaster> ob_list = userService.getUserObjects(user.getUm_id());
-
+				
+				if(user.getUserroles().get(0).getLk().getLk_longname().equals("ECOURT")) {
+					CourtUserMapping cum =courtMasterService.getCourtMappingForUser(user.getUm_id());
+				//	session.setAttribute("USER", user);
+					if(cum != null) {
+						CourtMaster cm =courtMasterService.getCourtMaster(cum.getCum_court_mid());
+						if(cm != null) {
+							if(cm.getCm_rec_status() == 3) {
+							user.setCourtMaster(cm);
+							}
+							session.setAttribute("USER", user);
+							System.out.println("USer Info "+user);
+							
+						}
+					}
+				}
+				else {
 				session.setAttribute("USER", user);
+				}
 				response.setResponse("TRUE");
 				response.setModelData(user);
 				response2.setModelList(ob_list);
 				session.setAttribute("ob_list", ob_list);
 				System.out.println("objectlist="+cm.convert_to_json(ob_list));
-			if(user.getUserroles().get(0).getLk().getLk_longname().equals("DMSAdmin") || user.getUserroles().get(0).getLk().getLk_longname().equals("Review_Officer"))
+			if(user.getUserroles().get(0).getLk().getLk_longname().equals("DMSAdmin") )
 				response.setData("admin/home");
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Review_Officer") 
+					|| user.getUserroles().get(0).getLk().getLk_longname().equals("Ecourt_Team")
+					||  user.getUserroles().get(0).getLk().getLk_longname().equals("SECTION_OFFICER")
+				    ||  user.getUserroles().get(0).getLk().getLk_longname().equals("Assistant Review Officer") ||  user.getUserroles().get(0).getLk().getLk_longname().equals("Stamp_Reporter")
+				    ||  user.getUserroles().get(0).getLk().getLk_longname().equals("REGISTRAR") ||  user.getUserroles().get(0).getLk().getLk_longname().equals("REGISTRAR (J)")
+				    || user.getUserroles().get(0).getLk().getLk_longname().equals("JOINT REGISTRAR") || user.getUserroles().get(0).getLk().getLk_longname().equals("JOINT REGISTRAR (J)"))
+				response.setData("user/home");
+			
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Chief Justice"))
+				response.setData("nomination/nominated");
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Judge"))
+				response.setData("casefile/manage");
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("REGISTRAR"))
+				response.setData("nomination/nominated");
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("ECOURT"))
+				
+				response.setData("ecourt/home");
 			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("CaueList_Uploader"))
 				response.setData("causelist/home");
-			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("ECOURT"))
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Private_Secretary"))
 				response.setData("ecourt/home");
-			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Private_Secretory"))
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Bench Secretary"))
 				response.setData("ecourt/home");
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Download Copy"))
+				response.setData("casefile/download_manage");
+			else if(user.getUserroles().get(0).getLk().getLk_longname().equals("Stemp Reporter"))
+				response.setData("casefile/case_stempreport");
 
+		}
+		else if (user.getUm_rec_status()==2)
+		{
+			response.setResponse("FALSE");
+			response.setData("InActive User");
 		}
 		else
 		{
@@ -163,8 +216,8 @@ public class LoginController extends HttpServlet {
 		String result = " ";
 
 		user = userService.validateUser(user.getUsername());	
-		ActionResponse <User> response = new ActionResponse();		
-		ActionResponse <ObjectMaster> response2 = new ActionResponse();
+		ActionResponse <User> response = new ActionResponse<User>();		
+		ActionResponse <ObjectMaster> response2 = new ActionResponse<ObjectMaster>();
 		if(user.getUm_id() != null){	
 			user = userService.getByuserid(user.getUm_id());
 			

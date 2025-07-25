@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
+
 @Entity
 @Table(name = "application")
 public class EfilingApplication {
@@ -67,6 +69,79 @@ public class EfilingApplication {
 	@Column(name = "ap_diary_no")
 	private String ap_diary_no;
 	
+	
+	
+	private transient List<CheckList> checkList;
+	
+	private transient List<ApplicationCheckListMapping> appCheckListMapping;
+	
+	
+	private transient Date filingDate;
+	
+
+	@OneToOne
+	@JoinColumn(name="ap_at_mid",referencedColumnName="at_id",insertable=false,updatable=false)
+	private EfilingApplicationTypes applicationType;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ap_stage_lid",insertable = false, updatable = false)
+	private EfilingLookup caseStage;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ap_cr_by",insertable = false, updatable = false)
+	private EfilingUser userMaster;
+	
+	
+	
+	
+	public Date getFilingDate() {
+		return filingDate;
+	}
+
+	public void setFilingDate(Date filingDate) {
+		this.filingDate = filingDate;
+	}
+
+	public EfilingApplicationTypes getApplicationType() {
+		return applicationType;
+	}
+
+	public void setApplicationType(EfilingApplicationTypes applicationType) {
+		this.applicationType = applicationType;
+	}
+
+	public EfilingLookup getCaseStage() {
+		return caseStage;
+	}
+
+	public void setCaseStage(EfilingLookup caseStage) {
+		this.caseStage = caseStage;
+	}
+
+	public EfilingUser getUserMaster() {
+		return userMaster;
+	}
+
+	public void setUserMaster(EfilingUser userMaster) {
+		this.userMaster = userMaster;
+	}
+
+	public List<ApplicationCheckListMapping> getAppCheckListMapping() {
+		return appCheckListMapping;
+	}
+
+	public void setAppCheckListMapping(List<ApplicationCheckListMapping> appCheckListMapping) {
+		this.appCheckListMapping = appCheckListMapping;
+	}
+
+	public List<CheckList> getCheckList() {
+		return checkList;
+	}
+
+	public void setCheckList(List<CheckList> checkList) {
+		this.checkList = checkList;
+	}
+
 	public Long getAp_id() {
 		return ap_id;
 	}
@@ -186,5 +261,16 @@ public class EfilingApplication {
 	public void setAp_diary_no(String ap_diary_no) {
 		this.ap_diary_no = ap_diary_no;
 	}
+
+	@Override
+	public String toString() {
+		return "EfilingApplication [ap_id=" + ap_id + ", ap_fd_mid=" + ap_fd_mid + ", ap_no=" + ap_no + ", ap_year="
+				+ ap_year + ", ap_at_mid=" + ap_at_mid + ", ap_filed_by=" + ap_filed_by + ", ap_applicant_name="
+				+ ap_applicant_name + ", ap_cr_by=" + ap_cr_by + ", ap_cr_date=" + ap_cr_date + ", ap_stage_lid="
+				+ ap_stage_lid + ", ap_draft_no=" + ap_draft_no + ", ap_assign_to=" + ap_assign_to + ", ap_appl_email="
+				+ ap_appl_email + ", ap_appl_mobile=" + ap_appl_mobile + ", ap_diary_no=" + ap_diary_no + "]";
+	}
+	
+	
 	
 }

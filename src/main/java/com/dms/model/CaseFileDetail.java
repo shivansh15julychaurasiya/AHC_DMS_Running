@@ -11,15 +11,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 
-
+import com.efiling.model.EfilingApplication;
 
 @Entity
 @Table(name="case_file_details")
@@ -81,10 +83,180 @@ public class CaseFileDetail{
   
 	@Column(name="fd_keywords")
 	private String fd_keywords;
+	
+
+	@Column(name="fd_pet_adv")
+	private String fd_pet_adv;
+	
+	
+
+	@Column(name="fd_res_adv")
+	private String fd_res_adv;
   
 	@Column(name="fd_bench_code")
 	private Long fd_bench_code;
 	
+	@Column(name="fd_assign_to")
+	private Long fd_assign_to;
+	
+	@Column(name="fd_rc_flag")
+	private Boolean fd_rc_flag;
+	
+	@Column(name="fd_cl_flag")
+	private Boolean fd_cl_flag;
+	
+	@Column(name="fd_cl_by")
+	private Long fd_cl_by;
+	
+	
+	@Column(name="fd_cl_date")
+	private Date fd_cl_date;
+	
+	
+	
+	
+	public String getFd_pet_adv() {
+		return fd_pet_adv;
+	}
+
+	public void setFd_pet_adv(String fd_pet_adv) {
+		this.fd_pet_adv = fd_pet_adv;
+	}
+
+	public String getFd_res_adv() {
+		return fd_res_adv;
+	}
+
+	public void setFd_res_adv(String fd_res_adv) {
+		this.fd_res_adv = fd_res_adv;
+	}
+
+	public Boolean getFd_cl_flag() {
+		return fd_cl_flag;
+	}
+
+	public void setFd_cl_flag(Boolean fd_cl_flag) {
+		this.fd_cl_flag = fd_cl_flag;
+	}
+
+	public Long getFd_cl_by() {
+		return fd_cl_by;
+	}
+
+	public void setFd_cl_by(Long fd_cl_by) {
+		this.fd_cl_by = fd_cl_by;
+	}
+
+	public Date getFd_cl_date() {
+		return fd_cl_date;
+	}
+
+	public void setFd_cl_date(Date fd_cl_date) {
+		this.fd_cl_date = fd_cl_date;
+	}
+
+	@Transient
+	private Long cl_list_type_mid;
+	
+	@Transient
+	private Long cl_court_no;
+	
+	@Transient
+	private Date cl_dol;
+	
+	@Transient
+	private Integer cl_serial_no;
+	
+	@Transient
+	private String status;
+	
+	@Transient
+	private Long cl_to_judge;
+	
+	@Transient
+	private Integer notificationCount;
+	
+	@Transient
+	private Integer pendingAppCount;
+	
+	@Transient
+	private List<EfilingApplication> efilingApplicationList;
+	
+	
+	@Transient
+	private List<EfilingApplication> efilingPendingApplicationList;
+	
+	
+	
+	
+	
+
+	public Integer getPendingAppCount() {
+		return pendingAppCount;
+	}
+
+	public void setPendingAppCount(Integer pendingAppCount) {
+		this.pendingAppCount = pendingAppCount;
+	}
+
+	public List<EfilingApplication> getEfilingPendingApplicationList() {
+		return efilingPendingApplicationList;
+	}
+
+	public void setEfilingPendingApplicationList(List<EfilingApplication> efilingPendingApplicationList) {
+		this.efilingPendingApplicationList = efilingPendingApplicationList;
+	}
+
+	public Integer getNotificationCount() {
+		return notificationCount;
+	}
+
+	public void setNotificationCount(Integer notificationCount) {
+		this.notificationCount = notificationCount;
+	}
+
+	public List<EfilingApplication> getEfilingApplicationList() {
+		return efilingApplicationList;
+	}
+
+	public void setEfilingApplicationList(List<EfilingApplication> efilingApplicationList) {
+		this.efilingApplicationList = efilingApplicationList;
+	}
+
+	
+	
+	public Boolean getFd_rc_flag() {
+		return fd_rc_flag;
+	}
+
+	public void setFd_rc_flag(Boolean fd_rc_flag) {
+		this.fd_rc_flag = fd_rc_flag;
+	}
+
+	public Long getCl_to_judge() {
+		return cl_to_judge;
+	}
+
+	public void setCl_to_judge(Long cl_to_judge) {
+		this.cl_to_judge = cl_to_judge;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Integer getCl_serial_no() {
+		return cl_serial_no;
+	}
+
+	public void setCl_serial_no(Integer cl_serial_no) {
+		this.cl_serial_no = cl_serial_no;
+	}
+
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fd_case_type",insertable = false, updatable = false)
 	private CaseType caseType;
@@ -92,11 +264,13 @@ public class CaseFileDetail{
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "pt_fd_mid")
 	@Where(clause="pt_rec_status=1")
+	@OrderBy("pt_sequence ASC")
 	private List<Petitioner> petitioners;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "rt_fd_mid")
 	@Where(clause="rt_rec_status=1")
+	@OrderBy("rt_sequence ASC")
 	private List<Respondent> respondents;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
@@ -109,10 +283,30 @@ public class CaseFileDetail{
 	@Where(clause="rc_rec_status=1")
 	private List<RespondentCounsel> rCounsels;
 	
+	
+
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "sd_fd_mid")
+	@Where(clause="sd_rec_status=1")
+	private List<SubDocument> subDocument;
+	
+	/*@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "io_fd_mid")
 	private List<ImpugnedOrder> impugnedOrders;
+	*/
 	
+	@Transient
+	private CaseNominated caseNominated;
+
+	public CaseNominated getCaseNominated() {
+		return caseNominated;
+	}
+
+	public void setCaseNominated(CaseNominated caseNominated) {
+		this.caseNominated = caseNominated;
+	}
+
 	@Transient
 	private String case_type;
 	
@@ -132,6 +326,9 @@ public class CaseFileDetail{
 	@Transient
 	private String first_respondent;
 	
+	
+	
+
 	public Long getFd_id() {
 		return fd_id;
 	}
@@ -268,13 +465,13 @@ public class CaseFileDetail{
 		this.judgement_id = judgement_id;
 	}
 
-	public List<ImpugnedOrder> getImpugnedOrders() {
+	/*public List<ImpugnedOrder> getImpugnedOrders() {
 		return impugnedOrders;
 	}
 
 	public void setImpugnedOrders(List<ImpugnedOrder> impugnedOrders) {
 		this.impugnedOrders = impugnedOrders;
-	}
+	}*/
 
 	public List<Petitioner> getPetitioners() {
 		return petitioners;
@@ -379,5 +576,68 @@ public class CaseFileDetail{
 	public void setFirst_respondent(String first_respondent) {
 		this.first_respondent = first_respondent;
 	}
+
+	public Long getCl_list_type_mid() {
+		return cl_list_type_mid;
+	}
+
+	public void setCl_list_type_mid(Long cl_list_type_mid) {
+		this.cl_list_type_mid = cl_list_type_mid;
+	}
+
+	public Long getCl_court_no() {
+		return cl_court_no;
+	}
+
+	public void setCl_court_no(Long cl_court_no) {
+		this.cl_court_no = cl_court_no;
+	}
+
+	public Date getCl_dol() {
+		return cl_dol;
+	}
+
+	public void setCl_dol(Date cl_dol) {
+		this.cl_dol = cl_dol;
+	}
+
+	public List<SubDocument> getSubDocument() {
+		return subDocument;
+	}
+
+	public void setSubDocument(List<SubDocument> subDocument) {
+		this.subDocument = subDocument;
+	}
+
+	public Long getFd_assign_to() {
+		return fd_assign_to;
+	}
+
+	public void setFd_assign_to(Long fd_assign_to) {
+		this.fd_assign_to = fd_assign_to;
+	}
+
+	@Override
+	public String toString() {
+		return "CaseFileDetail [fd_id=" + fd_id + ", fd_case_type=" + fd_case_type + ", fd_case_no=" + fd_case_no
+				+ ", fd_case_year=" + fd_case_year + ", fd_document_name=" + fd_document_name + ", fd_file_source="
+				+ fd_file_source + ", fd_rec_status=" + fd_rec_status + ", fd_stage_lid=" + fd_stage_lid + ", fd_cr_by="
+				+ fd_cr_by + ", fd_cr_date=" + fd_cr_date + ", fd_mod_by=" + fd_mod_by + ", fd_mod_date=" + fd_mod_date
+				+ ", fd_disposal_date=" + fd_disposal_date + ", fd_category_code=" + fd_category_code + ", fd_district="
+				+ fd_district + ", fd_bench_type=" + fd_bench_type + ", fd_act_section=" + fd_act_section
+				+ ", fd_keywords=" + fd_keywords + ", fd_bench_code=" + fd_bench_code + ", fd_assign_to=" + fd_assign_to
+				+ ", fd_rc_flag=" + fd_rc_flag + ", cl_list_type_mid=" + cl_list_type_mid + ", cl_court_no="
+				+ cl_court_no + ", cl_dol=" + cl_dol + ", cl_serial_no=" + cl_serial_no + ", status=" + status
+				+ ", cl_to_judge=" + cl_to_judge + ", notificationCount=" + notificationCount
+				+ ", efilingApplicationList=" + efilingApplicationList + ", caseType=" + caseType + ", petitioners="
+				+ petitioners + ", respondents=" + respondents + ", pCounsels=" + pCounsels + ", rCounsels=" + rCounsels
+				+ ", subDocument=" + subDocument + ", caseNominated=" + caseNominated + ", case_type=" + case_type
+				+ ", judgement_date=" + judgement_date + ", bench_code=" + bench_code + ", judgement_id=" + judgement_id
+				+ ", first_petitioner=" + first_petitioner + ", first_respondent=" + first_respondent + "]";
+	}
+
+	
+
+	
 	
 }

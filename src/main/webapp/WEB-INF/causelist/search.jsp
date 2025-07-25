@@ -18,6 +18,12 @@
 								</div>	
 							</td>
 							<td width="25%">
+							<div class="input-group" >
+									<input type="checkbox"  id="transferred" name="transferred" ng-model="getTransferFlag">&nbsp
+                                     <label for="transferred">Transferred</label>
+								</div>	
+							</td>
+							<td width="25%">
 								<div class="input-group date" >
 								<input type="text" class="form-control"
 									datepicker-popup="{{format}}" ng-model="model.cl_dol"
@@ -31,7 +37,7 @@
 							<td width="25%">
 								<div class='input-group'>
 									<button type="submit" class="btn btn-sm btn-success"
-										ng-click="getList(model)">
+										ng-click="getListOnSearch(model)">
 										<span class="glyphicon glyphicon-plus-sign"></span>
 										Submit
 									</button>									
@@ -52,27 +58,50 @@
 						<th style="text-align:center">Petitioner vs Respondent</th>
 						<th style="text-align:center">Petitioner Council</th>
 						<th style="text-align:center">Respondent Council</th>
+						<th ng-if ="getTransferFlag" style="text-align:center">Transferred From</th>
 						</tr>
 						</thead>
 						<tbody>
 						<tr ng-repeat="data in displayedCollection">
-						<td><span ng-show="displayedCollection[$index-1].cl_serial_no==data.cl_serial_no"><b>with</b></span>
-							<span ng-show="displayedCollection[$index-1].cl_serial_no!=data.cl_serial_no">{{data.cl_serial_no}}</span>
+						<td><span ng-show="displayedCollection[$index-1].cl_serial_no==data.cl_serial_no && displayedCollection[$index-1].cl_court_no == data.cl_court_no"><b>with</b></span>
+							<span ng-show="displayedCollection[$index-1].cl_serial_no!=data.cl_serial_no && displayedCollection[$index-1].cl_court_no != data.cl_court_no">{{data.cl_serial_no}}</span>
+								<span ng-show="displayedCollection[$index-1].cl_serial_no==data.cl_serial_no && displayedCollection[$index-1].cl_court_no != data.cl_court_no">{{data.cl_serial_no}}</span>
+								<span ng-show="displayedCollection[$index-1].cl_serial_no!=data.cl_serial_no && displayedCollection[$index-1].cl_court_no == data.cl_court_no">{{data.cl_serial_no}}</span>
 						</td>
-						<td style="text-align:center;cursor: pointer;text-decoration: underline;">
-						<span ng-if="data.cl_list_type_mid==1 || data.cl_list_type_mid==2" ng-click="viewApplication(data.cl_ano,data.cl_ayr)">Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/>{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
-						<span ng-if="data.cl_list_type_mid !=1 && data.cl_list_type_mid !=2" ng-click="viewCaseFile(data.cl_fd_mid)">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						<td ng-show ='data.cl_fd_mid  && data.petAvailable==false' style="text-align:center;cursor: pointer;text-decoration: underline;">
+						<span ng-if="data.cl_list_type_mid==1 || data.cl_list_type_mid==2 || data.cl_list_type_mid==20 || data.cl_list_type_mid==24" ng-click="viewApplication(data.cl_ano,data.cl_ayr,data.cl_fd_mid)">Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/>{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						<span ng-if="data.cl_list_type_mid !=1 && data.cl_list_type_mid !=2 || data.cl_list_type_mid !=20 && data.cl_list_type_mid !=24" ng-click="viewCaseFile(data.cl_fd_mid)">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						</td>
+						
+						<td  ng-show ='!data.cl_fd_mid && data.petAvailable==false' style="text-align:center;cursor: pointer;">
+						<span ng-if="data.cl_list_type_mid==1 || data.cl_list_type_mid==2 || data.cl_list_type_mid==20 || data.cl_list_type_mid==24" >Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/>{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						<span ng-if="data.cl_list_type_mid !=1 && data.cl_list_type_mid !=2 || data.cl_list_type_mid !=20 && data.cl_list_type_mid !=24">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						</br>
+						<span class ="text-danger">Case File Not in Dms</span>
+						</td>
+						<td  ng-show ='data.cl_fd_mid && data.petAvailable==true' style="text-align:center;cursor: pointer;">
+						<span ng-if="data.cl_list_type_mid==1 || data.cl_list_type_mid==2 || data.cl_list_type_mid==20 || data.cl_list_type_mid==24" >Application No. {{data.cl_ano}}/{{data.cl_ayr}}<br/>{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						<span ng-if="data.cl_list_type_mid !=1 && data.cl_list_type_mid !=2 || data.cl_list_type_mid !=20 && data.cl_list_type_mid !=24">{{data.caseType.ct_label}}<br/> {{data.cl_case_no}}/{{data.cl_case_year}}</span>
+						</br>
+						<span class ="text-danger">Petition Not Available</span>
 						</td>
 						<td style="text-align:center">{{data.cl_first_petitioner}} <br/> vs <br/> {{data.cl_first_respondent}} </td>
 						<td style="text-align:center">{{data.cl_petitioner_council}}</td>
 						<td style="text-align:center">{{data.cl_respondent_council}}</td>
+						<td ng-if ="getTransferFlag" style="text-align:center">{{data.courtMaster.cm_name}}</td>
 						
 						</tr>
-						<tr ng-if="displayedCollection.length==0 && search" >
-							<td colspan="5" class="alert alert-danger">No Records Found</td>
-						</tr>
+						<tr ng-show="showStatus">
+									<td colspan="6" style="text-align:center;" class="alert alert-danger"> No data found!!</td>
+								</tr>
+						<!-- <tr ng-if="displayedCollection.length==0 && search" >
+							<td colspan="6" class="alert alert-danger">No Records Found</td>
+						</tr> -->
 						</tbody>
 						</table>
+						<div ng-if="showLoader" style="height: 60px">
+							<div id="loader" class="center"></div>
+						</div>
 					</div>
 					
 				</div>
@@ -81,7 +110,7 @@
 	</div>
 </div>
 </div> 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts/controllers/SearchCauseListController.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts/controllers/SearchCauseListController.js?v=3"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap/ui-bootstrap-tpls.0.11.2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/Smart-Table-master/dist/smart-table.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/apps.min.js"></script>

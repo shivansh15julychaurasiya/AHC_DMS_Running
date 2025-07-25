@@ -1,5 +1,47 @@
 var edmsApp = angular.module("EDMSApp",['smart-table']);
 
+edmsApp.directive ("select2", function ($timeout, $parse) {
+	  return {
+	    restrict: 'AC',
+	    require: 'ngModel',
+	    link: function(scope, element, attrs) {
+	      console.log(attrs);
+	      $timeout(function() {
+	        element.select2();
+	        
+	        element.select2Initialized = true;
+	      });
+
+	      var refreshSelect = function() {
+	        if (!element.select2Initialized) return;
+	        $timeout(function() {
+	          element.trigger('change');
+	        });
+	      };
+	      
+	      var recreateSelect = function () {
+	        if (!element.select2Initialized) return;
+	        $timeout(function() {
+	          element.select2('destroy');
+	          element.select2();
+	        });
+	      };
+
+	      scope.$watch(attrs.ngModel, refreshSelect);
+
+	      if (attrs.ngOptions) {
+	        var list = attrs.ngOptions.match(/ in ([^ ]*)/)[1];
+	        // watch for option list changel
+	        scope.$watch(list, recreateSelect);
+	      }
+
+	      if (attrs.ngDisabled) {
+	        scope.$watch(attrs.ngDisabled, refreshSelect);
+	      }
+	    }
+	  };
+	});
+
 edmsApp.controller("UserMasterCtrl",['$scope','$http', function($scope,$http) {
 	var urlBase="/dms/";
 	$scope.masterentity = {};	
@@ -13,9 +55,51 @@ edmsApp.controller("UserMasterCtrl",['$scope','$http', function($scope,$http) {
 	$scope.userpemissions=[];
 	$scope.repositories=[];
 	$scope.folders=[];
+	$scope.userApprovalData=[];
 	
+	
+	//getUserForApproval();
 	getMasterdata();
 	getRoleDD();
+	
+	
+$scope.approveUser =function(data){
+		
+		console.log("approve urser dataaaaaaaaaaa",data);
+		
+		data.hcu_approved_status= "Y";
+		
+		$http.post(urlBase+'/userApproval',data).success(function (data){
+			
+			console.log("status of approve user",data);
+			
+			
+		}).error(function(data, status, headers, config){
+			
+			console.log("error in getting data");
+			
+		});
+};
+		
+		 function getUserForApproval() 
+			{
+		    	console.log("this method invokedddd");
+				$http.get(urlBase+'/getUserForApproval').success(function (data) {
+		            	console.log("user approval dataaaaaaaa",data);
+		            	
+
+		            	
+		            	$scope.userApprovalData = data.modelData;
+		            	console.log("dataaaaaaaaaaaaa approv",$scope.userApprovalData);
+		           
+		            }).
+		            error(function(data, status, headers, config) {
+		            	console.log("Error in getting User data");
+		            });
+		    };
+		    
+		
+		
 	function getMasterdata() 
 	{
 		$http.get(urlBase+'user/getallusers').success(function (data) {
@@ -140,6 +224,19 @@ edmsApp.controller("UserMasterCtrl",['$scope','$http', function($scope,$http) {
 			$scope.masterentity.um_role_id= $scope.masterentity.userroles[0].ur_role_id;
 	};
     
+	 getCaseTypes();
+	function getCaseTypes(){
+		  $http.get(urlBase+'master/getcasetypes').success(function (masterentity) {
+			  for (var i = 0; i < masterentity.modelList.length; i++) {
+  			  masterentity.modelList[i].labelandname ="";
+  			  masterentity.modelList[i].labelandname = masterentity.modelList[i].ct_label.concat("-",masterentity.modelList[i].ct_name);
+  		  }
+		    		$scope.caseTypes=masterentity.modelList;
+		      }).
+		      error(function(data, status, headers, config) {
+		      	console.log("Error in getting casetypes");
+		      });
+	  }
 
 	$scope.resetModel=function()
 	{
@@ -150,42 +247,28 @@ edmsApp.controller("UserMasterCtrl",['$scope','$http', function($scope,$http) {
 		
 	};
     
-	$scope.Refresherrorlist=function()
+	$scope.Refresherrorlist=function(data)
 	{
+		$scope.um_id=data.um_id;
 		$scope.errorlist = null;
 	};
 
+	$scope.user={};
+	
 	$scope.changePassword = function(data) {
-		//alert(1);
-		console.log(data);
-		console.log("********");
-
-				
-			$scope.password;
-			$scope.confirmpassword;
-			$scope.entity={'password':$scope.password,'confirmpassword':$scope.confirmpassword}
-		
-
+				$scope.user=data;
+				$scope.user.um_id=$scope.um_id;
 		var response = $http.post(urlBase+'user/changepassword',
-				$scope.entity);
+				$scope.user);
 		response.success(function(data, status, headers, config) {
 			if (data.response == "TRUE") {
-			
 				$('#pass_Modal').modal('hide');		
 				$scope.errorlist=null;
 				$('.form-group').removeClass('has-error');
-				bootbox.alert("Password changed Successfully!");
-				
-				//$scope.errorlist = [];
-				//$scope.ansDetails = {};
+				alert("Password changed Successfully!");
 
 			} else {
-
 				$scope.errorlist = data.dataMapList;
-				/*$.each($scope.errorlist, function(k, v) {
-					$("#" + k).parent().parent().addClass('has-error');
-				});*/
-				//bootbox.alert("Password and Confirm Password not matched");
 				$scope.ansDetails = [];
 			
 			}

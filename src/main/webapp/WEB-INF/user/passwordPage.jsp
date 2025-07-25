@@ -22,14 +22,14 @@ role="form">
 					<div class="form-group" >
        									 <label class="control-label col-md-5 col-sm-5" for="password"><h5>New Password:</h5></label>
        									 	<div class="col-md-6 col-sm-6">
-							       				<input class="form-control" type="password" id="password" name="password" placeholder="New Password" ng-model="password" required  />
+							       				<input class="form-control" type="password" id="password" name="password" placeholder="New Password" ng-model="user.password" required  />
 							   			
 									</div>
 									</div>       
 							       <div  class="form-group" >
 							       <label class="control-label col-md-5 col-sm-5" for="confirmpassword"><h5>Confirm Password:</h5></label>
 							       <div class="col-md-6 col-sm-6">
-							       <input  class="form-control" type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" ng-model="confirmpassword" required  />
+							       <input  class="form-control" type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" ng-model="user.confirmpassword" required  />
 							   </div>						
 										</div>
 
@@ -40,9 +40,10 @@ data-loading-text="Loading..." value="Login" ng-click="login()"
 class="btn btn-success" /> -->
 <div class="modal-footer"> 
 <input type="submit" id="submitbtn"
-data-loading-text="Loading..." value="Save" ng-click="changePassword()"
+data-loading-text="Loading..." value="Save" ng-click="changePassword(user)"
 class="btn btn-success" />
 
             </div>
-
+</form>
+</div>
    

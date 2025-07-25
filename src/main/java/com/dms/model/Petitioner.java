@@ -63,7 +63,7 @@ public class Petitioner {
 		private Integer pt_rec_status;
 		
 		@Column(name = "pt_sequence")
-		private Long pt_sequence;
+		private Integer pt_sequence;
 		
 		@Column(name="pt_s_mid")
 		private Long pt_s_mid;
@@ -199,14 +199,15 @@ public class Petitioner {
 			this.pt_city = pt_city;
 		}
 
-		public Long getPt_sequence() {
+		public Integer getPt_sequence() {
 			return pt_sequence;
 		}
 
-		public void setPt_sequence(Long pt_sequence) {
+		public void setPt_sequence(Integer pt_sequence) {
 			this.pt_sequence = pt_sequence;
 		}
 
+		
 		
 		
 		

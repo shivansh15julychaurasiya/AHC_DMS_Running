@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -64,6 +65,35 @@ public class User {
 	@Column(name = "um_department_id")
 	private Long um_department_id;
 	
+	@Transient
+	private  List<Long> um_ct_id;
+	
+	@Transient
+	private String passwordc;
+	
+	
+	
+	public String getPasswordc() {
+		return passwordc;
+	}
+
+	public void setPasswordc(String passwordc) {
+		this.passwordc = passwordc;
+	}
+
+	public List<Long> getUm_ct_id() {
+		return um_ct_id;
+	}
+
+	public void setUm_ct_id(List<Long> um_ct_id) {
+		this.um_ct_id = um_ct_id;
+	}
+
+	@Transient
+	private String old_password;
+	
+	
+	
 	@Transient 
 	private Long um_role_id;
 	
@@ -77,6 +107,30 @@ public class User {
 	@JoinColumn(name = "ur_um_mid",referencedColumnName="um_id",insertable = false, updatable = false)	
 	private List<UserRole> userroles;
 		
+	@Transient
+	private CourtMaster courtMaster;
+
+	
+	
+	
+
+	
+
+	public CourtMaster getCourtMaster() {
+		return courtMaster;
+	}
+
+	public void setCourtMaster(CourtMaster courtMaster) {
+		this.courtMaster = courtMaster;
+	}
+
+	public String getOld_password() {
+		return old_password;
+	}
+
+	public void setOld_password(String old_password) {
+		this.old_password = old_password;
+	}
 
 	public Long getUm_id() {
 		return um_id;
@@ -214,6 +268,14 @@ public class User {
 	public void setCourt_id(Integer court_id) {
 		this.court_id = court_id;
 	}
+
+	
+
+	
+
+	
+	
+	
 	
 	
 }

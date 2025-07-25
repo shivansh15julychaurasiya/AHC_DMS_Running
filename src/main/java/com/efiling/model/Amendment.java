@@ -175,6 +175,15 @@ public class Amendment {
 
 	public void setAm_uploaded_date(Date am_uploaded_date) {
 		this.am_uploaded_date = am_uploaded_date;
+	}
+
+	@Override
+	public String toString() {
+		return "Amendment [am_id=" + am_id + ", am_type=" + am_type + ", am_at_mid=" + am_at_mid + ", am_created_by="
+				+ am_created_by + ", am_created=" + am_created + ", am_fd_mid=" + am_fd_mid + ", am_status=" + am_status
+				+ ", am_um_mid=" + am_um_mid + ", am_document_no=" + am_document_no + ", am_document_year="
+				+ am_document_year + ", am_uploaded_date=" + am_uploaded_date + ", applicationType=" + applicationType
+				+ ", lkStatus=" + lkStatus + ", userMaster=" + userMaster + "]";
 	}	
 	
 	

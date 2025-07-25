@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dms.utility.GlobalFunction;
 
+
+
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -24,4 +27,19 @@ public class AdminController {
 		return "/admin/home";
 
 	}
+	
+	@RequestMapping(value = "/dmscase", method = RequestMethod.GET)
+	public String dms() {
+		
+		return "/admin/dms";
+
+	}
+	@RequestMapping(value = "/onlinecasefiling", method = RequestMethod.GET)
+	public String onineCaseFiling() {
+		
+		return "/admin/efiling";
+
+	}
+	
+	
 }

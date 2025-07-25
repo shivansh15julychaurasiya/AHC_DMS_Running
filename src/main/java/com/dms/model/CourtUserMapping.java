@@ -17,8 +17,8 @@ public class CourtUserMapping
 {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "court_user_mappinag_seq")
-	@SequenceGenerator(name = "court_user_mappinag_seq", sequenceName = "court_user_mappinag_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "court_user_mapping_seq")
+	@SequenceGenerator(name = "court_user_mapping_seq", sequenceName = "court_user_mapping_seq", allocationSize = 1)
 	@Column(name = "cum_id")
 	private Long cum_id;
 
@@ -28,10 +28,13 @@ public class CourtUserMapping
 	@Column(name = "cum_user_mid")
 	private Long cum_user_mid;
 	
+	@Column(name = "cum_jg_mid")
+	private Long cum_jg_mid;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cum_court_mid",insertable = false, updatable = false)
 	private CourtMaster courtMaster;
-	
+		
 	public Long getCum_id() {
 		return cum_id;
 	}
@@ -62,6 +65,14 @@ public class CourtUserMapping
 
 	public void setCourtMaster(CourtMaster courtMaster) {
 		this.courtMaster = courtMaster;
+	}
+
+	public Long getCum_jg_mid() {
+		return cum_jg_mid;
+	}
+
+	public void setCum_jg_mid(Long cum_jg_mid) {
+		this.cum_jg_mid = cum_jg_mid;
 	}
 	
 

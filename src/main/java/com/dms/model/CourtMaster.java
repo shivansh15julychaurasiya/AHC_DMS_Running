@@ -30,6 +30,9 @@ public class CourtMaster {
 	@Column(name = "cm_rec_status")
 	private Integer cm_rec_status;
 	
+	@Column(name = "cm_bench_id")
+	private Integer cm_bench_id;
+	
 	@Column(name = "cm_cr_by")
 	private Long cm_cr_by;
 
@@ -41,6 +44,37 @@ public class CourtMaster {
 	
 	@Column(name = "cm_mod_date")
 	private Date cm_mod_date;
+	
+	@Column(name = "cm_judges_name")
+	private String cm_judges_name;
+	
+	public String getCm_judges_name() {
+		return cm_judges_name;
+	}
+
+	public void setCm_judges_name(String cm_judges_name) {
+		this.cm_judges_name = cm_judges_name;
+	}
+
+	private transient boolean updateFlag =false;
+
+	
+	
+	public boolean isUpdateFlag() {
+		return updateFlag;
+	}
+
+	public void setUpdateFlag(boolean updateFlag) {
+		this.updateFlag = updateFlag;
+	}
+
+	public Integer getCm_bench_id() {
+		return cm_bench_id;
+	}
+
+	public void setCm_bench_id(Integer cm_bench_id) {
+		this.cm_bench_id = cm_bench_id;
+	}
 
 	public Integer getCm_id() {
 		return cm_id;
@@ -104,6 +138,13 @@ public class CourtMaster {
 
 	public void setCm_mod_date(Date cm_mod_date) {
 		this.cm_mod_date = cm_mod_date;
+	}
+
+	@Override
+	public String toString() {
+		return "CourtMaster [cm_id=" + cm_id + ", cm_name=" + cm_name + ", cm_value=" + cm_value + ", cm_rec_status="
+				+ cm_rec_status + ", cm_bench_id=" + cm_bench_id + ", cm_cr_by=" + cm_cr_by + ", cm_cr_date="
+				+ cm_cr_date + ", cm_mod_by=" + cm_mod_by + ", cm_mod_date=" + cm_mod_date + "]";
 	}
 	
 	

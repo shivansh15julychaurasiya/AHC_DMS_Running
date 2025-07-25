@@ -19,7 +19,9 @@ import com.dms.model.ActionResponse;
 import com.dms.model.CourtMaster;
 import com.dms.model.CourtUserMapping;
 import com.dms.model.Lookup;
+import com.dms.model.SecurityQuestion;
 import com.dms.model.User;
+import com.dms.model.UserCaseType;
 import com.dms.model.UserRole;
 import com.dms.service.CourtMasterService;
 import com.dms.service.LookupService;
@@ -33,8 +35,6 @@ public class UserController {
 	
 	@Autowired
 	private UserService userservice;
-	
-	
 	
 	@Autowired
 	private LookupService lookUpService;
@@ -66,6 +66,130 @@ public class UserController {
 	@RequestMapping(value = "/user/edit")
 	public String edit(Model model) {
 		return "/views/editProfile";
+	}
+	
+	@RequestMapping(value = "/user/userApproval")
+	public String approval(Model model) {
+		return "/user/userApproval";
+	}
+	
+	@RequestMapping(value = "/user/home")
+	public String userHome(Model model) {
+		return "/user/home";
+	}
+	
+	
+	/*@RequestMapping(value = "/user/updateUser", method = RequestMethod.POST)
+	 public @ResponseBody String updateUser(@RequestBody User user,HttpSession session)
+	 {
+		 String jsonData=null; 
+		 
+		 ActionResponse<User>response=new ActionResponse();
+		 User userdetail = userservice.getUserDetail(user.getUm_id()); 
+		 
+		 System.out.println("userdetail:"+userdetail.getUm_id());
+		 System.out.println("updated full name :" +user.getUm_fullname());
+
+		 userdetail.setUm_fullname(user.getUm_fullname());
+		 userdetail.setUm_email(user.getUm_email());
+		 userdetail.setUm_mobile(user.getUm_mobile());
+		 userservice.save(userdetail);
+		
+		 session.setAttribute("USER", userdetail);
+		 
+		 response.setResponse("TRUE");
+		 jsonData = globalfunction.convert_to_json(response);
+		 
+		 return jsonData;
+		
+	 }*/
+	
+	@RequestMapping(value = "/user/changepassword", method = RequestMethod.POST)
+	public @ResponseBody String changepassword(@RequestBody User u,HttpSession session) 
+	{ 
+		String jsonData = null;
+		User user=(User) session.getAttribute("USER");
+		System.out.println(user.getUm_fullname());
+		ActionResponse<User> response =new ActionResponse<User>() ;
+		//response = umvalidation.doValidationForPassword(u);
+		
+		response.setResponse("TRUE");
+		
+		String pass=u.getPassword();
+		User u1 =null;
+		//System.out.println(u.getPassword()+"pass");
+		if (response.getResponse() == "TRUE") {
+			u.setPassword(globalfunction.md5encryption(pass));
+			System.out.println(pass);
+			userservice.update(u.getUm_id(),u.getPassword());
+		}
+		
+		if(u != null) {
+			jsonData = globalfunction.convert_to_json(response);
+			System.out.println("last "+response.getResponse());
+			
+		}
+		else {
+			response.setResponse("FALSE");
+		}
+		jsonData = globalfunction.convert_to_json(response);
+	
+	    return jsonData;
+	}
+	
+	@RequestMapping(value = "/user/matchOldPassword", method = RequestMethod.POST)
+	public @ResponseBody String matchOldPassword(@RequestBody User u,HttpSession session) 
+	{ 
+		
+		String jsonData = null;
+		User user=(User) session.getAttribute("USER");
+		ActionResponse<User> response =new ActionResponse<User>() ;
+		String old_pass =globalfunction.md5encryption(u.getOld_password());
+		if(user.getPassword().equals(old_pass)) {
+		
+		response.setResponse("TRUE");
+		}
+		else {
+			response.setResponse("False");
+		}
+		
+		String pass=u.getPassword();
+		//System.out.println(u.getPassword()+"pass");
+		if (response.getResponse() == "TRUE") {
+			
+		}
+		
+		jsonData = globalfunction.convert_to_json(response);
+		System.out.println("last "+response.getResponse());
+	    return jsonData;
+	}
+	
+	
+	
+	@RequestMapping(value = "/user/getUserDetails",method = RequestMethod.GET)
+	public @ResponseBody String getUserDetails(HttpSession session) {
+		
+		String jsonData=null;
+		
+		User user = (User) session.getAttribute("USER");
+		ActionResponse<User>response=new ActionResponse();
+    	
+		User userdetails = (User) session.getAttribute("USER");
+		
+		System.out.println("user.getUm_id()  "+user.getUm_id());
+		
+		User userdetail = userservice.getUserDetail(userdetails.getUm_id());
+	    
+		response.setResponse("TRUE");
+		response.setData(userdetail);
+	
+		
+		
+		jsonData = globalfunction.convert_to_json(response);
+		
+		
+		return jsonData;
+		
 	}
 	
 	@RequestMapping(value = "/user/getallusers")
@@ -161,11 +285,29 @@ public class UserController {
 				
 				CourtUserMapping cum=courtMasterService.getCourtMapping(um.getUm_id());
 				
+				/*if(um.isUm_in_chamber()) {
+					CourtMaster cm =courtMasterService.getCourtMaster(temp_um.getCourt_id());
+					
+					System.out.println("print court Master"+cm);
+				}*/
+				
 					cum.setCum_court_mid(temp_um.getCourt_id());
 					cum.setCum_user_mid(um.getUm_id());				
 				courtMasterService.saveMapping(cum);
 				urService.save(ur);
 			}
+			
+			UserCaseType uct = new UserCaseType();
+			List<Long> ut = new ArrayList<Long>();
+
+			ut = temp_um.getUm_ct_id();
+			for (int i = 0; i < ut.size(); i++) {
+				System.out.println(ut.get(i));
+				uct.setUcm_um_mid(um.getUm_id());
+				uct.setUcm_ct_mid(ut.get(i));
+				urService.save1(uct);
+			}
+			
 			um=userservice.getUser(um.getUm_id());
 			response.setModelData(um);
 		}	
@@ -193,9 +335,23 @@ public class UserController {
 			else
 			{*/
 			//	um.setPassword(globalfunction.md5encryption(um.getPassword()));
+			 User temp_um = um;
 				um.setUm_fullname(um.getUm_fullname());
 				
 			 um=userservice.save(um);
+			 
+			
+			 UserCaseType uct = new UserCaseType();
+				List<Long> ut = new ArrayList<Long>();
+
+				ut = temp_um.getUm_ct_id();
+				for (int i = 0; i < ut.size(); i++) {
+					System.out.println(ut.get(i));
+					uct.setUcm_um_mid(um.getUm_id());
+					uct.setUcm_ct_mid(ut.get(i));
+					urService.save1(uct);
+				}
+			 
 			response.setModelData(um);
 			//um.setPassword(globalfunction.md5encryption(um.getPassword()));
 		}
@@ -203,25 +359,23 @@ public class UserController {
 		return jsonData;
 		
 	}
-	@RequestMapping(value = "/user/changepassword", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/user/changePassword", method = RequestMethod.POST)
 	public @ResponseBody String changePassword(@RequestBody User u,HttpSession session) 
 	{ 
 		String jsonData = null;
-		User user=(User) session.getAttribute("USER");
-		System.out.println(user.getUm_fullname());
 		ActionResponse<User> response =new ActionResponse<User>() ;
 		response = umvalidation.doValidationForPassword(u);
-		
+		System.out.println(u.getUsername());
 		String pass=u.getPassword();
 		//System.out.println(u.getPassword()+"pass");
 		if (response.getResponse() == "TRUE") {
-			user.setPassword(globalfunction.md5encryption(pass));
+			u.setPassword(globalfunction.md5encryption(pass));
 			System.out.println(pass);
-			userservice.update(user);
+			userservice.update(u.getUm_id(),u.getPassword());
 		}
 		
-		jsonData = globalfunction.convert_to_json(response);
+		jsonData = globalfunction.convert_to_json(response);   
 		System.out.println("last "+response.getResponse());
 	    return jsonData;
-	}		
+	}		*/
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dms.model.UserCaseType;
 import com.dms.model.UserRole;
 
 @Service
@@ -42,6 +43,19 @@ public class UserRoleService {
 			return result;
 		}
 		
+	}
+	
+	
+	@Transactional
+	public UserCaseType save1(UserCaseType us) {
+
+		UserCaseType master = null;
+		try {
+			master = em.merge(us);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return master;
 	}
 	
 	@Transactional
@@ -97,7 +111,7 @@ public class UserRoleService {
 	
 	@Transactional
 	public List<Long> getSytemAdminUsers() {
-		List<Long> usersids = em.createQuery("select ur.ur_um_mid from UserRole ur where ur.ur_role_id In(Select lk.lk_id from Lookup lk where lk.lk_longname='DMSAdmin')").getResultList();
+		List<Long> usersids = em.createQuery("select ur.ur_um_mid from UserRole ur where ur.ur_role_id In(Select lk.lk_id from Lookup lk where lk.lk_longname in('DMSAdmin','Ecourt_Team'))").getResultList();
 		return usersids;
 	}
 	

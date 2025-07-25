@@ -31,6 +31,10 @@
 								<th st-sort="um_account_activation">Role</th>
 								<th style="width: 20%;" class="text-center">Action</th>					
 								</tr>
+								<tr>
+								<th><input st-search="username" placeholder="search for Username" class="input-sm form-control" type="search"/></th>
+									<th><input st-search="um_fullname" placeholder="search for User Full Name" class="input-sm form-control" type="search"/></th>
+								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="data in displayedCollection">
@@ -40,7 +44,7 @@
 								</td>
 								<td>
 								<a class="btn btn-info btn-xs" ng-click="setMasterdata(data)" data-toggle="modal" data-target="#user_Modal" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
-								<a class="btn btn-info btn-xs" ng-click="Refresherrorlist()" data-toggle="modal" data-target="#pass_Modal" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Change Password</a>
+								<a class="btn btn-info btn-xs" ng-click="Refresherrorlist(data)" data-toggle="modal" data-target="#pass_Modal" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Change Password</a>
 								</td>
 								</tr>
 							</tbody>
@@ -106,6 +110,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/Smart-Table-master/dist/smart-table.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/assets/js/apps.min.js"></script>
+	
+	<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/select2.min.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/angularJs/select2.full.min.js"></script>
 <script>
 	$(document).ready(function() {
 		App.init();

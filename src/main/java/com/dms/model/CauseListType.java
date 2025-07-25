@@ -40,6 +40,19 @@ public class CauseListType {
 	
 	@Column(name="clt_description")
 	private String clt_description;
+	
+	@Column(name = "clt_ccms_list")
+	private Integer clt_ccms_list;
+	
+	
+
+	public Integer getClt_ccms_list() {
+		return clt_ccms_list;
+	}
+
+	public void setClt_ccms_list(Integer clt_ccms_list) {
+		this.clt_ccms_list = clt_ccms_list;
+	}
 
 	public Long getClt_id() {
 		return clt_id;
@@ -103,6 +116,13 @@ public class CauseListType {
 
 	public void setClt_description(String clt_description) {
 		this.clt_description = clt_description;
+	}
+
+	@Override
+	public String toString() {
+		return "CauseListType [clt_id=" + clt_id + ", clt_name=" + clt_name + ", clt_rec_status=" + clt_rec_status
+				+ ", clt_cr_by=" + clt_cr_by + ", clt_cr_date=" + clt_cr_date + ", clt_mod_by=" + clt_mod_by
+				+ ", clt_mod_date=" + clt_mod_date + ", clt_description=" + clt_description + "]";
 	}
 	
 	

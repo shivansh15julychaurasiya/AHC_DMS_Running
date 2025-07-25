@@ -82,22 +82,22 @@ public class ImpugnedOrder {
 	@Column(name = "io_rec_status") 
 	private  Integer io_rec_status;
   
-	@OneToOne(cascade = CascadeType.PERSIST)
+	/*@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "io_district",insertable = false, updatable = false)
 	private District district;
+	*/
 	
-	
-	@OneToOne(cascade = CascadeType.PERSIST)
+	/*@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "io_hc_case_type",insertable = false, updatable = false)
-	private CaseType hcCaseType;
+	private CaseType hcCaseType;*/
 	
-	@OneToOne(cascade = CascadeType.PERSIST)
+/*	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "io_lc_case_type",insertable = false, updatable = false)
-	private LowerCourtCaseType lcCaseType;
+	private LowerCourtCaseType lcCaseType;*/
 	  
-	@OneToOne(cascade = CascadeType.PERSIST)
+	/*@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "io_lct_mid",insertable = false, updatable = false)
-	private LowerCourtTypes courtType;
+	private LowerCourtTypes courtType;*/
 	  
 	public Long getIo_id() {
 		return io_id;
@@ -235,29 +235,29 @@ public class ImpugnedOrder {
 		this.io_fd_mid = io_fd_mid;
 	}
 
-	public CaseType getHcCaseType() {
+	/*public CaseType getHcCaseType() {
 		return hcCaseType;
 	}
 
 	public void setHcCaseType(CaseType hcCaseType) {
 		this.hcCaseType = hcCaseType;
-	}
+	}*/
 
-	public LowerCourtCaseType getLcCaseType() {
+	/*public LowerCourtCaseType getLcCaseType() {
 		return lcCaseType;
 	}
 
 	public void setLcCaseType(LowerCourtCaseType lcCaseType) {
 		this.lcCaseType = lcCaseType;
-	}
+	}*/
 
-	public LowerCourtTypes getCourtType() {
+/*	public LowerCourtTypes getCourtType() {
 		return courtType;
 	}
 
 	public void setCourtType(LowerCourtTypes courtType) {
 		this.courtType = courtType;
-	}
+	}*/
 
 	public Integer getIo_rec_status() {
 		return io_rec_status;
@@ -267,13 +267,17 @@ public class ImpugnedOrder {
 		this.io_rec_status = io_rec_status;
 	}
 
-	public District getDistrict() {
+	public void setIo_fd_mid(Long io_fd_mid) {
+		this.io_fd_mid = io_fd_mid;
+	}
+
+	/*public District getDistrict() {
 		return district;
 	}
 
 	public void setDistrict(District district) {
 		this.district = district;
-	}
+	}*/
 	
 	
 }

@@ -33,9 +33,26 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void update(User u) {
-		User r1 = em.merge(u);
+	public void update(Long userid, String pass) {
+	
+		User old= em.find(User.class, userid);
+		old.setPassword(pass);
+		em.merge(old);
 	}
+	
+	@Transactional
+	public User update(User u) {
+		User r1 =null;
+		try {
+		 r1 = em.merge(u);
+		}
+		catch(Exception e) {
+			
+		}
+		return r1;
+	}
+	
+	
 	@Transactional
 	public LoginLog saveLog(LoginLog s) {
 
