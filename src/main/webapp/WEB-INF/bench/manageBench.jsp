@@ -56,6 +56,8 @@
 
 <button class="btn btn-success btn-sm" ng-disabled="showLoader" ng-click="correctionIaToday(row)" >Correction&Mention</button>
 
+<a class="btn btn-info btn-sm" ng-click="setMasterdata(row)" data-toggle="modal" data-target="#next_Modal" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Next Day</a>
+
 
                                             </td>
 
@@ -108,12 +110,26 @@
                         		 </div>
                    		 		</div>
               		 	    </div>
+              		 	    
+              		 	    	<div class="modal fade" id="next_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						  <div class="modal-dialog modal-lg">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="myModalLabel"> <span><strong> Next Day Causelist</strong></span>
+						        
+						      </div>	     
+					  			<%@ include file="../bench/_cause_modal.jsp"%>
+						    </div>
+						  </div>
+					</div>	
+              		 	    
                           <div class="modal fade" id="user_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						  <div class="modal-dialog modal-lg">
 						    <div class="modal-content">
 						      <div class="modal-header">
 						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						        <h4 class="modal-title" id="myModalLabel"> <span ng-if="!masterentity.um_id"><strong> Add New User</strong></span>
+						        <h4 class="modal-title" id="myModalLabel"> <span ng-if="!masterentity.um_id"><strong> Add New Bench</strong></span>
 						        <span ng-if="masterentity.um_id"><Strong>Update User</Strong></span></h4>
 						      </div>	     
 					  			<%@ include file="../bench/master_bench.jsp"%>
@@ -183,7 +199,7 @@
     <!-- ================== END PAGE LEVEL JS ================== -->
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/angularJs/ng-file-upload.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/angularJs/ngMask.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts/controllers/BenchController.js?v=3"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts/controllers/BenchController.js?v=4"></script>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap/angular-datepicker.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap/ui-bootstrap-tpls.0.11.2.js"></script>

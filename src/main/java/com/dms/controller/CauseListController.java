@@ -444,6 +444,7 @@ public class CauseListController {
 				
 				cl.setCaseChecked(Boolean.parseBoolean(cfd[0].toString()));
 				cl.setFileSource(cfd[1].toString().trim());
+				}
 				
 				if(cl.getCl_list_type_mid()==1L || cl.getCl_list_type_mid()==2L) {
 					SubDocument sd1=subDocumentService.getAppSubDocument(cl);
@@ -455,7 +456,8 @@ public class CauseListController {
 					}
 				}
 				else {
-					if(cl.getCl_iscrime().equals("Y")) {
+					/*if(cl.getCl_serial_no()==163) {*/
+					if(cl.getCl_iscrime().trim().equals("Y")) {
 						List<SameCrimDetails> scd=subDocumentService.getAllSameCrimDetails(cl.getCl_id());
 						
 						if(scd.size()!=0) {
@@ -477,7 +479,7 @@ public class CauseListController {
 					}*/
 					
 				}
-			}
+			
 			}
 			
 			/*if(causeList.getCl_list_type_mid()==null) {}
@@ -511,7 +513,69 @@ public class CauseListController {
 
 		List<CauseList> list = causeListService.getList(causeList);
 		
-		if(causeList.getCl_list_type_mid()==null) {
+		for(CauseList cl : list) {
+			
+
+			if(cl.getCl_fd_mid()!=null) {
+				Object[] cfd=caseFileDetailService.getCaseFileDetail1(cl.getCl_fd_mid());
+			SubDocument sd=subDocumentService.getPetitionSubDocument(cl.getCl_fd_mid(), 1);
+			
+			Petitioner pt=caseFileDetailService.getFirstPetitioner(cl.getCl_fd_mid());
+			
+			
+			if(pt!=null && !pt.getPt_name().trim().equals(cl.getCl_first_petitioner().trim())) {
+				cl.setCl_ecourt_status(false);
+			}
+			
+			if(sd ==null) {
+				cl.setPetAvailable(true);
+			}
+			
+		/*	cl.setCaseChecked(cfd.getFd_cl_flag());
+			cl.setFileSource(cfd.getFd_file_source().trim());*/
+			
+			cl.setCaseChecked(Boolean.parseBoolean(cfd[0].toString()));
+			cl.setFileSource(cfd[1].toString().trim());
+			}
+			
+			if(cl.getCl_list_type_mid()==1L || cl.getCl_list_type_mid()==2L) {
+				SubDocument sd1=subDocumentService.getAppSubDocument(cl);
+				if(sd1 ==null) {
+					SubApplication sb=subDocumentService.getSubAppSubDocument(cl);
+					if(sb==null) {
+						cl.setAppAvailable(true);
+						}						
+				}
+			}
+			else {
+				/*if(cl.getCl_serial_no()==163) {*/
+				if(cl.getCl_iscrime().trim().equals("Y")) {
+					List<SameCrimDetails> scd=subDocumentService.getAllSameCrimDetails(cl.getCl_id());
+					
+					if(scd.size()!=0) {
+						cl.setSameCrimDetails(scd);
+					}
+					}
+				if(cl.getCl_lcr_no()!=null) {
+					List<SameLcrDetails> sld=subDocumentService.getAllSameLcrDetails(cl.getCl_id());
+					
+					if(sld.size()!=0) {
+						cl.setSameLcrDetails(sld);
+					}
+					}
+				/*SubDocument sd1=subDocumentService.getNewAppSubDocument(cl.getCl_fd_mid(),1, cfd.getFd_cl_date());
+				if(sd1!=null)
+				{
+					
+					cl.setAppNew(true);
+				}*/
+				
+			}
+		
+		
+		}
+		
+/*		if(causeList.getCl_list_type_mid()==null) {
 			for(CauseList cl : list) {
 				if(cl.getCl_fd_mid()!=null ) {
 					SubDocument sd=subDocumentService.getPetitionSubDocument(cl.getCl_fd_mid(), 1);
@@ -590,7 +654,7 @@ public class CauseListController {
 			}
 			System.out.println(cl);
 		}
-		}
+		}*/
 		response.setResponse("true");
 		response.setModelList(list);
 		jsonData = globalfunction.convert_to_json(response);

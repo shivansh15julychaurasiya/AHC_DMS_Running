@@ -73,7 +73,10 @@ public class LoginController extends HttpServlet {
 	}*/
 	
 	
-	
+	@RequestMapping(value = "/")
+    public String defaultPage() {
+        return "../index11";
+    }  
 	
 	@RequestMapping(value = "/dms/login")
 	public String login() {	    	

@@ -68,18 +68,18 @@
 	 <!-- Local System connection --> 
 	 
 	  
-	  <!-- <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+	  <!--  <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
      	<property name="driverClassName" value="org.postgresql.Driver"/>
-      	<property name="url" value="jdbc:postgresql://localhost:5432/New_EDMS?charSet=LATIN1"/> 
+      	<property name="url" value="jdbc:postgresql://localhost:5433/dms?charSet=LATIN1"/> 
       	<property name="username" value="postgres"/> 
-        <property name="password" value="postgres"/>
+        <property name="password" value="vijay"/>
 	</bean>
 	
 	<bean class="org.apache.commons.dbcp.BasicDataSource" id="eFilingDataSource">
      	<property name="driverClassName" value="org.postgresql.Driver"/>
-      	<property name="url" value="jdbc:postgresql://localhost:5432/New_Efiling?charSet=LATIN1"/> 
+      	<property name="url" value="jdbc:postgresql://localhost:5432/New_Efiling21?charSet=LATIN1"/> 
       	<property name="username" value="postgres"/> 
-        <property name="password" value="postgres"/>
+        <property name="password" value="vijay"/>
 	</bean> 
 	
 	 <bean class="org.apache.commons.dbcp.BasicDataSource" id="dmsDataSourceLKO">
@@ -149,7 +149,7 @@
       		<property name="url" value="jdbc:postgresql://192.168.0.176:5444/edms?charSet=LATIN1"/> 
       	<property name="username" value="edms_user"/> 
         <property name="password" value="edms123"/>
-	</bean>   
+	</bean> 
 	
 	<!-- <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
      	<property name="driverClassName" value="org.postgresql.Driver"/>

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dms.model.CauseList;
+import com.dms.model.JudgeName;
 import com.dms.model.MediationDocs;
 import com.dms.model.Notes;
 import com.dms.model.OrderReport;
@@ -243,6 +244,20 @@ public class SubDocumentService
 		}
 	}
 	
+	public MediationDocs getByFdId(Long sd_id) {
+		// TODO Auto-generated method stub
+		MediationDocs medDocument=null;
+		try {
+			Query query=em.createQuery("SELECT d FROM MediationDocs d where d.mdn_fd_mid=:sd_id").setParameter("sd_id",sd_id);
+			medDocument= (MediationDocs) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}finally{
+			return medDocument;	
+		}
+	}
+	
 	
 	public SubDocument getApplication(Integer app_no, Integer app_year) {
 		// TODO Auto-generated method stub
@@ -430,6 +445,30 @@ public class SubDocumentService
 		try
 		{
 		result = (Notes)lko.createQuery("SELECT nt FROM Notes nt where nt.nt_fd_mid=:fd_id").setParameter("fd_id", fd_id).getSingleResult();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public Notes getNote1(Long fd_id,List<JudgeName> jn) {
+		String jnId=jn.get(0).getJn_id().toString();
+		if(jn.size()>1) {
+		for(int i=1;i < jn.size(); i++) {
+			jnId+=","+jn.get(i).getJn_id().toString();
+		}
+		}
+		
+		Notes result =null;
+		System.out.println("== --------");
+		try
+		{
+		result = (Notes)em.createQuery("SELECT nt FROM Notes nt where nt.nt_fd_mid=:fd_id and nt.nt_cr_by in ("+jnId+")")
+				.setParameter("fd_id", fd_id).getSingleResult();
+			/*result = (Notes)em.createQuery("SELECT nt FROM Notes nt where nt.nt_fd_mid=:fd_id ")
+					.setParameter("fd_id", fd_id).getSingleResult();*/
 		}
 		catch (Exception e) 
 		{

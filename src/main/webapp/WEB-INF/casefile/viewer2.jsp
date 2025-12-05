@@ -1,15 +1,18 @@
 	
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/viewer.css" />
+	
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/debugger.css" />
 
 <!-- This snippet is used in production (included from viewer.html) -->
 <link rel="resource" type="application/l10n"
 	href="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/locale/locale.properties" />
-<script src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/build/pdf.js?v=1"></script>
+<script src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/build/pdf.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/debugger.js"></script>
 <script
-	src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/viewer.js"></script>
+	src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/viewer.js?v=3"></script>
 
 <div tabindex="1" class="viewOnLoad" style="height: 450px; ">
     <div id="outerContainer">
@@ -208,7 +211,7 @@
           </div>
         </div>  <!-- secondaryToolbar -->
 
-        <div class="toolbar" >
+        <div class="toolbar" id ="pdfToolBar"  style ="top:50.2px; position:sticky; z-index: 5;">
           <div id="toolbarContainer">
             <div id="toolbarViewer">
               <div id="toolbarViewerLeft">
@@ -231,7 +234,7 @@
                 <input type="number" id="pageNumber" class="toolbarField" title="Page" value="1" min="1" tabindex="15" data-l10n-id="page" autocomplete="off">
                 <span id="numPages" class="toolbarLabel"></span>
               </div>
-              <div id="toolbarViewerRight" hidden>
+              <div id="toolbarViewerRight" >
                 <button id="openFile" class="toolbarButton hiddenLargeView" title="Open File" tabindex="31" data-l10n-id="open_file" hidden="true">
                   <span data-l10n-id="open_file_label">Open</span>
                 </button>
@@ -299,7 +302,7 @@
           </div>
         </div>
 
-        <div id="viewerContainer" tabindex="0" style="height: 900px;">
+        <div id="viewerContainer" tabindex="0" style="height: 1000px;">
           <div id="viewer" class="pdfViewer"></div>
         </div>
       </div> <!-- mainContainer -->

@@ -163,6 +163,96 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 		
 	 }
 	  
+	  $scope.nextCause = function(masterentity) {
+	    	console.log(masterentity);
+	    	
+	    	 
+			  console.log("dataaaaaaaaaaaaaaaa",content);
+			  $scope.court=masterentity;
+			  $scope.showLoader =true;
+			  $('#next_Modal').modal('hide');
+			  
+			  var response = $http.post(urlBase+'bench/nextDayGen',$scope.court);		 
+				response.success(function(data, status, headers, config) {					
+					if(data.response=="FALSE"){					
+						alert("Kuch Nhi Utha");
+					}
+					
+					if(data.response=="TRUE"){					
+						alert("CHAL GAYI");
+					}
+					 $scope.showLoader =false;
+					
+			});
+			response.error(function(data, status, headers, config) {
+				alert( "Error");
+			});
+		          
+			
+		 
+	    }
+	  
+	  $scope.nextTrans = function(masterentity) {
+	    	console.log(masterentity);
+	    	
+	    	 
+			  console.log("dataaaaaaaaaaaaaaaa",content);
+			  $scope.court=masterentity;
+			  $scope.showLoader =true;
+			  $('#next_Modal').modal('hide');
+			  
+			  var response = $http.post(urlBase+'bench/nextTrans',$scope.court);		 
+				response.success(function(data, status, headers, config) {					
+					if(data.response=="FALSE"){					
+						alert("Kuch Nhi Utha");
+					}
+					
+					if(data.response=="TRUE"){					
+						alert("CHAL GAYI");
+					}
+					 $scope.showLoader =false;
+					
+			});
+			response.error(function(data, status, headers, config) {
+				alert( "Error");
+			});
+		          
+			
+		 
+	    }
+	  
+	  $scope.nextCorrection = function(masterentity) {
+	    	console.log(masterentity);
+	    	
+	    	 
+			  console.log("dataaaaaaaaaaaaaaaa",content);
+			  $scope.court=masterentity;
+			  $scope.showLoader =true;
+			  
+			  $('#next_Modal').modal('hide');
+			  
+			  var response = $http.post(urlBase+'bench/nextCorrection',$scope.court);		 
+				response.success(function(data, status, headers, config) {					
+					if(data.response=="FALSE"){					
+						alert("Kuch Nhi Utha");
+					}
+					
+					if(data.response=="TRUE"){					
+						alert("CHAL GAYI");
+					}
+					 $scope.showLoader =false;
+					
+			});
+			response.error(function(data, status, headers, config) {
+				alert( "Error");
+			});
+		          
+			
+		 
+	    }
+	  
+	  
+	  
 	  $scope.correctionIaToday = function(content) { 
 		  console.log("dataaaaaaaaaaaaaaaa",content);
 		  $scope.court=content;
@@ -203,6 +293,10 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 		      	console.log("Error in getting casetypes");
 		      });
 	  }
+	  
+	  $scope.setMasterdata = function(masterentity) {
+			$scope.masterentity = angular.copy(masterentity);
+		};
 	  
 	  getAllCourts();
 	  

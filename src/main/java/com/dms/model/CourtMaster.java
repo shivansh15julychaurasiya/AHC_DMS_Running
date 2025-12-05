@@ -48,6 +48,16 @@ public class CourtMaster {
 	@Column(name = "cm_judges_name")
 	private String cm_judges_name;
 	
+	private transient Date clDate;
+	
+	public Date getClDate() {
+		return clDate;
+	}
+
+	public void setClDate(Date clDate) {
+		this.clDate = clDate;
+	}
+
 	public String getCm_judges_name() {
 		return cm_judges_name;
 	}

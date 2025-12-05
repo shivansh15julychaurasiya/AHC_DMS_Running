@@ -3993,8 +3993,7 @@ class PageViewport {
     dontFlip = false
   }) {
     this.viewBox = viewBox;
-    /*this.scale = scale;*/
-    this.scale = "auto";
+    this.scale = scale;
     this.rotation = rotation;
     this.offsetX = offsetX;
     this.offsetY = offsetY;

@@ -596,6 +596,8 @@ public class CauseListService
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date cl_dol1;
 		String date2=null;
+		Date date = new Date();
+		String currentDate = formatter.format(date);
 		try {
 			cl_dol1 = formatter.parse(cl_dol);
 			 date2=formatter.format(cl_dol1);
@@ -613,7 +615,7 @@ public class CauseListService
 			Query query  =  em.createNativeQuery("select Distinct cl_fd_mid,(cl_court_no-2),cl_serial_no,cl_first_petitioner,pt_name,\r\n" + 
 					"(select ct_label from case_types  where ct_id=cl_case_type_mid),cl_case_no,cl_case_year from cause_list,petitioner_details where  cl_fd_mid =pt_fd_mid\r\n" + 
 					"and cl_first_petitioner not ilike '%' ||SPLIT_PART(pt_name, ' ', 1)||'%'  and pt_sequence=1 and cl_dol='"+date2 +"'  and cl_fd_mid  in(\r\n" + 
-							"select fd_id from case_file_details  where trim(fd_file_source)='"+fd_file_source+"' and case_file_details.fd_cl_flag ='false'  ) \r\n" + 
+							"select fd_id from case_file_details  where trim(fd_file_source)='"+fd_file_source+"' ) \r\n" + 
 							"order by cl_court_no ");
 			
 						

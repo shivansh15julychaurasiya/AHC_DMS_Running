@@ -889,6 +889,104 @@ List<SubDocument> subList =cfd.getSubDocument();
 				c.setCl_list_type_mid(39L);
 				c.setCount(Integer.parseInt(row1[0].toString()));
 			}
+			if (row1[1].toString().equals("40")) {
+				c.setCl_list_type_mid(40L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("41")) {
+				c.setCl_list_type_mid(41L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+                    
+			if (row1[1].toString().equals("42")) {
+				c.setCl_list_type_mid(42L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("43")) {
+				c.setCl_list_type_mid(43L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("44")) {
+				c.setCl_list_type_mid(44L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("45")) {
+				c.setCl_list_type_mid(45L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("46")) {
+				c.setCl_list_type_mid(46L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("47")) {
+				c.setCl_list_type_mid(47L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("48")) {
+				c.setCl_list_type_mid(48L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("49")) {
+				c.setCl_list_type_mid(49L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("50")) {
+				c.setCl_list_type_mid(50L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("51")) {
+				c.setCl_list_type_mid(51L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("52")) {
+				c.setCl_list_type_mid(52L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}if (row1[1].toString().equals("53")) {
+				c.setCl_list_type_mid(53L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("54")) {
+				c.setCl_list_type_mid(54L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("55")) {
+				c.setCl_list_type_mid(55L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}if (row1[1].toString().equals("56")) {
+				c.setCl_list_type_mid(56L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}if (row1[1].toString().equals("57")) {
+				c.setCl_list_type_mid(57L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}if (row1[1].toString().equals("58")) {
+				c.setCl_list_type_mid(58L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("59")) {
+				c.setCl_list_type_mid(59L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("60")) {
+				c.setCl_list_type_mid(60L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("61")) {
+				c.setCl_list_type_mid(61L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("62")) {
+				c.setCl_list_type_mid(62L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("63")) {
+				c.setCl_list_type_mid(63L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			if (row1[1].toString().equals("64")) {
+				c.setCl_list_type_mid(64L);
+				c.setCount(Integer.parseInt(row1[0].toString()));
+			}
+			
 			cList.add(c);
 		}
 		response.setModelList(cList);

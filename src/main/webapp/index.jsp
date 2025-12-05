@@ -45,7 +45,7 @@ body {
 
 .login {
   position:relative;
-  height: 380px;
+  height: 390px;
   width: 405px;
   margin: auto;
   padding: 10px 10px;
@@ -68,7 +68,7 @@ body {
 }
 
 form {
-  padding-top: 50px;
+  padding-top: 18px;
 }
 
 /* .active {
@@ -367,7 +367,7 @@ textarea {
    <input type="password" class="text keyboard-input"  id="password" name="password"  ng-model="loginform.password" required placeholder="Password" />
      <span style="color: purple"><b>password</b></span>
      </div>
-    <br>
+    
     <!-- <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" />
     <label for="checkbox-1-1">Keep me Signed in</label> -->
     

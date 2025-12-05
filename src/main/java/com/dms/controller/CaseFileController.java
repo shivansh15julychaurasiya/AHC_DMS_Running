@@ -2255,7 +2255,7 @@ public class CaseFileController {
 				 		 
 				 		subDocuments.add(sb);
 				 		 
-				 		 
+				 		downloadFile(sb.getJudgmentID(), uploadPath);
 				 		  
 				 	   }
 				    }
@@ -2799,13 +2799,13 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 			Lookup lookupRepo = lookupService.getLookUpObject("REPOSITORYPATH");
 			
 			
-			/*String srcPath = lookupRepo.getLk_longname() + File.separator
+			String srcPath = lookupRepo.getLk_longname() + File.separator
 					+ caseFileDetail.getCaseType().getCt_label()
-					+ File.separator ;*/
+					+ File.separator ;
 			
-			String srcPath = "D:\\Allahabad High Court\\Allahabad" + File.separator
+		/*	String srcPath = "D:\\Allahabad High Court\\Allahabad" + File.separator
 			+ caseFileDetail.getCaseType().getCt_label()
-			+ File.separator ;
+			+ File.separator ;*/
 			
 			String fileName=null;
 			
@@ -2831,9 +2831,11 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 			}
 			
 
-			File source = new File(srcPath);
+			/*File source = new File(srcPath);*/
 			
-			/*File source = new File("C:\\Users\\Alok\\Pictures\\WRIC149172020_PETN_1.pdf");*/
+			/*File source = new File("C:\\Users\\Alok\\Documents\\WRIC323162025_PETN_1.pdf");*/
+			
+			File source = new File("C:\\Users\\Alok\\Pictures\\stamp rept\\WTAX43662025_PETN_1.pdf");
 
 			String uploadPath = context.getRealPath("");
 			File dest = new File(uploadPath + File.separator + "uploads"
@@ -5857,6 +5859,8 @@ else {
 				 		 sb.setSubApplications(new ArrayList<SubApplication>());
 				 		 
 				 		subDocuments.add(sb);
+				 		
+				 		downloadFile(sb.getJudgmentID(), uploadPath);
 				 		 
 				 		 
 				 		  
@@ -5977,6 +5981,7 @@ else {
 				 		 
 				 		subDocuments.add(sb);
 				 		 
+				 		downloadFile(sb.getJudgmentID(), uploadPath);
 				 		 
 				 		  
 				 	   }
@@ -7139,8 +7144,8 @@ else {
 			
 				List<JudgeName> judge = courtMasterService.getJudgeByECourtMappingUmid(user.getCourtMaster().getCm_bench_id());
 			
-			/*Notes notedata = subDocumentService.getNote(fd_id,judge.getJn_id());*/
-				Notes notedata = subDocumentService.getNote(fd_id);
+			Notes notedata = subDocumentService.getNote1(fd_id,judge);
+				/*Notes notedata = subDocumentService.getNote(fd_id);*/
 			
 			response.setResponse("TRUE");
 			response.setModelData(notedata);
