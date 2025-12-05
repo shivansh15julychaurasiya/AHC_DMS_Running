@@ -389,7 +389,26 @@ public class CauseListService
 			querystr+=" AND c.cl_court_no="+causeList.getCl_court_no();
 		}
 		try {
-			Query query  =  em.createQuery("SELECT count(distinct cl_serial_no)as count,cl_list_type_mid from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" and c.cl_rec_status=1 group by c.cl_list_type_mid");	
+//			Query query  =  em.createQuery("SELECT count(distinct cl_serial_no)as count,cl_list_type_mid from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" and c.cl_rec_status=1 group by c.cl_list_type_mid");
+			
+			/*
+			 * Query query = em.createQuery(
+			 * "SELECT count(distinct c.cl_serial_no), c.cl_list_type_mid, t.clt_description "
+			 * + "FROM CauseList c JOIN CauseListType t ON c.cl_list_type_mid = t.clt_id " +
+			 * "WHERE c.cl_dol = '" + cl_dol + "'" + querystr +
+			 * " AND c.cl_rec_status = 1 GROUP BY c.cl_list_type_mid, t.clt_description" );
+			 */
+			
+			String sql = "SELECT COUNT(DISTINCT c.cl_serial_no) AS total_count, " +
+		             "c.cl_list_type_mid, t.clt_description " +
+		             "FROM cause_list c " +
+		             "JOIN cause_list_type t ON c.cl_list_type_mid = t.clt_id " +
+		             "WHERE c.cl_dol = '" + cl_dol + "' " +
+		             "AND c.cl_court_no = " + querystr + " " +
+		             "AND c.cl_rec_status = 1 " +
+		             "GROUP BY c.cl_list_type_mid, t.clt_description " +
+		             "ORDER BY t.clt_description";
+
 			list= query.getResultList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -427,7 +446,9 @@ public class CauseListService
 			querystr+=" AND c.cl_court_no="+causeList.getCl_court_no();
 		}
 		try {
-			Query query  =  em.createQuery("SELECT count(cl_serial_no)as count,cl_list_type_mid ,c.cl_court_no from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" and c.cl_rec_status=3 group by c.cl_list_type_mid , c.cl_court_no");	
+			Query query  =  em.createQuery("SELECT count(cl_serial_no)as count,cl_list_type_mid ,c.cl_court_no from CauseList c WHERE c.cl_dol ='"+cl_dol +"'"+querystr +" and c.cl_rec_status=3 group by c.cl_list_type_mid , c.cl_court_no");
+			
+
 			list= query.getResultList();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

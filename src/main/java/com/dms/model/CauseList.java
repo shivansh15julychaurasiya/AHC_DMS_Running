@@ -109,6 +109,9 @@ public class CauseList {
 	@Column(name = "cl_case_stage")
 	private String cl_case_stage;
 	
+	private String listTypeName;
+	
+	
 	
 
 	@Transient
@@ -243,11 +246,13 @@ public class CauseList {
 	
 	
 	
-	
-
-	public String getCl_islcr() {
-		return cl_islcr;
-	}
+	public String getListTypeName() {
+		
+		return listTypeName;
+		}
+	public void setListTypeName(String listTypeName) {
+		this.listTypeName = listTypeName;
+		}
 
 	public void setCl_islcr(String cl_islcr) {
 		this.cl_islcr = cl_islcr;

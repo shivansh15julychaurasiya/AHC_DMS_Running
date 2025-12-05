@@ -273,7 +273,7 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 		response.success(function(data, status, headers, config) {
 			$scope.masterdata = data.modelList;
 
-			angular.forEach($scope.masterdata, function(object, key) {
+/*			angular.forEach($scope.masterdata, function(object, key) {
 
 				if (object.cl_list_type_mid == 1) {
 					$scope.applicationcount = object.count
@@ -365,7 +365,7 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 						$scope.showtu2List = true;
 					}
 				}
-				/****************** Vijay Chaurasiya *****************/
+				***************** Vijay Chaurasiya ****************
 
 				if (object.cl_list_type_mid == 42) {
 					$scope.tu6count = object.count;
@@ -559,7 +559,7 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 				}
 
 
-			});
+			});*/
 
 		});
 		response.error(function(data, status, headers, config) {

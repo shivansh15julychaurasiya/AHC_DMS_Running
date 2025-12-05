@@ -770,7 +770,7 @@ List<SubDocument> subList =cfd.getSubDocument();
 		}
 		List<CauseList> cList = new ArrayList<>();
 
-		for (int i = 0; i < list.size(); i++) {
+	/*	for (int i = 0; i < list.size(); i++) {
 			CauseList c = new CauseList();
 			Object[] row1 = (Object[]) list.get(i);
 			if (row1[1].toString().equals("1")) {
@@ -989,6 +989,19 @@ List<SubDocument> subList =cfd.getSubDocument();
 			
 			cList.add(c);
 		}
+*/		
+		for (Object obj : list) {
+		    Object[] row = (Object[]) obj;
+
+		    CauseList c = new CauseList();
+		    c.setCl_list_type_mid(Long.valueOf(row[1].toString()));
+		    c.setCount(Integer.parseInt(row[0].toString()));
+		    c.setListTypeName(row[2].toString()); // new field
+
+		    cList.add(c);
+		}
+
+		
 		response.setModelList(cList);
 
 		if (list != null) {
