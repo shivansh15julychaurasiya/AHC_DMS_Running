@@ -21,7 +21,8 @@ EDMSApp.directive('loading', ['$http', function($http) {
 
 EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http) {
 	var baseUrl = "/dms/";
-	$scope.causelist_date = convertDate(new Date());
+	/*$scope.causelist_date = convertDate(new Date());*/
+	$scope.causelist_date = convertDate("2025-12-05");
 	loadMasterData();
 	//$scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales", "Tele Sales", "Corporate Sales"];
 	//$scope.data = [300, 500, 100, 40, 120];
@@ -271,9 +272,48 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 	function loadMasterData() {
 		var response = $http.get(baseUrl + 'ecourt/getreport?causelist_date=' + $scope.causelist_date);
 		response.success(function(data, status, headers, config) {
+			 
 			$scope.masterdata = data.modelList;
+             console.log(data.modelList)
+			 console.log("master data***************"+$scope.masterdata);
+             $scope.masterdata = data.modelList;
+			 $scope.backupdata = data.modelList;
+			 $scope.backupdata1 = $scope.backupdata
+			 
+			 
 
-/*			angular.forEach($scope.masterdata, function(object, key) {
+
+           // Allowed card list types
+           $scope.allowedListIds = [1,2,3,4,5,35,6,7];
+		   
+		   $scope.additionListIds = [7,11,,12,13,,14,15,25];
+
+           //  Default data Filter automatically
+           $scope.defaultData = $scope.masterdata.filter(function(item){
+               return $scope.allowedListIds.includes(item.cl_list_type_mid);
+           });
+		   
+		  
+		   
+		   console.log("filter data"+ $scope.defaultData)
+		   
+		   $scope.otherData = $scope.backupdata.filter(item =>
+		       !$scope.allowedListIds.includes(item.cl_list_type_mid)
+		   );
+		   
+		   //  additional data Filter automatically
+		   $scope.removedAdditional = $scope.otherData.filter(item =>
+		   	       !$scope.additionListIds.includes(item.cl_list_type_mid)
+		   	   );
+		   console.log("removerd additionaldata"+ $scope.removedAdditional)
+		   console.log( $scope.otherData)
+		   
+		 
+		   	   
+
+
+
+		angular.forEach($scope.defaultData, function(object, key) {
 
 				if (object.cl_list_type_mid == 1) {
 					$scope.applicationcount = object.count
@@ -301,265 +341,9 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 					$scope.additionalcount = object.count;
 				}
 
-				if (object.cl_list_type_mid == 19) {
-					$scope.productioncount = object.count;
-
-					if ($scope.productioncount > 0) {
-						$scope.showProductionList = true;
-					}
-				}
-				if (object.cl_list_type_mid == 26) {
-					$scope.tdcount = object.count;
-
-					if ($scope.tdcount > 0) {
-						$scope.showtdList = true;
-					}
-				}
-				if (object.cl_list_type_mid == 27) {
-					$scope.tfcount = object.count;
-
-					if ($scope.tfcount > 0) {
-						$scope.showtfList = true;
-					}
-				}
-				if (object.cl_list_type_mid == 36) {
-					$scope.tpfcount = object.count;
-
-					if ($scope.tpfcount > 0) {
-						$scope.showtpfList = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 28) {
-					$scope.tiacount = object.count;
-
-					if ($scope.tiacount > 0) {
-						$scope.showtiaList = true;
-					}
-				}
-				if (object.cl_list_type_mid == 29) {
-					$scope.tscount = object.count;
-
-					if ($scope.tscount > 0) {
-						$scope.showtsList = true;
-					}
-				}
-				if (object.cl_list_type_mid == 30) {
-					$scope.tucount = object.count;
-
-					if ($scope.tucount > 0) {
-						$scope.showtuList = true;
-					}
-				}
-				if (object.cl_list_type_mid == 31) {
-					$scope.tu1count = object.count;
-
-					if ($scope.tu1count > 0) {
-						$scope.showtu1List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 32) {
-					$scope.tu2count = object.count;
-
-					if ($scope.tu2count > 0) {
-						$scope.showtu2List = true;
-					}
-				}
-				***************** Vijay Chaurasiya ****************
-
-				if (object.cl_list_type_mid == 42) {
-					$scope.tu6count = object.count;
-					if ($scope.tu6count > 0) {
-						$scope.showtu6List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 43) {
-					$scope.tu7count = object.count;
-					if ($scope.tu7count > 0) {
-						$scope.showtu7List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 44) {
-					$scope.tu8count = object.count;
-					if ($scope.tu8count > 0) {
-						$scope.showtu8List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 45) {
-					$scope.tu9count = object.count;
-					if ($scope.tu9count > 0) {
-						$scope.showtu9List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 46) {
-					$scope.tu10count = object.count;
-					if ($scope.tu10count > 0) {
-						$scope.showtu10List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 47) {
-					$scope.tu11count = object.count;
-					if ($scope.tu11count > 0) {
-						$scope.showtu11List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 48) {
-					$scope.tu12count = object.count;
-					if ($scope.tu12count > 0) {
-						$scope.showtu12List = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 49) {
-					$scope.tu13count = object.count;
-					if ($scope.tu13count > 0) {
-						$scope.showtu13List = true;
-					}
-				}
 
 
-				if (object.cl_list_type_mid == 50) {
-					$scope.tu14count = object.count;
-					if ($scope.tu14count > 0) {
-						$scope.showtu14List = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 51) {
-					$scope.tu15count = object.count;
-					if ($scope.tu15count > 0) {
-						$scope.showtu15List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 52) {
-					$scope.tu16count = object.count;
-					if ($scope.tu16count > 0) {
-						$scope.showtu16List = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 53) {
-					$scope.tu17count = object.count;
-					if ($scope.tu17count > 0) {
-						$scope.showtu17List = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 54) {
-					$scope.tu18count = object.count;
-					if ($scope.tu18count > 0) {
-						$scope.showtu18List = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 55) {
-					$scope.tu19count = object.count;
-					if ($scope.tu19count > 0) {
-						$scope.showtu19List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 56) {
-					$scope.tu20count = object.count;
-					if ($scope.tu20count > 0) {
-						$scope.showtu20List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 57) {
-					$scope.tu21count = object.count;
-					if ($scope.tu21count > 0) {
-						$scope.showtu21List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 58) {
-					$scope.tu22count = object.count;
-					if ($scope.tu22count > 0) {
-						$scope.showtu22List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 59) {
-					$scope.tu23count = object.count;
-					if ($scope.tu23count > 0) {
-						$scope.showtu23List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 60) {
-					$scope.tu24count = object.count;
-					if ($scope.tu24count > 0) {
-						$scope.showtu24List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 61) {
-					$scope.tu25count = object.count;
-					if ($scope.tu25count > 0) {
-						$scope.showtu25List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 62) {
-					$scope.tu26count = object.count;
-					if ($scope.tu26count > 0) {
-						$scope.showtu26List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 63) {
-					$scope.tu27count = object.count;
-					if ($scope.tu27count > 0) {
-						$scope.showtu27List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 64) {
-									$scope.tu28count = object.count;
-									if ($scope.tu28count > 0) {
-										$scope.showtu28List = true;
-									}
-								}
-				if (object.cl_list_type_mid == 33) {
-					$scope.tu3count = object.count;
-
-					if ($scope.tu3count > 0) {
-						$scope.showtu3List = true;
-					}
-				}
-				if (object.cl_list_type_mid == 34) {
-					$scope.tu4count = object.count;
-
-					if ($scope.tu4count > 0) {
-						$scope.showtu4List = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 38) {
-					$scope.tscount1 = object.count;
-
-					if ($scope.tscount1 > 0) {
-						$scope.showtsList1 = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 39) {
-					$scope.tscount2 = object.count;
-
-					if ($scope.tscount2 > 0) {
-						$scope.showtsList2 = true;
-					}
-				}
-
-				if (object.cl_list_type_mid == 40) {
-					$scope.tscount3 = object.count;
-
-					if ($scope.tscount3 > 0) {
-						$scope.showtsList3 = true;
-					}
-				}
-				if (object.cl_list_type_mid == 41) {
-					$scope.tu5count = object.count;
-
-					if ($scope.tu5count > 0) {
-						$scope.showtu5List = true;
-					}
-				}
-
-
-			});*/
+			});
 
 		});
 		response.error(function(data, status, headers, config) {

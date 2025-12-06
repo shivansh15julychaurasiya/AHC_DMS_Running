@@ -109,6 +109,7 @@ public class CauseList {
 	@Column(name = "cl_case_stage")
 	private String cl_case_stage;
 	
+	@Transient
 	private String listTypeName;
 	
 	
