@@ -165,8 +165,8 @@ public class CauseListService
 		List<CauseList> list=new ArrayList<CauseList>();
 		String querystr="";
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		/* String cl_dol = formatter.format(causeList.getCl_dol()); */
-		String cl_dol="2025-12-05";
+		 String cl_dol = formatter.format(causeList.getCl_dol()); 
+	
 		
 		/*String cl_dol = formatter.format(new Date());*/
 		if(causeList.getCl_court_no()!=null)
@@ -371,8 +371,8 @@ public class CauseListService
 	    List<Object> list = new ArrayList<>();
 	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-//	    String cl_dol = formatter.format(causeList.getCl_dol() != null ? causeList.getCl_dol() : new Date());
-        String cl_dol="2025-12-05";
+	    String cl_dol = formatter.format(causeList.getCl_dol() != null ? causeList.getCl_dol() : new Date());
+  
 	    String querystr = "";
 
 	    if(causeList.getCl_court_no() != null) {

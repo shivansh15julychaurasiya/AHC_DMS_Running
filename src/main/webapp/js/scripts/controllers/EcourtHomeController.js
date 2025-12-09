@@ -21,8 +21,8 @@ EDMSApp.directive('loading', ['$http', function($http) {
 
 EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http) {
 	var baseUrl = "/dms/";
-	/*$scope.causelist_date = convertDate(new Date());*/
-	$scope.causelist_date = convertDate("2025-12-05");
+	$scope.causelist_date = convertDate(new Date());
+
 	loadMasterData();
 	//$scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales", "Tele Sales", "Corporate Sales"];
 	//$scope.data = [300, 500, 100, 40, 120];
@@ -286,7 +286,7 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
            // Allowed card list types
            $scope.allowedListIds = [1,2,3,4,5,35,6,7];
 		   
-		   $scope.additionListIds = [7,11,,12,13,,14,15,25];
+		   $scope.additionListIds = [7,11,,12,13,,14,15,25,23,24,8,9,10,16,17,18,19,20,22];
 
            //  Default data Filter automatically
            $scope.defaultData = $scope.masterdata.filter(function(item){
