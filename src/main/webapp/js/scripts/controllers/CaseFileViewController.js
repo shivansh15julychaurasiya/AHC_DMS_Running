@@ -15,12 +15,28 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $sce, $http,$filter) {
 	 DEFAULT_URL = url;
 	 //PDFViewerApplication.open(DEFAULT_URL);
 	 
-	 PDFViewerApplication.open({
+	/* PDFViewerApplication.open({
 		  url: DEFAULT_URL
-		});
+		});*/
 	
    // alert(DEFAULT_URL);
-	 
+   
+   
+   
+   $scope.userId = $('#loggedUserId').val();
+
+   console.log("*********************** logged user="+$scope.userId);
+   var pdfPath=url
+
+   var fullUrl = "http://localhost:5173/search?pdf=" +
+                 encodeURIComponent(pdfPath) +
+                 "&userId=" + encodeURIComponent($scope.userId);
+
+
+
+     // TRUST the URL for iframe
+     $scope.searchUrl = $sce.trustAsResourceUrl(fullUrl);
+	  
 	 $scope.case_type_label ;
 	$scope.petitions=[];
 	$scope.petitionsData=[];
@@ -736,7 +752,14 @@ $scope.changeTop = function (){
 	    	DEFAULT_URL=urlBase+'uploads/' +data.modelData.document_name+".pdf";
 	    //	DEFAULT_URL="192.168.0.162:8080/elegalix_restapi/api/judgment/8042762";
 			console.log($scope.document_name);
-			PDFViewerApplication.open(DEFAULT_URL);
+			
+			
+			var fullUrl = "http://localhost:5173/search?pdf=" +
+			                 encodeURIComponent(DEFAULT_URL);
+
+			   // TRUST the URL for iframe
+			   $scope.searchUrl = $sce.trustAsResourceUrl(fullUrl);
+			
 			clearInterval(myVar1);
 			count =0;
 			console.log("ppppppppppppppppppppppp----------"+DEFAULT_URL);
@@ -782,14 +805,18 @@ $scope.changeTop = function (){
 	    	$scope.sample=data.modelData;
 	    	DEFAULT_URL=urlBase+'uploads/' +data.modelData.document_name+".pdf";
 	    //	DEFAULT_URL="192.168.0.162:8080/elegalix_restapi/api/judgment/8042762";
-			console.log(PDFViewerApplication.pdfSidebar.isOpen);
+		var fullUrl = "http://localhost:5173/search?pdf=" +
+				                 encodeURIComponent(DEFAULT_URL);
+
+				   // TRUST the URL for iframe
+				   $scope.searchUrl = $sce.trustAsResourceUrl(fullUrl);
+		
+		
 			/*PDFViewerApplication.pdfSidebar.*/
 			/*PDFViewerApplication.pdfSidebar.isOpen=true;
 			console.log(PDFViewerApplication.pdfSidebar.isOpen);*/
 			//PDFViewerApplication.open(DEFAULT_URL);
-			PDFViewerApplication.open({
-				  url: DEFAULT_URL
-				});
+			
 			clearInterval(myVar1);
 			count =0;
 			console.log("ppppppppppppppppppppppp----------"+DEFAULT_URL);
@@ -817,14 +844,7 @@ $scope.showMedReport=function(sd_id,$index,data){
 		
 		console.log("subDocument",data);
 		document.getElementById('outlineView').innerHTML = '';
-		
-		
-		
-		
-		
-		
-		
-		
+			
 		
 		$http.get(urlBase+'casefile/showMedReport/'+sd_id).success(function (data) {
 	    	$scope.sample=data.modelData;

@@ -757,6 +757,8 @@ List<SubDocument> subList =cfd.getSubDocument();
 			userRole = userrole.getLk().getLk_longname();
 		}
 		List list = new ArrayList();
+		// ADD this instead
+//		Date manualDate = new SimpleDateFormat("yyyy-MM-dd").parse("2026-01-30");
 
 		if (userRole.equals("ECOURT") || userRole.equals("Private_Secretary") || userRole.equals("Bench Secretary")) {
 			CourtUserMapping mapping = courtMasterService.getCourtMapping(user.getUm_id());
@@ -773,12 +775,23 @@ List<SubDocument> subList =cfd.getSubDocument();
 	
 		for (Object obj : list) {
 		    Object[] row = (Object[]) obj;
+		    
+		    
+			
+			 // recent changes
+			  if(Long.valueOf(row[1].toString())==21L) { CauseList c = new
+			  CauseList(); c.setCl_list_type_mid(1L); c.setCount(Integer.parseInt("0"));
+			  c.setListTypeName("Correction Application"); }
+			 
+		    
+		    
 
 		    CauseList c = new CauseList();
 		    c.setCl_list_type_mid(Long.valueOf(row[1].toString()));
 		    c.setCount(Integer.parseInt(row[0].toString()));
 		    c.setListTypeName(row[2].toString()); 
 
+		    
 		    cList.add(c);
 		}
 
@@ -1021,7 +1034,9 @@ Integer fromCourt =Integer.parseInt(fromCourt1);
 		if (userRole.equals("ECOURT") || userRole.equals("Private_Secretary") || userRole.equals("Bench Secretary")) {
 			CourtUserMapping mapping = courtMasterService.getCourtMapping(user.getUm_id());
 
-			causeList.setCl_dol(new Date());
+//			Date manualDate = new SimpleDateFormat("yyyy-MM-dd").parse("2026-01-30");
+			
+			causeList.setCl_dol(date1);
 			causeList.setCl_court_no(mapping.getCum_court_mid());
 
 			list = causeListService.getListByType(causeList);

@@ -16,8 +16,8 @@
 <tx:annotation-driven transaction-manager="transactionManagerEfiling" />
 <tx:annotation-driven transaction-manager="transactionManagerLKODMS" />
    <context:annotation-config/>
-    <context:component-scan base-package="com.dms.*" />
-    <context:component-scan base-package="com.efiling.*" />
+    <context:component-scan base-package="com.dms" />
+    <context:component-scan base-package="com.efiling" />
        <context:annotation-config/>
     <bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -221,6 +221,7 @@
             <mvc:mapping path="/dms/index" /> 
              <mvc:mapping path="/**"/>
               <mvc:exclude-mapping path="/userregistration/**"/>
+               <mvc:exclude-mapping path="/dms/high-light/**"/>
             <bean class="com.dms.controller.RequestProcessingTimeInterceptor"></bean> 
         </mvc:interceptor>
    </mvc:interceptors>

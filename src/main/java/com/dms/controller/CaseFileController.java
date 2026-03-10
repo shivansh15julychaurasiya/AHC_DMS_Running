@@ -1149,12 +1149,6 @@ public class CaseFileController {
 			 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 			 
 			 
-			 
-			
-			 
-			
-			
-			 
 			String result=null;
 			 
 			 String url="http://192.168.0.178/dms-rest-api/rest/findCaseFile/BAIL/37124/2015/A";
@@ -2799,13 +2793,14 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 			Lookup lookupRepo = lookupService.getLookUpObject("REPOSITORYPATH");
 			
 			
-			String srcPath = lookupRepo.getLk_longname() + File.separator
-					+ caseFileDetail.getCaseType().getCt_label()
-					+ File.separator ;
+			/*
+			 * String srcPath = lookupRepo.getLk_longname() + File.separator +
+			 * caseFileDetail.getCaseType().getCt_label() + File.separator ;
+			 */
 			
-		/*	String srcPath = "D:\\Allahabad High Court\\Allahabad" + File.separator
+			String srcPath = "D:\\Allahabad High Court\\Allahabad" + File.separator
 			+ caseFileDetail.getCaseType().getCt_label()
-			+ File.separator ;*/
+			+ File.separator ;
 			
 			String fileName=null;
 			
@@ -2831,21 +2826,35 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 			}
 			
 
-			/*File source = new File(srcPath);*/
+//			File source = new File(srcPath);
 			
 			/*File source = new File("C:\\Users\\Alok\\Documents\\WRIC323162025_PETN_1.pdf");*/
+		
 			
-			File source = new File("C:\\Users\\Alok\\Pictures\\stamp rept\\WTAX43662025_PETN_1.pdf");
+			System.out.println("FULL PDF PATH = " + srcPath);
+
+			File source = new File(srcPath);
+
+			if (!source.exists()) {
+			    System.out.println("Source file not found: " + srcPath);
+//			    return "/casefile/notfound";
+			}
 
 			String uploadPath = context.getRealPath("");
-			File dest = new File(uploadPath + File.separator + "uploads"
-					+ File.separator + fileName
-					+ ".pdf");
+
+			File uploadDir = new File(uploadPath + File.separator + "uploads");
+
+			if (!uploadDir.exists()) {
+			    uploadDir.mkdirs();
+			}
+
+			File dest = new File(uploadDir, fileName + ".pdf");
 
 			try {
-				FileUtils.copyFile(source, dest);
+			    FileUtils.copyFile(source, dest);
+			    System.out.println("Copied to: " + dest.getAbsolutePath());
 			} catch (IOException e) {
-				e.printStackTrace();
+			    e.printStackTrace();
 			}
 			
 			
@@ -3410,7 +3419,7 @@ if(clNext == null || !nextCase) {
 	
 	
 	
-	   
+	   // download file 
 	   public void downloadFile(Long id, String path){
 		   
 		   // This method will download file using RestTemplate

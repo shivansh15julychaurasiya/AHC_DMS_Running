@@ -66,7 +66,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $sce, $http,$filter) {
 	$scope.cl_ayr= $('#cl_ayr').val();
 	$scope.cl_ano= $('#cl_ano').val();
 	
-
+// $scope.cl_serial_noCurrent1 = Number($('#cl_serial_noCurrent').val());
 	
 	
 	if(!$scope.cl_court_no || !$scope.cl_rec_status || !$scope.cl_serial_no || !$scope.cl_list_type_mid || !$scope.cl_fd_mid ){
@@ -191,7 +191,9 @@ getConnectedCases =function(){
 	
 	var serialDesc ='Sr No. '+$scope.cl_serial_noCurrent
 	
-	document.getElementById("serial").innerHTML =serialDesc;
+	
+	//      vijay
+	//document.getElementById("serial").innerHTML =serialDesc;
 	
 	
 	

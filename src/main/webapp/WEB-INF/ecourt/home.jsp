@@ -18,260 +18,155 @@
 <div id="content" class="content" ng-controller="ECourtHomeCtrl">
 
 
-<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/5">
-				<div class="widget widget-stats bg-green">
-					<div class="stats-icon">
-						<i class="fa fa-desktop"></i>
-					</div>
-					<div class="stats-info">
-						<h4 style="font-size: 15px;">Fresh Cases</h4>
-						<h4 style="font-size: 15px;">Total Case Listed :
-							{{freshcount}}</h4>
-					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/5">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
-			</div>
-		</div>
-		</a>
-	</div>
-
-
-
-	<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/3">
-				<div class="widget widget-stats bg-green">
-					<div class="stats-icon">
-						<i class="fa fa-desktop"></i>
-					</div>
-					<div class="stats-info">
-						<h4 style="font-size: 15px;">Daily Cause List</h4>
-						<h4 style="font-size: 15px;">Total Case Listed :
-							{{dailycount}}</h4>
-					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/3">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
+	<!-- Loader -->
+	<div class="row justify-content-center align-items-center"
+		ng-if="isLoading" style="min-height: 300px;">
+		<div class="col-12 d-flex justify-content-center">
+			<div class="text-center">
+				<div class="spinner-border text-primary" role="status"
+					style="width: 4rem; height: 4rem;"></div>
+				<h4 class="mt-3" style="font-weight: 600; color: #444;">Loading...</h4>
 			</div>
 		</div>
 	</div>
 
-	<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/1">
-				<div class="widget widget-stats bg-green">
-					<div class="stats-icon">
-						<i class="fa fa-desktop"></i>
-					</div>
-					<div class="stats-info">
-						<h4 style="font-size: 14px;">Daily IA</h4>
-						<h4 style="font-size: 15px;">Total Case Listed :
-							{{applicationcount}}</h4>
-					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/1">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
-			</div>
-		</div>
-	</div>
 
 	<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/2">
-				<div class="widget widget-stats bg-green">
-					<div class="stats-icon">
-						<i class="fa fa-desktop"></i>
-					</div>
-					<div class="stats-info">
-						<h4 style="font-size: 15px;">Correction Application</h4>
-						<h4 style="font-size: 15px;">Total Case Listed :
-							{{correctioncount}}</h4>
-					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/2">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
-			</div>
-		</div>
-	</div>
 
-	<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/35">
-				<div class="widget widget-stats bg-green">
-					<div class="stats-icon">
-						<i class="fa fa-desktop"></i>
-					</div>
-					<div class="stats-info">
-						<h4 style="font-size: 15px;">'As-Fresh' List</h4>
-						<h4 style="font-size: 15px;">Total Case Listed :
-							{{putFreshcount}}</h4>
-					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/35">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
-			</div>
-		</div>
-		</a>
-	</div>
-	<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/4">
-				<div class="widget widget-stats bg-green">
-					<div class="stats-icon">
-						<i class="fa fa-desktop"></i>
-					</div>
-					<div class="stats-info">
-						<h4 style="font-size: 15px;">Backlog</h4>
-						<h4 style="font-size: 15px;">Total Case Listed :
-							{{backlogcount}}</h4>
-					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/4">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
-			</div>
-		</div>
-	</div>
+		<div class="row "
+			ng-if="!isLoading && (!defaultData || defaultData.length === 0) && (!additionalcount || additionalcount == 0)"
+			style="min-height: 300px;">
 
-	<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/6">
-				<div class="widget widget-stats bg-green">
-					<div class="stats-icon">
-						<i class="fa fa-desktop"></i>
+			<div class="col-12  ">
+				<div class="card shadow-lg p-4"
+					style="max-width: 450px; border-left: 6px solid #ff9800; border-radius: 12px; margin-left:280px;
+					 border-right: 6px solid #ff9800; margin-top:100px;">
+					<div class="card-body text-center">
+						<i class="fa fa-exclamation-triangle"
+							style="font-size: 40px; color: #ff9800;"></i>
+
+						<h3 class="mt-3" style="font-weight: 700; color: #444;">Today, There
+							is no List Available !</h3>
+
+						<!--  <p style="font-size: 16px; color: #666;">
+                        Today, there are currently no lists available.
+                    </p> -->
 					</div>
-					<div class="stats-info">
-						<h4 style="font-size: 15px;">Fresh Supplementry</h4>
-						<h4 style="font-size: 15px;">Total Case Listed :
-							{{supplementarycount}}</h4>
-					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/6">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
+				</div>
 			</div>
+
 		</div>
-	</div>
-	<div class="container-fluid">
-		<div class="col-md-3 col-sm-6">
-			<a target="_new" href="/dms/causelist/type/7">
-				<div class="widget widget-stats bg-green">
+		<div class="row"
+			ng-if="(defaultData && defaultData.length > 0) || (additionalcount && additionalcount > 0)">
+
+			<!-- Default Data Cards -->
+			<div class="col-md-3 col-sm-6 d-flex" ng-repeat="item in defaultData">
+				<div class="widget widget-stats bg-green w-75 d-flex flex-column"
+					style="display: flex; flex-direction: column; justify-content: space-between; height: 120px; width: 238px;">
+
 					<div class="stats-icon">
 						<i class="fa fa-desktop"></i>
 					</div>
+
+					<div class="stats-info flex-grow-1">
+						<h4 style="font-size: 15px;">{{item.listTypeName}}</h4>
+						<h4 style="font-size: 15px;">Total Case Listed:
+							{{item.count}}</h4>
+					</div>
+
+					<div class="stats-link">
+						<a target="_new"
+							href="/dms/causelist/type/{{item.cl_list_type_mid}}"> View
+							Detail <i class="fa fa-arrow-circle-o-right"></i>
+						</a>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Additional Count  -->
+			<div class="col-md-3 col-sm-6 d-flex"
+				ng-if="additionalcount && additionalcount > 0">
+				<div class="widget widget-stats bg-green w-75 d-flex flex-column"
+					style="display: flex; flex-direction: column; justify-content: space-between; height: 120px; width: 238px;">
+
+					<div class="stats-icon">
+						<i class="fa fa-desktop"></i>
+					</div>
+
 					<div class="stats-info">
 						<h4 style="font-size: 15px;">Additional/Unlisted</h4>
 						<h4 style="font-size: 15px;">Total Case Listed :
 							{{additionalcount}}</h4>
 					</div>
-			</a>
-			<div class="stats-link">
-				<a target="_new" href="/dms/causelist/type/7">View Detail <i
-					class="fa fa-arrow-circle-o-right"></i></a>
+
+					<div class="stats-link">
+						<a target="_new" href="/dms/causelist/type/7"> View Detail <i
+							class="fa fa-arrow-circle-o-right"></i>
+						</a>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<br>
+	<hr class="bg-dark text-dark">
+
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3 col-sm-6 d-flex"
+				ng-repeat="item in removedAdditional">
+				<div class="widget widget-stats bg-green w-75 d-flex flex-column"
+					style="display: flex; flex-direction: column; justify-content: space-between; height: 120px; width: 238px;">
+
+					<div class="stats-icon">
+						<i class="fa fa-desktop"></i>
+					</div>
+
+					<div class="stats-info flex-grow-1">
+						<h4 style="font-size: 15px;">{{item.listTypeName}}</h4>
+						<h4 style="font-size: 15px;">Total Case Listed:
+							{{item.count}}</h4>
+					</div>
+
+					<div class="stats-link">
+						<a target="_new"
+							href="/dms/causelist/type/{{item.cl_list_type_mid}}"> View
+							Detail <i class="fa fa-arrow-circle-o-right"></i>
+						</a>
+					</div>
+
+				</div>
 			</div>
 		</div>
-<br><br><br>
 	</div>
 
-
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-3 col-sm-6 d-flex" ng-repeat="item in removedAdditional">
-      <div class="widget widget-stats bg-green w-75 d-flex flex-column"
-        style="display:flex; flex-direction:column; justify-content:space-between; height:120px;width:238px;">
-        
-        <div class="stats-icon">
-          <i class="fa fa-desktop"></i>
-        </div>
-
-        <div class="stats-info flex-grow-1">
-          <h4 style="font-size:15px;">{{item.listTypeName}}</h4>
-          <h4 style="font-size:15px;">Total Case Listed: {{item.count}}</h4>
-        </div>
-
-        <div class="stats-link">
-          <a target="_new" href="/dms/causelist/type/{{item.cl_list_type_mid}}">
-            View Detail <i class="fa fa-arrow-circle-o-right"></i>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-	
-
-
-
-<!-- 				                                                 <button id="doownloadCauseList" type="button" class="btn btn-primary btn-sm" ng-click="doownloadCauseList()">Cause List</button>
- -->
-
-<!-- Sushant -->
-
-<!-- 		<div class="col-md-3 col-sm-6">
-			<div class="widget widget-stats bg-green">
-				<div class="stats-icon">
-					<i class="fa fa-desktop"></i>
-				</div>
-				<div class="stats-info">
-					<h4>Click To view Previous Date Causlist</h4>
-					<h4></h4>
-				</div>
-				<div class="stats-link">
-					<a targert="_new" ng-click="show()">View Detail <i
-						class="fa fa-arrow-circle-o-right"></i></a>
-				</div>
-			</div>
-		</div> -->
-
-<%-- <div class="modal fade" id="user_Modal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					<span ng-if="!masterentity.um_id"><strong> Calendar</strong></span>
-			</div>
-			<%@ include file="../ecourt/calender_form.jsp"%>
+	<!-- Transfered Case list -->
+	<div class="container-fluid" ng-show="divShow">
+		<label class="control-label col-md-4">Date of Decision: <span
+			class="text-danger"> * </span></label>
+		<div class="col-md-4">
+			<input type="text" class="form-control"
+				datepicker-popup="{{format1}}" name="fromDate1"
+				ng-change="getCauseList(cause_list_date)" ng-model="cause_list_date"
+				is-open="fromDate1" max-date="maxDate"
+				datepicker-options="dateOptions" ng-disabled="true"
+				date-disabled="disabled(date, mode)" close-text="Close"
+				show-button-bar="false" /> <span class="input-group-addon"
+				ng-click="open1($event,'fromDate1')"><i
+				class="glyphicon glyphicon-calendar"></i></span>
 		</div>
+
+
+
+
+
 	</div>
-</div> --%>
-<div class="container-fluid" ng-show="divShow">
-	<label class="control-label col-md-4">Date of Decision: <span
-		class="text-danger"> * </span></label>
-	<div class="col-md-4">
-		<input type="text" class="form-control" datepicker-popup="{{format1}}"
-			name="fromDate1" ng-change="getCauseList(cause_list_date)"
-			ng-model="cause_list_date" is-open="fromDate1" max-date="maxDate"
-			datepicker-options="dateOptions" ng-disabled="true"
-			date-disabled="disabled(date, mode)" close-text="Close"
-			show-button-bar="false" /> <span class="input-group-addon"
-			ng-click="open1($event,'fromDate1')"><i
-			class="glyphicon glyphicon-calendar"></i></span>
-	</div>
-
-
-
-
-
-</div>
 
 </div>
 
@@ -287,7 +182,7 @@
 
 </body>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/scripts/controllers/EcourtHomeController.js?v=9"></script>
+	src="${pageContext.request.contextPath}/js/scripts/controllers/EcourtHomeController.js?v=11"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/bootstrap/angular-datepicker.js"></script>
 

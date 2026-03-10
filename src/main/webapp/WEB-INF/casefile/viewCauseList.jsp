@@ -230,6 +230,19 @@ $(document).ready(function(){
 							select2="">
 							<option>Select Serial Number</option>
 						</select>
+						
+						
+<!-- 						  <select
+  id="serial"
+  ng-model="cl_serial_noCurrent1"
+  ng-options="n as n for n in allSerial track by n"
+  ng-change="changeSerial()">
+  <option value="">Select Serial Number</option>
+</select> -->
+						
+						
+						
+						
         </span>
        <span>
       

@@ -33,6 +33,11 @@ public class RequestProcessingTimeInterceptor extends HandlerInterceptorAdapter 
 		user=(User) request.getSession().getAttribute("USER");
 		String url=request.getRequestURI();
 		System.out.println("URL="+url);
+		
+		// allow highlight API
+		if(url.contains("/dms/high-light")){
+		    return true;
+		}
  		
 		user=(User) request.getSession().getAttribute("USER");
 		

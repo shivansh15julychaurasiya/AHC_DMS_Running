@@ -9,7 +9,8 @@ EDMSApp.directive('loading', ['$http', function($http) {
 			scope.$watch(scope.isLoading, function(v) {
 				if (v) {
 					elm.show();
-				} else {
+				} el
+			 {
 					elm.hide();
 				}
 			});
@@ -24,8 +25,7 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 	$scope.causelist_date = convertDate(new Date());
 
 	loadMasterData();
-	//$scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales", "Tele Sales", "Corporate Sales"];
-	//$scope.data = [300, 500, 100, 40, 120];
+
 	$scope.dailycount = 0;
 	$scope.freshcount = 0;
 	$scope.putFreshcount = 0;
@@ -36,82 +36,7 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 	$scope.correctioncount = 0;
 	$scope.productioncount = 0;
 	$scope.tiacount = 0;
-	$scope.divShow = false;
 	$scope.showProductionList = false;
-	$scope.showtiaList = false;
-	$scope.tdcount = 0;
-	$scope.showtdList = false;
-	$scope.tfacount = 0;
-	$scope.showtfList = false;
-	$scope.tscount = 0;
-	$scope.showtsList = false;
-	$scope.tscount1 = 0;
-	$scope.showtsList1 = false;
-	$scope.tscount2 = 0;
-	$scope.showtsList2 = false;
-	$scope.tscount3 = 0;
-	$scope.showtsList3 = false;
-	$scope.tucount = 0;
-	$scope.showtuList = false;
-	$scope.tu1count = 0;
-	$scope.tu2count = 0;
-	$scope.tu3count = 0;
-	$scope.tu4count = 0;
-	$scope.tu5count = 0;
-	$scope.tu6count = 0;
-	$scope.tu7count = 0;
-	$scope.tu8count = 0;
-	$scope.tu9count = 0;
-	$scope.tu10count = 0;
-	$scope.tu11count = 0;
-	$scope.tu12count = 0;
-	$scope.tu13count = 0;
-	$scope.tu14count = 0;
-	$scope.tu15count = 0;
-	$scope.tu16count = 0;
-	$scope.tu17count = 0;
-	$scope.tu18count = 0;
-	$scope.tu19count = 0;
-	$scope.tu20count = 0;
-	$scope.tu21count = 0;
-	$scope.tu22count = 0;
-	$scope.tu23count = 0;
-	$scope.tu24count = 0;
-	$scope.tu25count = 0;
-	$scope.tu26count = 0;
-	$scope.tu27count = 0;
-	$scope.tu28count = 0;
-
-
-	$scope.showtu1List = false;
-	$scope.showtu2List = false;
-	$scope.showtu3List = false;
-	$scope.showtu4List = false;
-	$scope.showtu5List = false;
-	$scope.showtu6List = false;
-	$scope.showtu7List = false;
-	$scope.showtu8List = false;
-	$scope.showtu9List = false;
-	$scope.showtu10List = false;
-	$scope.showtu11List = false;
-	$scope.showtu12List = false;
-	$scope.showtu13List = false;
-	$scope.showtu14List = false;
-	$scope.showtu15List = false;
-	$scope.showtu16List = false;
-	$scope.showtu17List = false;
-	$scope.showtu18List = false;
-	$scope.showtu19List = false;
-	$scope.showtu20List = false;
-	$scope.showtu21List = false;
-	$scope.showtu22List = false;
-	$scope.showtu23List = false;
-	$scope.showtu24List = false;
-	$scope.showtu25List = false;
-	$scope.showtu26List = false;
-	$scope.showtu27List = false;
-	$scope.showtu28List = false;
-
 
 
 
@@ -126,6 +51,13 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 		if (type == "toDate1")
 			$scope.toDate = true;
 	};
+
+
+
+	// Vijay chaurasiya
+
+	
+
 
 	function loadMasterData2() {
 		var countadd = 0;
@@ -266,91 +198,50 @@ EDMSApp.controller('ECourtHomeCtrl', ['$scope', '$http', function($scope, $http)
 	loadMasterData3();
 	loadMasterData2();
 
-
-
+	$scope.isLoading = true;
 
 	function loadMasterData() {
-		var response = $http.get(baseUrl + 'ecourt/getreport?causelist_date=' + $scope.causelist_date);
-		response.success(function(data, status, headers, config) {
-			 
-			$scope.masterdata = data.modelList;
-             console.log(data.modelList)
-			 console.log("master data***************"+$scope.masterdata);
-             $scope.masterdata = data.modelList;
-			 $scope.backupdata = data.modelList;
-			 $scope.backupdata1 = $scope.backupdata
-			 
-			 
+	    var response = $http.get(baseUrl + 'ecourt/getreport?causelist_date=' + $scope.causelist_date);
 
+	    response.success(function (data) {
 
-           // Allowed card list types
-           $scope.allowedListIds = [1,2,3,4,5,35,6,7];
-		   
-		   $scope.additionListIds = [7,11,,12,13,,14,15,25,23,24,8,9,10,16,17,18,19,20,22];
+	        $scope.masterdata = data.modelList;
+	        $scope.backupdata = data.modelList;
+	        $scope.backupdata1 = $scope.backupdata;
 
-           //  Default data Filter automatically
-           $scope.defaultData = $scope.masterdata.filter(function(item){
-               return $scope.allowedListIds.includes(item.cl_list_type_mid);
-           });
-		   
-		  
-		   
-		   console.log("filter data"+ $scope.defaultData)
-		   
-		   $scope.otherData = $scope.backupdata.filter(item =>
-		       !$scope.allowedListIds.includes(item.cl_list_type_mid)
-		   );
-		   
-		   //  additional data Filter automatically
-		   $scope.removedAdditional = $scope.otherData.filter(item =>
-		   	       !$scope.additionListIds.includes(item.cl_list_type_mid)
-		   	   );
-		   console.log("removerd additionaldata"+ $scope.removedAdditional)
-		   console.log( $scope.otherData)
-		   
-		 
-		   	   
+	        // Allowed list IDs
+	        $scope.allowedListIds = [1, 2, 3, 4, 5, 35, 6, 7,23,21];
 
+	       
+	        $scope.additionListIds = [
+	            7, 11, 12, 13, 14, 15, 25, 23, 24,
+	            8, 9, 10, 16, 17, 18, 19, 20, 22,21
+	        ];
 
+	        // Default Data
+	        $scope.defaultData = $scope.masterdata.filter(function (item) {
+	            return $scope.allowedListIds.includes(item.cl_list_type_mid);
+	        });
 
-		angular.forEach($scope.defaultData, function(object, key) {
+	        // Other Data
+	        $scope.otherData = $scope.masterdata.filter(item =>
+	            !$scope.allowedListIds.includes(item.cl_list_type_mid)
+	        );
 
-				if (object.cl_list_type_mid == 1) {
-					$scope.applicationcount = object.count
-				}
-				if (object.cl_list_type_mid == 2) {
-					$scope.correctioncount = object.count
-				}
-				if (object.cl_list_type_mid == 3) {
-					$scope.dailycount = object.count
-				}
-				if (object.cl_list_type_mid == 4) {
-					$scope.backlogcount = object.count
-				}
-				if (object.cl_list_type_mid == 5) {
-					$scope.freshcount = object.count
-				}
+	        // Removed additional list
+	        $scope.removedAdditional = $scope.otherData.filter(item =>
+	            !$scope.additionListIds.includes(item.cl_list_type_mid)
+	        );
 
-				if (object.cl_list_type_mid == 35) {
-					$scope.putFreshcount = object.count
-				}
-				if (object.cl_list_type_mid == 6) {
-					$scope.supplementarycount = object.count
-				}
-				if (object.cl_list_type_mid == 7) {
-					$scope.additionalcount = object.count;
-				}
+	        // Stop loader
+	        $scope.isLoading = false;
+	    });
 
+	    response.error(function () {
+	        $scope.isLoading = false; // also stop loader on error
+	    });
+	}
 
-
-			});
-
-		});
-		response.error(function(data, status, headers, config) {
-			//alert("Error");
-		});
-
-	};
 
 	function loadMasterData1() {
 		var response = $http.get(baseUrl + 'ecourt/downloadCauseList?causelist_date=' + $scope.causelist_date);

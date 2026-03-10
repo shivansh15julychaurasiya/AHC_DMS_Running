@@ -96,9 +96,7 @@ $scope.approveUser =function(data){
 		            error(function(data, status, headers, config) {
 		            	console.log("Error in getting User data");
 		            });
-		    };
-		    
-		
+		    };		
 		
 	function getMasterdata() 
 	{
@@ -110,6 +108,7 @@ $scope.approveUser =function(data){
             	console.log("Error in getting User data");
             });
     };
+	
     function getRoleDD() {
 		$http.get(urlBase+'user/getmasters').
             success(function (data) {
