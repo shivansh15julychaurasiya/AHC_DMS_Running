@@ -492,6 +492,22 @@ public class CauseListController {
 		
 		}
 	
+		
+		@RequestMapping(value = "/causelist/getParty/{fdId}", method = RequestMethod.GET)
+		public @ResponseBody ActionResponse<CauseList> getPartyNameById(@PathVariable Long fdId, HttpSession session) {
+
+		    CauseList partyName = causeListService.getPartyNameById(fdId);
+
+		    ActionResponse<CauseList> response = new ActionResponse<>();
+		    response.setResponse("true");
+		    response.setData(partyName);
+
+		    return response; 
+		}
+		
+		
+		
+		
 
 	@RequestMapping(value = "/causelist/getCauseList", method = RequestMethod.POST)
 	public @ResponseBody String getCauseList(@RequestBody CauseList causeList, HttpSession session) {

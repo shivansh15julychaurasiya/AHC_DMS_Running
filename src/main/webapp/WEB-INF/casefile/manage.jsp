@@ -94,6 +94,8 @@
                                                                             <button class="btn btn-success btn-sm" ng-click="viewCaseFile(row.fd_id)">View</button>
 
                                                                             <% }%>
+                                                                            
+                                                                                  <button class="btn btn-success btn-sm" ng-click="addPartyName(row.fd_id)">Add Party</button>
 
                                             </td>
                                         </tr>

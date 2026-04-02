@@ -385,6 +385,22 @@ public class CaseFileDetailService {
 		}
 		return pet;
 	}
+	
+	public Petitioner getPetitionerByFdId(Long id) {
+		// TODO Auto-generated method stub
+		Petitioner pet=null;
+		try {
+			pet=(Petitioner) em.createQuery("SELECT pet from Petitioner pet where pet.pt_fd_mid=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pet;
+	}
+	
+	
+	
+	
 	@Transactional
 	public Petitioner save(Petitioner pet) {
 		// TODO Auto-generated method stub
@@ -407,6 +423,22 @@ public class CaseFileDetailService {
 		}
 		return ret;
 	}
+	
+	public Respondent getRespondentByFdId(Long id) {
+		// TODO Auto-generated method stub
+		Respondent ret=null;
+		try {
+			ret=(Respondent) em.createQuery("SELECT ret from Respondent ret where ret.rt_fd_mid=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	
+	
+	
 	@Transactional
 	public Respondent save(Respondent ret) {
 		// TODO Auto-generated method stub

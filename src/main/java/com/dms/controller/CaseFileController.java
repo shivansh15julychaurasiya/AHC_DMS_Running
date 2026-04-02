@@ -5065,7 +5065,120 @@ else {
 		return jsonData;
 
 	}
+//======================================== VIJAY CHAURASIYA  START FROM HERE========================================
+	
+	@RequestMapping(value = "/getpetitionerByFdId/{fdId}", method = RequestMethod.GET)
+	public @ResponseBody String getPetitionerByFd(@PathVariable("fdId") Long fdId) {
 
+	    ActionResponse<Petitioner> response = new ActionResponse<>();
+	    String jsonData = null;
+
+	    try {
+	        Petitioner pet = caseFileDetailService.getPetitionerByFdId(fdId);
+
+	        response.setResponse("TRUE");
+	        response.setData(pet);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.setResponse("FALSE");
+	    }
+
+	    jsonData = globalfunction.convert_to_json(response);
+	    return jsonData;
+	}
+	
+	@RequestMapping(value = "/savepetitioner", method = RequestMethod.POST)
+	public @ResponseBody String savePetitioner(@RequestBody Petitioner pet,
+	                                           HttpSession session) {
+
+	    ActionResponse<Petitioner> response = new ActionResponse<>();
+	    String jsonData = null;
+
+	    try {
+	        User u = (User) session.getAttribute("USER");
+
+	        // Set required fields
+	        pet.setPt_rec_status(1);
+	        pet.setPt_cr_by(u.getUm_id());
+	        pet.setPt_cr_date(new Date());
+
+	        // Save
+	        caseFileDetailService.save(pet);
+
+	        response.setResponse("TRUE");
+	        response.setData(pet);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.setResponse("FALSE");
+	    }
+
+	    jsonData = globalfunction.convert_to_json(response);
+	    return jsonData;
+	}
+	
+	@RequestMapping(value = "/saverespondent", method = RequestMethod.POST)
+	public @ResponseBody String saveRespondent(@RequestBody Respondent res,
+	                                           HttpSession session) {
+
+	    ActionResponse<Respondent> response = new ActionResponse<>();
+	    String jsonData = null;
+
+	    try {
+	        User u = (User) session.getAttribute("USER");
+
+	        //  Set required fields
+	        res.setRt_rec_status(1);
+	        res.setRt_cr_by(u.getUm_id());
+	        res.setRt_cr_date(new Date());
+
+	        // Save
+	        caseFileDetailService.save(res);
+
+	        response.setResponse("TRUE");
+	        response.setData(res);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.setResponse("FALSE");
+	    }
+
+	    jsonData = globalfunction.convert_to_json(response);
+	    return jsonData;
+	}
+	
+	
+	@RequestMapping(value = "/getrespondentByFdId/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getRespondent(@PathVariable("id") Long id) {
+
+	    ActionResponse<Respondent> response = new ActionResponse<>();
+	    String jsonData = null;
+
+	    try {
+	        Respondent res = caseFileDetailService.getRespondentByFdId(id);
+
+	        response.setResponse("TRUE");
+	        response.setData(res);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.setResponse("FALSE");
+	    }
+
+	    jsonData = globalfunction.convert_to_json(response);
+	    return jsonData;
+	}
+	
+	
+	
+	//========================================================================================================
+		//======================================== VIJAY CHAURASIYA  END WITH ========================================
+			
+	
+	
+	
+	
 	@RequestMapping(value = "/deleterespondent/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody String deleterespondent(@PathVariable("id") Long id,
 			HttpSession session) {

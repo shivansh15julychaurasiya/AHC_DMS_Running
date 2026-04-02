@@ -1,6 +1,5 @@
 package com.dms.service;
 
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -141,6 +139,32 @@ public class CauseListService
 		}
 		return c;
 	}
+	
+	@Transactional
+	public CauseList getPartyNameById(Long fdId) {
+
+	    List<CauseList> list = em.createQuery(
+	            "SELECT cl FROM CauseList cl WHERE cl.cl_fd_mid = :fdId",
+	            CauseList.class)
+	        .setParameter("fdId", fdId)
+	        .getResultList();
+
+	    System.out.println("SIZE WITHOUT STATUS = " + list.size());
+
+	    List<CauseList> list2 = em.createQuery(
+	            "SELECT cl FROM CauseList cl WHERE cl.cl_fd_mid = :fdId AND cl.cl_rec_status = 1",
+	            CauseList.class)
+	        .setParameter("fdId", fdId)
+	        .getResultList();
+
+	    System.out.println("SIZE WITH STATUS = " + list2.size());
+
+	    return list2.isEmpty() ? null : list2.get(0);
+	}
+	
+	
+	
+	
 	
 	@Transactional
 	public Long findDocument(Long bench_code,Long case_type,Long case_no,Long case_year) 
